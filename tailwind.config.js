@@ -13,8 +13,22 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Montserrat', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'abu-body': '#F2F2F8',
+                'merah-primary': '#9C1F14',
+                'merah-secondary': '#6F0707',
+                'merah-warning': '#E50000',
+                'merah-warning': '#E50000',
+                'merah-component': '#D30808',
+                'kuning-warning': '#F6C23A',
+                'hijau-warning': '#55BF53',
+                'abu-text': '#676767',
+                'abu-component': '#A6A6A6',
+                'abu-label': '#535353',
+                'biru': '#76CEFF',
+            }
         },
     },
 

@@ -22,10 +22,9 @@ defineExpose({ focus: () => input.value.focus() });
 </script>
 
 <template>
-    <input
-        class="border-abu-text rounded-md shadow-sm focus:border-2 focus:ring-0"
-        :value="modelValue"
+    <textarea
+        class="border-abu-text rounded-md shadow-sm"
         @input="$emit('update:modelValue', $event.target.value)"
         ref="input"
-    />
+    >{{ modelValue }}</textarea>
 </template>
