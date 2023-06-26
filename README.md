@@ -10,13 +10,13 @@ requirement:
 before you run command below you need to start database server and create new database with name "laravel"
 ``
 
-
 ```bash
 gh repo clone syarifmuhammad/toefl-tpa 
 cd toefl-tpa
 composer install
 cp .env.example .env
 php artisan migrate
+php artisan db:seed
 php artisan key:generate
 php artisan serve
 ```
@@ -27,8 +27,17 @@ npm install
 npm run dev
 ```
 
+default login:
+```
+test@mail.com
+12345678
+```
+
 
 ## structure folder
 - resources -> for view
 - app/Http -> for controller
 - app/Models -> for models
+- routes/ -> for routes
+  - web.php
+  - auth.php 
