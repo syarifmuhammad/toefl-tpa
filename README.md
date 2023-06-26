@@ -41,3 +41,6 @@ test@mail.com
 - routes/ -> for routes
   - web.php
   - auth.php 
+
+## screenshots
+![dashboard](/screenshots/dashboard.png)
