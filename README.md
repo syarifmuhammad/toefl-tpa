@@ -29,6 +29,6 @@ npm run dev
 
 
 ## structure folder
-resources -> for view
-app/Http -> for controller
-app/Models -> for models
+- resources -> for view
+- app/Http -> for controller
+- app/Models -> for models
