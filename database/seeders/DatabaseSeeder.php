@@ -17,9 +17,13 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'test',
+            'nim_or_nik' => '1234567890',
+            'password' => '12345678',
             'email' => 'test@mail.com',
-            'password' => '12345678'
+            'name' => 'Test User',
+            'profile_picture' => 'https://i.pravatar.cc/300',
+            'phone' => '081234567890',
+            'is_admin' => '1'
         ]);
         
         Schedule::factory()

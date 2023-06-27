@@ -2,6 +2,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head } from '@inertiajs/vue3';
+import { defineComponent } from 'vue';
+
+defineComponent({
+    schedule: Array
+})
 </script>
 
 
@@ -99,10 +104,10 @@ import { Head } from '@inertiajs/vue3';
     </AuthenticatedLayout>
 </template>
 
-<script>
+<!-- <script>
    import { defineComponent } from 'vue';
    
    export default defineComponent({
      props: ['schedule'],
    });
-</script>
+</script> -->
