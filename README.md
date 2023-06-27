@@ -49,5 +49,11 @@ git push
   - auth.php 
 - public/assets -> for assets
 
+## important link
+- [figma](https://www.figma.com/file/fRx0OHk1H60POgjbMtu9dG/Untitled?type=design&node-id=0-1&mode=design&t=lTNaUaKbnl115bKY-0)
+- [class diagram](https://drive.google.com/file/d/1IEbZgJyzN-ruYdEXGXN0e1Qg9MVTiiGL/view)
+
+
+
 ## screenshots
 ![dashboard](/screenshots/dashboard.png)
