@@ -4,6 +4,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head } from '@inertiajs/vue3';
 </script>
 
+
+
 <template>
     <Head title="Dashboard" />
 
@@ -71,17 +73,36 @@ import { Head } from '@inertiajs/vue3';
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr v-for="n in 10" class="border-b-2 border-abu-component">
+                        <!-- <li v-for="example in examples.data" :key="example.id">        
+                                     {{ example.name }} - {{ example.email }}       
+                                          </li> -->
+                        <tr v-for="(row, idx) in schedule" :key="idx" class="border-b-2 border-abu-component">
+                            <td class="py-5">{{ idx+1 }}.</td>
+                            <td class="py-5">{{ row.tanggal }}</td>
+                            <td class="py-5">{{ row.waktu }}</td>
+                            <td class="py-5">{{ row.terisi }}/{{ row.kuota }}</td>
+                            <td class="py-5">{{ (row.status == 1 ) ? "ready" : "not ready" }}</td>
+                            <td class="py-5"><PrimaryButton class="px-4">Pilih</PrimaryButton></td>
+                        </tr>
+                        <!-- <tr v-for="n in 10" class="border-b-2 border-abu-component">
                             <td class="py-5">{{ n }}.</td>
                             <td class="py-5">10 Juni 2023</td>
                             <td class="py-5">10.00 WIB</td>
                             <td class="py-5">14/40</td>
                             <td class="py-5">Ready</td>
                             <td class="py-5"><PrimaryButton class="px-4">Pilih</PrimaryButton></td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
         </section>
     </AuthenticatedLayout>
 </template>
+
+<script>
+   import { defineComponent } from 'vue';
+   
+   export default defineComponent({
+     props: ['schedule'],
+   });
+</script>
