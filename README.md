@@ -33,6 +33,12 @@ test@mail.com
 12345678
 ```
 
+how to push
+```
+git add .
+git commit -m <your comment>
+git push
+```
 
 ## structure folder
 - resources -> for view
@@ -41,6 +47,7 @@ test@mail.com
 - routes/ -> for routes
   - web.php
   - auth.php 
+- public/assets -> for assets
 
 ## screenshots
 ![dashboard](/screenshots/dashboard.png)
