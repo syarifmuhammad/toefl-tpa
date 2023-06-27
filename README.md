@@ -7,7 +7,7 @@ requirement:
 - xampp (for server database)
 
 ``
-before you run command below you need to start database server and create new database with name "laravel"
+create new database with name "menpro"
 ``
 
 ```bash
