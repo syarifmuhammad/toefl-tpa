@@ -29,8 +29,10 @@ npm run dev
 
 default login:
 ```
-test@mail.com
-12345678
+register baru saja, karena belom buat seeder
+
+<!-- test@mail.com
+12345678 -->
 ```
 
 how to push
