@@ -4,11 +4,21 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import TextArea from '@/Components/TextArea.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
+    nim_or_nik: '',
     name: '',
     email: '',
+    phone: '',
+    street: '',
+    sub_district: '',
+    district: '',
+    province: '',
+    village: '',
+    postal_code: '',
+    profile_picture: '',
     password: '',
     password_confirmation: '',
 });
@@ -54,7 +64,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel for="street" value="Address" />
 
-                <TextArea id="street" class="mt-1 block w-full" v-model="form.street" required autocomplete="street" />
+                <TextArea id="street" class="mt-1 block w-full" v-model="form.street" required />
 
                 <InputError class="mt-2" :message="form.errors.street" />
             </div>

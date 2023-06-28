@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('name');
             $table->string('profile_picture');
-            // $table->foreignId('addressId')->references('id')->on('address');
             $table->string('phone');
             $table->boolean('is_admin')->default('0');
             $table->timestamp('email_verified_at')->nullable();

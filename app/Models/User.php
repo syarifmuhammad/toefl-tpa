@@ -25,11 +25,7 @@ class User extends Authenticatable
         'email',
         'name',
         'profile_picture',
-        'street',
-        'village',
-        'sub_district',
-        'district',
-        'province',
+        'address_id',
         'phone'
     ];
 
