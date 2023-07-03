@@ -4,20 +4,21 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import TextArea from '@/Components/TextArea.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
-    nama: '',
-    no_whatsapp: '',
-    nik_or_nim: '',
+    nim_or_nik: '',
+    name: '',
     email: '',
-    photo: null,
-    provinsi: '',
-    kota: '',
-    kecamatan: '',
-    desa: '',
-    kode_pos: '',
-    alamat: '',
+    phone: '',
+    street: '',
+    sub_district: '',
+    district: '',
+    province: '',
+    village: '',
+    postal_code: '',
+    profile_picture: '',
     password: '',
     password_confirmation: '',
 });
@@ -37,34 +38,34 @@ const submit = () => {
             <form @submit.prevent="submit" class="mt-6">
                 <div class="flex gap-x-4 items-start">
                     <div class="w-1/2">
-                        <InputLabel for="nnamaame" value="Nama Lengkap Peserta  (tercetak di sertifikat)" required>
+                        <InputLabel for="name" value="Nama Lengkap Peserta  (tercetak di sertifikat)" required>
                             Nama sesuai KTP (tanpa gelar)
                         </InputLabel>
 
-                        <TextInput id="nama" type="text" class="mt-1 block w-full" v-model="form.nama" required autofocus
+                        <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus
                             autocomplete="name" />
 
-                        <InputError class="mt-2" :message="form.errors.nama" />
+                        <InputError class="mt-2" :message="form.errors.name" />
                     </div>
                     <div class="w-1/2">
-                        <InputLabel for="no_whatsapp" value="No WhatsApp" required>
+                        <InputLabel for="phone" value="No WhatsApp" required>
                             Didahului kode negara. (Contoh: +6281xxxxxx)
                         </InputLabel>
 
-                        <TextInput id="no_whatsapp" type="tel" class="mt-1 block w-full" v-model="form.no_whatsapp"
+                        <TextInput id="phone" type="tel" class="mt-1 block w-full" v-model="form.phone"
                             required autocomplete="tel" />
 
-                        <InputError class="mt-2" :message="form.errors.no_whatsapp" />
+                        <InputError class="mt-2" :message="form.errors.phone" />
                     </div>
                 </div>
                 <div class="flex gap-x-4 items-start mt-4">
                     <div class="w-1/2">
-                        <InputLabel for="nik" value="NIK" required>
+                        <InputLabel for="nim_or_nik" value="NIK" required>
                             No. Kartu Tanda Penduduk (KTP)
                         </InputLabel>
 
-                        <TextInput id="nik" type="text" class="mt-1 block w-full" v-model="form.nik_or_nim" required autofocus
-                            autocomplete="nik" />
+                        <TextInput id="nim_or_nik" type="text" class="mt-1 block w-full" v-model="form.nim_or_nik" required autofocus
+                            autocomplete="nim_or_nik" />
 
                         <InputError class="mt-2" :message="form.errors.nik_or_nim" />
                     </div>
@@ -81,79 +82,79 @@ const submit = () => {
                 </div>
                 <div class="flex gap-x-4 items-start mt-4">
                     <div class="w-1/4">
-                        <InputLabel for="photo" value="Foto Profil" required>
+                        <InputLabel for="profile_picture" value="Foto Profil" required>
                             Format file .jpg / .png (Maks .2MB)
                         </InputLabel>
 
-                        <TextInput id="photo" type="file" class="mt-1 block w-full py-1" required />
+                        <TextInput id="profile_picture" type="file" class="mt-1 block w-full py-1" required />
 
-                        <InputError class="mt-2" :message="form.errors.photo" />
+                        <InputError class="mt-2" :message="form.errors.profile_picture" />
                     </div>
                     <div class="w-1/4">
-                        <InputLabel for="provinsi" value="Provinsi" required>
+                        <InputLabel for="province" value="Provinsi" required>
                             Provinsi Tempat Tinggal
                         </InputLabel>
 
-                        <TextInput id="provinsi" type="text" class="mt-1 block w-full" v-model="form.provinsi" required
+                        <TextInput id="province" type="text" class="mt-1 block w-full" v-model="form.province" required
                             autocomplete="address-level1" />
 
-                        <InputError class="mt-2" :message="form.errors.provinsi" />
+                        <InputError class="mt-2" :message="form.errors.province" />
                     </div>
                     <div class="w-1/4">
-                        <InputLabel for="kota" value="Kota/Kabupaten" required>
+                        <InputLabel for="district" value="Kota/Kabupaten" required>
                             Kota/Kabupaten Tempat Tinggal
                         </InputLabel>
 
-                        <TextInput id="kota" type="text" class="mt-1 block w-full" v-model="form.kota" required
+                        <TextInput id="district" type="text" class="mt-1 block w-full" v-model="form.district" required
                             autocomplete="address-level2" />
 
-                        <InputError class="mt-2" :message="form.errors.kota" />
+                        <InputError class="mt-2" :message="form.errors.district" />
                     </div>
                     <div class="w-1/4">
-                        <InputLabel for="kecamatan" value="Kecamatan" required>
+                        <InputLabel for="sub_district" value="Kecamatan" required>
                             Kecamatan Tempat Tinggal
                         </InputLabel>
 
-                        <TextInput id="kecamatan" type="text" class="mt-1 block w-full" v-model="form.kecamatan" required
+                        <TextInput id="sub_district" type="text" class="mt-1 block w-full" v-model="form.sub_district" required
                             autocomplete="address-level3" />
 
-                        <InputError class="mt-2" :message="form.errors.kecamatan" />
+                        <InputError class="mt-2" :message="form.errors.sub_district" />
                     </div>
                 </div>
                 <div class="flex gap-x-4 mt-4">
                     <div class="w-1/2 flex flex-col gap-y-4">
                         <div class="flex gap-x-4">
                             <div class="w-1/2">
-                                <InputLabel for="desa" value="Desa/Kelurahan*" required>
+                                <InputLabel for="village" value="Desa/Kelurahan*" required>
                                     Desa/Kelurahan Tempat Tinggal
                                 </InputLabel>
 
-                                <TextInput id="desa" type="text" class="mt-1 block w-full" v-model="form.desa" required
+                                <TextInput id="village" type="text" class="mt-1 block w-full" v-model="form.village" required
                                     autofocus autocomplete="address-level4" />
 
-                                <InputError class="mt-2" :message="form.errors.desa" />
+                                <InputError class="mt-2" :message="form.errors.village" />
                             </div>
                             <div class="w-1/2">
-                                <InputLabel for="kode_pos" value="Kode Pos" required>
+                                <InputLabel for="postal_code" value="Kode Pos" required>
                                     Kode Pos Daerah Tempat Tinggal
                                 </InputLabel>
 
-                                <TextInput id="kode_pos" type="text" class="mt-1 block w-full" v-model="form.kode_pos"
+                                <TextInput id="postal_code" type="text" class="mt-1 block w-full" v-model="form.postal_code"
                                     required autofocus autocomplete="postal-code" />
 
-                                <InputError class="mt-2" :message="form.errors.kode_pos" />
+                                <InputError class="mt-2" :message="form.errors.postal_code" />
                             </div>
                         </div>
                         <div class="">
-                            <InputLabel for="alamat" value="Alamat (pengiriman sertifikat dan legalisir)" required>
+                            <InputLabel for="street" value="Alamat (pengiriman sertifikat dan legalisir)" required>
                                 Alamat Rumah
                             </InputLabel>
 
-                            <textarea id="email" name="alamat"
+                            <textarea id="street" name="street"
                                 class="border-abu-text rounded-md shadow-sm focus:border-2 focus:ring-0 mt-1 block w-full"
-                                autocomplete="street-address" v-model="form.alamat" required></textarea>
+                                autocomplete="street-address" v-model="form.street" required></textarea>
 
-                            <InputError class="mt-2" :message="form.errors.email" />
+                            <InputError class="mt-2" :message="form.errors.street" />
                         </div>
                     </div>
                     <div class="w-1/2 flex flex-col justify-between">

@@ -2,7 +2,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import { defineComponent } from 'vue';
+
+defineComponent({
+    schedule: Array
+})
 </script>
+
+
 
 <template>
     <Head title="Dashboard" />
@@ -72,14 +79,14 @@ import { Head, Link } from '@inertiajs/vue3';
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr v-for="n in 10" class="border-b-2 border-abu-component">
-                            <td class="py-5">{{ n }}.</td>
-                            <td class="py-5">10 Juni 2023</td>
-                            <td class="py-5">10.00 WIB</td>
-                            <td class="py-5">14/40</td>
-                            <td class="py-5">Ready</td>
+                        <tr v-for="(row, idx) in schedule" :key="idx" class="border-b-2 border-abu-component">
+                            <td class="py-5">{{ idx+1 }}.</td>
+                            <td class="py-5">{{ row.tanggal }}</td>
+                            <td class="py-5">{{ row.waktu }}</td>
+                            <td class="py-5">{{ row.terisi }}/{{ row.kuota }}</td>
+                            <td class="py-5">{{ (row.status == 1 ) ? "ready" : "not ready" }}</td>
                             <td class="py-5">
-                                <Link :href="route('exam.detail', n)">
+                                <Link :href="route('exam.detail', row.id)">
                                 <PrimaryButton class="px-4">Pilih</PrimaryButton>
                                 </Link>
                             </td>
@@ -90,3 +97,11 @@ import { Head, Link } from '@inertiajs/vue3';
         </section>
     </AuthenticatedLayout>
 </template>
+
+<!-- <script>
+   import { defineComponent } from 'vue';
+   
+   export default defineComponent({
+     props: ['schedule'],
+   });
+</script> -->

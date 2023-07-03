@@ -17,7 +17,7 @@ defineProps({
 });
 
 const form = useForm({
-    email: '',
+    nim_or_nik: '',
     password: '',
     remember: false,
 });
@@ -41,8 +41,8 @@ const submit = () => {
         <form @submit.prevent="submit">
             <div>
                 <label for="email" class="font-medium">NIK / NIM</label>
-                <input type="text" class="mt-2 border-[#DAE0E6] px-3 py-2 w-full rounded-lg text-abu-text" v-model="form.email" placeholder="Masukkan NIK / NIM anda" required autocomplete="username">
-                <InputError class="mt-2" :message="form.errors.email" />
+                <input type="text" class="mt-2 border-[#DAE0E6] px-3 py-2 w-full rounded-lg text-abu-text" v-model="form.form.nim_or_nik" placeholder="Masukkan NIK / NIM anda" required autocomplete="username">
+                <InputError class="mt-2" :message="form.errors.form.nim_or_nik" />
             </div>
 
             <div class="mt-6">

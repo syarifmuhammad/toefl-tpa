@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Schedule;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,9 +16,19 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
+        // User::factory()->create([
+        //     'nim_or_nik' => '1234567890',
+        //     'password' => '12345678',
+        //     'email' => 'test@mail.com',
         //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
+        //     'profile_picture' => 'https://i.pravatar.cc/300',
+        //     'phone' => '081234567890',
+        //     'is_admin' => '0'
         // ]);
+        
+        // Schedule::factory()
+        //     ->count(10)
+        //     ->create();
+
     }
 }

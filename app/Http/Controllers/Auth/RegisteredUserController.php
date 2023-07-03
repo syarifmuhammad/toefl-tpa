@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -32,15 +33,37 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'nim_or_nik' => ['required','numeric','regex:/^(\d{10}|\d{16})$/','unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'name' => 'required|string|max:255',
+            'profile_picture' => 'required|string',
+            'street' => 'required|string',
+            'village' => 'required|string',
+            'sub_district' => 'required|string',
+            'district' => 'required|string',
+            'province' => 'required|string',
+            'postal_code' => 'required|numeric|digits:5',
+            'phone' => 'required|numeric|digits_between:10,13|starts_with:62',
+        ]);
+
+        $address = Address::create([
+            'street' => $request->street,
+            'village' => $request->village,
+            'sub_district' => $request->sub_district,
+            'district' => $request->district,
+            'province' => $request->province,
+            'postal_code' => $request->postal_code,
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'nim_or_nik' => $request->nim_or_nik,
             'password' => Hash::make($request->password),
+            'email' => $request->email,
+            'name' => $request->name,
+            'profile_picture' => $request->profile_picture,
+            'address_id' => $address->id,
+            'phone' => $request->phone,
         ]);
 
         event(new Registered($user));
