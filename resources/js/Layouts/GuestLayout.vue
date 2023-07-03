@@ -12,9 +12,12 @@ import { Link } from '@inertiajs/vue3';
         </div>
 
         <div
-            class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg"
+            class="w-full sm:max-w-md mt-6 p-8 bg-white shadow-[0_4px_40px_0_rgba(0,0,0,0.25)] overflow-hidden sm:rounded-lg"
         >
             <slot />
+        </div>
+        <div class="mt-4" v-if="route().current('login')">
+            Belum punya akun ? <Link :href="route('register')" class="text-biru inline">Register</Link>
         </div>
     </div>
 </template>

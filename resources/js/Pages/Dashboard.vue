@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -52,7 +52,8 @@ import { Head } from '@inertiajs/vue3';
         <section class="mt-10 px-4 sm:px-6 lg:px-8 py-12 w-full">
             <div class="w-full flex divide-x-2">
                 <div class="pr-10">
-                    <a class="font-semibold text-xl text-merah-component border-b-2 pb-1 border-merah-component" href="">TOEFL</a>
+                    <a class="font-semibold text-xl text-merah-component border-b-2 pb-1 border-merah-component"
+                        href="">TOEFL</a>
                 </div>
                 <div class="pl-10">
                     <a class="font-semibold text-xl text-abu-text" href="">TPA</a>
@@ -77,7 +78,11 @@ import { Head } from '@inertiajs/vue3';
                             <td class="py-5">10.00 WIB</td>
                             <td class="py-5">14/40</td>
                             <td class="py-5">Ready</td>
-                            <td class="py-5"><PrimaryButton class="px-4">Pilih</PrimaryButton></td>
+                            <td class="py-5">
+                                <Link :href="route('exam.detail', n)">
+                                <PrimaryButton class="px-4">Pilih</PrimaryButton>
+                                </Link>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

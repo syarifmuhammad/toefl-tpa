@@ -22,19 +22,36 @@ Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return Inertia::render('Dashboard');
     })->name('index');
-    
+
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->middleware('verified')->name('dashboard');
 
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/profile/password', [ProfileController::class, 'password'])->name('profile.password');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::name('profile.')->prefix('/profile')->group(function () {
+        Route::get('', [ProfileController::class, 'index'])->name('index');
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+        Route::get('/password', [ProfileController::class, 'password'])->name('password');
+        Route::patch('', [ProfileController::class, 'update'])->name('update');
+        Route::delete('', [ProfileController::class, 'destroy'])->name('destroy');
+    });
 
-    Route::get('/history', [ExamController::class, 'history'])->name('exam.history');
-    Route::get('/history/{id}', [ExamController::class, 'detail_history'])->name('exam.history.detail');
+    Route::name('exam.')->group(function () {
+        Route::get('/exam/{id}', [ExamController::class, 'show'])->name('detail');
+        Route::get('/exam/{id}/pembayaran', [ExamController::class, 'payment'])->name('payment');
+        Route::get('/history', [ExamController::class, 'history'])->name('history');
+        Route::get('/history/{id}', [ExamController::class, 'detail_history'])->name('history.detail');
+    });
+
 });
 
-require __DIR__.'/auth.php';
+Route::name('admin.')->prefix('admin')->group(function() {
+    Route::get('/', function () {
+        return Inertia::render('Admin/Dashboard');
+    })->name('index');
+
+    Route::get('/monitor/{id}', function () {
+        return Inertia::render('Admin/MonitorUjian');
+    })->name('monitor');
+});
+
+require __DIR__ . '/auth.php';
