@@ -35,7 +35,7 @@ const submit = () => {
     <div class="h-screen px-20 py-2">
         <div class="bg-white rounded-[10px] p-8">
             <h1 class="font-bold text-lg">Biodata Diri</h1>
-            <form @submit.prevent="submit" class="mt-6">
+            <form @submit.prevent="submit" class="mt-6" >
                 <div class="flex gap-x-4 items-start">
                     <div class="w-1/2">
                         <InputLabel for="name" value="Nama Lengkap Peserta  (tercetak di sertifikat)" required>
@@ -49,7 +49,7 @@ const submit = () => {
                     </div>
                     <div class="w-1/2">
                         <InputLabel for="phone" value="No WhatsApp" required>
-                            Didahului kode negara. (Contoh: +6281xxxxxx)
+                            Didahului kode negara. (Contoh: 6281xxxxxx)
                         </InputLabel>
 
                         <TextInput id="phone" type="tel" class="mt-1 block w-full" v-model="form.phone"
@@ -67,7 +67,7 @@ const submit = () => {
                         <TextInput id="nim_or_nik" type="text" class="mt-1 block w-full" v-model="form.nim_or_nik" required autofocus
                             autocomplete="nim_or_nik" />
 
-                        <InputError class="mt-2" :message="form.errors.nik_or_nim" />
+                        <InputError class="mt-2" :message="form.errors.nim_or_nik" />
                     </div>
                     <div class="w-1/2">
                         <InputLabel for="email" value="E-mail Aktif" required>
@@ -86,7 +86,7 @@ const submit = () => {
                             Format file .jpg / .png (Maks .2MB)
                         </InputLabel>
 
-                        <TextInput id="profile_picture" type="file" class="mt-1 block w-full py-1" required />
+                        <TextInput id="profile_picture" type="file" class="mt-1 block w-full py-1" required @input="form.profile_picture = $event.target.files[0]" />
 
                         <InputError class="mt-2" :message="form.errors.profile_picture" />
                     </div>

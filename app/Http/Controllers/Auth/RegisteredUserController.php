@@ -33,11 +33,11 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'nim_or_nik' => ['required','numeric','regex:/^(\d{10}|\d{16})$/','unique:'.User::class],
+            'nim_or_nik' => ['required', 'numeric', 'regex:/^(\d{10}|\d{16})$/', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'email' => 'required|string|email|max:255|unique:' . User::class,
             'name' => 'required|string|max:255',
-            'profile_picture' => 'required|string',
+            'profile_picture' => 'required',
             'street' => 'required|string',
             'village' => 'required|string',
             'sub_district' => 'required|string',
@@ -56,12 +56,18 @@ class RegisteredUserController extends Controller
             'postal_code' => $request->postal_code,
         ]);
 
+        if ($request->file('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $fileName = date('YmdHis') . $file->getClientOriginalName();
+            $file->move(public_path('images/profile_picture'), $fileName);
+        }
+
         $user = User::create([
             'nim_or_nik' => $request->nim_or_nik,
             'password' => Hash::make($request->password),
             'email' => $request->email,
             'name' => $request->name,
-            'profile_picture' => $request->profile_picture,
+            'profile_picture' => $fileName,
             'address_id' => $address->id,
             'phone' => $request->phone,
         ]);
