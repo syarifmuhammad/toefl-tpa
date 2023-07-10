@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
@@ -20,10 +21,8 @@ use Inertia\Inertia;
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->name('index');
     
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::name('profile.')->prefix('/profile')->group(function () {
@@ -44,13 +43,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::name('admin.')->prefix('admin')->group(function() {
-    Route::get('/', function () {
-        return Inertia::render('Admin/Dashboard');
-    })->name('index');
+    Route::get('/', [AdminController::class, 'index'])->name('index');
 
-    Route::get('/monitor/{id}', function () {
-        return Inertia::render('Admin/MonitorUjian');
-    })->name('monitor');
+    Route::get('/monitor/{id}', [AdminController::class, 'monitor'])->name('monitor');
 });
 
 require __DIR__ . '/auth.php';
