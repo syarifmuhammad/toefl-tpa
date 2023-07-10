@@ -4,12 +4,32 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Models\Address;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
 class UserFactory extends Factory
 {
+
+    /**
+     * helper for function getNimOrNik
+     * 
+     */
+    function randomNumber($length): string{
+        $number = range(9, 100);
+        shuffle($number);
+        return substr(implode('', $number), 0, $length);
+    }
+
+    /**
+     * create nim or nik random
+     * 
+     */
+    public function  getNimOrNik(): string {
+        return (rand(1,100) % 2 === 0) ? $this->randomNumber(10) : $this->randomNumber(16);
+    }
+
     /**
      * Define the model's default state.
      *
@@ -18,10 +38,14 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'nim_or_nik' => $this->getNimOrNik(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'profile_picture' => fake()->imageUrl(),
+            'password' => 'password',
+            'address_id' => Address::factory(),
+            'phone' => fake()->phoneNumber(),
             'remember_token' => Str::random(10),
         ];
     }
