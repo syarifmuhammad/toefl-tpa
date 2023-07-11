@@ -51,6 +51,15 @@ Route::name('admin.')->prefix('admin')->group(function() {
     Route::get('/monitor/{id}', function () {
         return Inertia::render('Admin/MonitorUjian');
     })->name('monitor');
+
+    Route::name('bank-soal.')->prefix('bank-soal')->group(function() {
+        Route::get('/', function () {
+            return Inertia::render('Admin/BankSoal/Index');
+        })->name('index');
+        Route::get('/{id}', function () {
+            return Inertia::render('Admin/BankSoal/Detail');
+        })->name('detail');
+    });
 });
 
 require __DIR__ . '/auth.php';

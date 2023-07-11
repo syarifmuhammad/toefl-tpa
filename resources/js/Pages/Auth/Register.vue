@@ -28,6 +28,13 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const setProfilePicture = (data) => {
+    if (data.target.files.length > 0) {
+        form.profile_picture = data.target.files[0]
+    }
+};
+
 </script>
 
 <template>
@@ -86,7 +93,7 @@ const submit = () => {
                             Format file .jpg / .png (Maks .2MB)
                         </InputLabel>
 
-                        <TextInput id="profile_picture" type="file" class="mt-1 block w-full py-1" required />
+                        <TextInput @change="setProfilePicture" id="profile_picture" type="file" class="mt-1 block w-full py-1" required />
 
                         <InputError class="mt-2" :message="form.errors.profile_picture" />
                     </div>

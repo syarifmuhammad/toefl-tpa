@@ -5,7 +5,7 @@ import SuccessLogo from '@/Components/SuccessLogo.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref } from 'vue'
 
-const status = ref('unpaid')
+const status = ref('canceled')
 
 </script>
 

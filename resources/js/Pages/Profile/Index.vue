@@ -40,15 +40,15 @@ defineProps({
                         </div>
                         <div class="flex justify-between pb-4 border-b border-abu-component">
                             <label class="font-medium" for="nik_or_nim">Nik / NIM</label>
-                            <p>12012000016</p>
+                            <p>{{ $page.props.auth.user.nim_or_nik }}</p>
                         </div>
                         <div class="flex justify-between pb-4 border-b border-abu-component">
                             <label class="font-medium" for="number_phone">Nomor Telepon</label>
-                            <p>+6281352671896</p>
+                            <p>{{ $page.props.auth.user.phone }}</p>
                         </div>
                         <div class="flex justify-between pb-4 border-b border-abu-component">
                             <label class="font-medium" for="number_phone">Alamat</label>
-                            <p>Jl. Teluk Gadang, RT. 03, RW. 01 Desa Semayap</p>
+                            <p>{{ $page.props.auth.user.street }}</p>
                         </div>
                     </div>
                     <div class="mt-20">
