@@ -28,6 +28,13 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const setProfilePicture = (data) => {
+    if (data.target.files.length > 0) {
+        form.profile_picture = data.target.files[0]
+    }
+};
+
 </script>
 
 <template>

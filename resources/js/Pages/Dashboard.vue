@@ -2,11 +2,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { defineComponent } from 'vue';
+import { defineProps } from 'vue';
 
-defineComponent({
-    schedule: Array
-})
+defineProps({ schedule: Array })
+
 </script>
 
 

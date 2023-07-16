@@ -5,7 +5,7 @@ import TextInput from '@/Components/TextInput.vue';
 import TextArea from '@/Components/TextArea.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, usePage, useForm } from '@inertiajs/vue3';
 
 defineProps({
     mustVerifyEmail: {
@@ -16,16 +16,20 @@ defineProps({
     },
 });
 
+const user = usePage().props.auth.user;
+
 const form = useForm({
-    name: '',
-    nik_or_nim: '',
-    number_phone: '',
-    province: '',
-    district: '',
-    sub_district: '',
-    village: '',
-    zip_code: '',
-    address: '',
+    nim_or_nik: user.nim_or_nik,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    street: user.street,
+    sub_district: user.sub_district,
+    district: user.district,
+    province: user.province,
+    village: user.village,
+    postal_code: user.postal_code,
+    profile_picture: user.profile_picture,
 });
 
 </script>
@@ -58,28 +62,28 @@ const form = useForm({
                             <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required
                                 autofocus />
 
-                            <!-- <InputError class="mt-2" :message="form.errors.name" /> -->
+                            <InputError class="mt-2" :message="form.errors.name" />
                         </div>
                         <div class="flex justify-between gap-x-5 mt-4">
                             <div class="w-1/2">
-                                <InputLabel for="nik_or_nim" value="NIK/NIM" required>
+                                <InputLabel for="nim_or_nik" value="NIK/NIM" required>
                                     No. Kartu Tanda Penduduk (KTP) / No. Induk Mahasiswa
                                 </InputLabel>
 
-                                <TextInput id="nik_or_nim" type="text" class="mt-1 block w-full" v-model="form.nik_or_nim"
+                                <TextInput id="nim_or_nik" type="text" class="mt-1 block w-full" v-model="form.nim_or_nik"
                                     required autofocus />
 
-                                <!-- <InputError class="mt-2" :message="form.errors.name" /> -->
+                                <InputError class="mt-2" :message="form.errors.nim_or_nik" />
                             </div>
                             <div class="w-1/2">
-                                <InputLabel for="number_phone" value="No WhatsApp" required>
+                                <InputLabel for="phone" value="No WhatsApp" required>
                                     Didahului kode negara. (Contoh: +6281xxxxxx)
                                 </InputLabel>
 
-                                <TextInput id="number_phone" type="tel" class="mt-1 block w-full"
-                                    v-model="form.number_phone" required autofocus />
+                                <TextInput id="phone" type="tel" class="mt-1 block w-full"
+                                    v-model="form.phone" required autofocus autocomplete="tel" />
 
-                                <!-- <InputError class="mt-2" :message="form.errors.name" /> -->
+                                <InputError class="mt-2" :message="form.errors.name" />
                             </div>
                         </div>
                         <div class="flex justify-between gap-x-5 mt-4">
@@ -89,9 +93,9 @@ const form = useForm({
                                 </InputLabel>
 
                                 <TextInput id="province" type="text" class="mt-1 block w-full" v-model="form.province"
-                                    required autofocus />
+                                    required autofocus autocomplete="address-level1" />
 
-                                <!-- <InputError class="mt-2" :message="form.errors.name" /> -->
+                                <InputError class="mt-2" :message="form.errors.province" />
                             </div>
                             <div class="w-1/3">
                                 <InputLabel for="district" value="Kota/Kabupaten" required>
@@ -99,7 +103,7 @@ const form = useForm({
                                 </InputLabel>
 
                                 <TextInput id="district" type="text" class="mt-1 block w-full" v-model="form.district"
-                                    required autofocus />
+                                    required autofocus autocomplete="address-level2" />
 
                                 <!-- <InputError class="mt-2" :message="form.errors.name" /> -->
                             </div>
