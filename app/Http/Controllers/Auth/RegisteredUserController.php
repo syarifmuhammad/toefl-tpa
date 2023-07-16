@@ -64,8 +64,6 @@ class RegisteredUserController extends Controller
         }
         
 
-        
-
         $user = User::create([
             'nim_or_nik' => $request->nim_or_nik,
             'password' => Hash::make($request->password),
