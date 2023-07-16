@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -58,9 +59,12 @@ class RegisteredUserController extends Controller
 
         if ($request->file('profile_picture')) {
             $file = $request->file('profile_picture');
-            $fileName = date('YmdHis') . $file->getClientOriginalName();
+            $fileName = date('YmdHis') . $file->getClientOriginalName();        
             $file->move(public_path('images/profile_picture'), $fileName);
         }
+        
+
+        
 
         $user = User::create([
             'nim_or_nik' => $request->nim_or_nik,

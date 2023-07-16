@@ -2,10 +2,20 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
 
-defineProps({ schedule: Array })
+const props = defineProps(
+    { 
+        schedule: Array,
+        profile_picture: String,
+        email: String,
+        phone: String,
+    },
+)
 
+console.debug(props.profile_picture) //?.length)
+
+// console.log($this.props.id)
 </script>
 
 
@@ -21,16 +31,15 @@ defineProps({ schedule: Array })
         <section class="mt-2 px-4 sm:px-6 lg:px-8 py-12 bg-white flex flex-col gap-y-4 lg:flex-row items-center gap-x-8">
             <div>
                 <div class="w-[150px] aspect-square rounded-full">
-                    <img src="{{ url('public/images/profile_picture/') }}{{ $page.props.auth.user.profile_picture }}"
-                        alt="">
+                    <img :src="profile_picture" alt="">
                 </div>
             </div>
             <div class="w-full">
                 <h3 class="text-3xl font-semibold text-merah-component">{{ $page.props.auth.user.name }}</h3>
                 <div class="flex flex-wrap gap-x-6 items-center mt-2">
-                    <p>{{ $page.props.auth.user.email }}</p>
+                    <p>{{ email }}</p>
                     <span class="w-[7px] aspect-square bg-abu-component rounded-full"></span>
-                    <p>{{ $page.props.auth.user.phone }}</p>
+                    <p>{{ phone }}</p>
                     <span class="w-[7px] aspect-square bg-abu-component rounded-full"></span>
                     <p>IT Telkom Surabaya</p>
                 </div>
@@ -81,18 +90,21 @@ defineProps({ schedule: Array })
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr v-for="(row, idx) in schedule" :key="idx" class="border-b-2 border-abu-component">
-                            <td class="py-5">{{ idx + 1 }}.</td>
-                            <td class="py-5">{{ row.tanggal }}</td>
-                            <td class="py-5">{{ row.waktu }}</td>
-                            <td class="py-5">{{ row.terisi }}/{{ row.kuota }}</td>
-                            <td class="py-5">{{ (row.status == 1) ? "ready" : "not ready" }}</td>
-                            <td class="py-5">
-                                <Link :href="route('exam.detail', row.id)">
-                                <PrimaryButton class="px-4">Pilih</PrimaryButton>
-                                </Link>
-                            </td>
-                        </tr>
+                        <div v-if="schedule.data.length != 0">
+                            <tr v-for="(row, idx) in schedule" :key="idx" class="border-b-2 border-abu-component">
+                                <td class="py-5">{{ idx + 1 }}.</td>
+                                <td class="py-5">{{ row.tanggal }}</td>
+                                <td class="py-5">{{ row.waktu }}</td>
+                                <td class="py-5">{{ row.terisi }}/{{ row.kuota }}</td>
+                                <td class="py-5">{{ (row.status == 1) ? "ready" : "not ready" }}</td>
+                                <td class="py-5">
+                                    <Link :href="route('exam.detail', row.id)">
+                                    <PrimaryButton class="px-4">Pilih</PrimaryButton>
+                                    </Link>
+                                </td>
+                            </tr>
+                        </div>
+                        
                     </tbody>
                 </table>
             </div>
