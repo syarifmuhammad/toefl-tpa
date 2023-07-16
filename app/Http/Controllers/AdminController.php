@@ -16,4 +16,14 @@ class AdminController extends Controller
   {
     return Inertia::render('Admin/MonitorUjian');
   }
+
+  public function add_soal()
+  {
+    return Inertia::render('Admin/AddSoal');
+  }
+
+  public function store_soal(Request $request)
+  {
+    dd($request->all());
+  }
 }

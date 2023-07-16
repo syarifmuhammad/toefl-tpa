@@ -44,8 +44,10 @@ Route::middleware('auth')->group(function () {
 
 Route::name('admin.')->prefix('admin')->group(function() {
     Route::get('/', [AdminController::class, 'index'])->name('index');
-
     Route::get('/monitor/{id}', [AdminController::class, 'monitor'])->name('monitor');
+
+    Route::get('/soal/add', [AdminController::class, 'add_soal'])->name('soal.add');
+    Route::post('/soal/add', [AdminController::class, 'store_soal'])->name('soal.store');
 });
 
 require __DIR__ . '/auth.php';
