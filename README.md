@@ -15,10 +15,15 @@ gh repo clone syarifmuhammad/toefl-tpa
 cd toefl-tpa
 composer install
 cp .env.example .env
-php artisan migrate
-php artisan db:seed
+php artisan migrate --seed
 php artisan key:generate
 php artisan serve
+```
+
+if database already exist and has a error
+```bash
+php artisan db:wipe
+php artisan migrate --seed
 ```
 
 in new terminal run
@@ -27,12 +32,10 @@ npm install
 npm run dev
 ```
 
-default login:
+default login as admin:
 ```
-register baru saja, karena belom buat seeder
-
-<!-- test@mail.com
-12345678 -->
+1201202020
+password
 ```
 
 how to push
