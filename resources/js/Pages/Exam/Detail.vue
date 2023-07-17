@@ -13,19 +13,18 @@ import { Head, Link } from '@inertiajs/vue3'
 
     <AuthenticatedLayout>
         <template #breadcrumb>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Detail Ujian</h2>
+            <h2 class="font-semibold text-2xl text-gray-800 leading-tight">Detail Ujian</h2>
         </template>
 
         <section class="mt-10 px-4 sm:px-6 lg:px-8 w-full">
             <div class="bg-white rounded-lg overflow-hidden">
                 <div class="px-8 py-3 w-full flex items-center bg-merah-primary">
-                    <h3 class="font-semibold text-3xl text-white">TOEFL</h3>
+                    <h3 class="font-semibold text-2xl text-white">TOEFL</h3>
                 </div>
-
                 <div class="px-4 sm:px-6 lg:px-8 py-8">
                     <div>
-                        <h2 class="font-semibold text-4xl">Detail Kegiatan</h2>
-                        <table class="h-full text-xl mt-4">
+                        <h2 class="font-semibold text-xl">Detail Kegiatan</h2>
+                        <table class="h-full mt-4">
                             <tr>
                                 <td class="w-[175px]">Jenis tes</td>
                                 <td class="font-semibold">:</td>
@@ -56,7 +55,7 @@ import { Head, Link } from '@inertiajs/vue3'
                         </table>
                     </div>
                     <div class="mt-8">
-                        <h2 class="font-semibold text-4xl">Deskripsi</h2>
+                        <h2 class="font-semibold text-xl">Deskripsi</h2>
                         <ul class="list-disc pl-4 mt-4">
                             <li>Harap membayar sesuai dengan total biaya yang sudah ditentukan sampain digit terakhir.</li>
                             <li>Harap melakukan pembayaran sebelum batas waktu pembayaran</li>

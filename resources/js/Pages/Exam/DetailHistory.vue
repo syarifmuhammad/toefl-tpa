@@ -31,8 +31,8 @@ const status = ref('canceled')
                     </svg>
                     <SuccessLogo v-else />
                     <div class="ml-4" :class="status == 'canceled' ? 'text-white' : ''">
-                        <h3 class="font-semibold text-3xl">Pembayaran belum dilakukan</h3>
-                        <p class="font-medium text-xl">Silahkan membayar terlebih dahulu untuk melanjutkan pendaftaran
+                        <h3 class="font-semibold text-2xl">Pembayaran belum dilakukan</h3>
+                        <p class="font-medium">Silahkan membayar terlebih dahulu untuk melanjutkan pendaftaran
                             sebelum tanggal <span class="font-bold" :class="{ 'text-merah-warning': status == 'unpaid' }">28
                                 April 2023, 11:59 WIB</span></p>
                     </div>
@@ -40,50 +40,50 @@ const status = ref('canceled')
 
                 <div class="px-4 sm:px-6 lg:px-8 py-8">
                     <div>
-                        <h2 class="font-semibold text-4xl">Rincian Pendaftaran</h2>
-                        <div class="flex text-xl mt-4">
+                        <h2 class="font-semibold text-xl">Rincian Pendaftaran</h2>
+                        <div class="flex mt-4">
                             <p class="w-[175px]">Jenis tes</p>
                             <p class="font-semibold">: TOEFL</p>
                         </div>
-                        <div class="flex text-xl mt-4">
+                        <div class="flex mt-4">
                             <p class="w-[175px]">Tanggal tes</p>
                             <p class="font-semibold">: 2 Mei 2023</p>
                         </div>
-                        <div class="flex text-xl mt-4">
+                        <div class="flex mt-4">
                             <p class="w-[175px]">Status</p>
                             <p class="font-semibold">: Menunggu Pembayaran</p>
                         </div>
                     </div>
                     <div class="mt-8">
-                        <h2 class="font-semibold text-4xl">Rincian Pembayaran</h2>
-                        <div class="flex text-xl mt-4">
+                        <h2 class="font-semibold text-xl">Rincian Pembayaran</h2>
+                        <div class="flex mt-4">
                             <p class="w-[175px]">Id Pembayaran</p>
                             <p class="font-semibold">: 1234</p>
                         </div>
-                        <div class="flex text-xl mt-4">
+                        <div class="flex mt-4">
                             <p class="w-[175px]">Rekening Tujuan</p>
                             <p class="font-semibold">: Bank BNI, Alamat Sekian, No. Sekian, Kabupaten Sekian</p>
                         </div>
-                        <div class="flex text-xl mt-4">
+                        <div class="flex mt-4">
                             <p class="w-[175px]">No. Rekening</p>
                             <p class="font-semibold">: 000-000-000</p>
                         </div>
-                        <div class="flex text-xl mt-4">
+                        <div class="flex mt-4">
                             <p class="w-[175px]">Atas Nama</p>
                             <p class="font-semibold">: PT. Gatau Apalah Sejahtera, Cabang Ini Itu</p>
                         </div>
-                        <div class="flex text-xl mt-4">
+                        <div class="flex mt-4">
                             <p class="w-[175px]">Total Biaya</p>
                             <p class="font-semibold">: Rp. 42.069,99-</p>
                         </div>
-                        <div class="flex text-xl mt-4">
+                        <div class="flex mt-4">
                             <p class="w-[175px]">Waktu Batas Pembayaran</p>
                             <p class="font-semibold">: <span class="text-merah-warning">Jum’at, 28 April 2023, 11:59
                                     WIB</span></p>
                         </div>
                     </div>
                     <div class="mt-8">
-                        <h2 class="font-semibold text-4xl">Perhatian</h2>
+                        <h2 class="font-semibold text-xl">Perhatian</h2>
                         <ul class="list-disc px-4 sm:px-6 lg:px-8 mt-4">
                             <li>
                                 Harap membayar sesuai dengan total biaya yang sudah ditentukan sampain digit terakhir.
