@@ -103,9 +103,7 @@ console.debug(props.schedule) //?.length)
                                     </Link>
                                 </td>
                             </tr>
-                            
                         </tbody>
-                    
                 </table>
             </div>
         </section>

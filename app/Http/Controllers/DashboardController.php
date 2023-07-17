@@ -26,15 +26,15 @@ class DashboardController extends Controller
         $email = $user["email"];
         $phone = $user["phone"];
 
-        $schedule = Schedule::paginate(15);
-        
+        $schedule = Schedule::orderBy('tanggal','asc')->orderBy('waktu', 'asc');
+        // paginate(15);
 
         if ($user["is_admin"]) {
             return redirect('admin');
         }
         else {
             return Inertia::render('Dashboard', [
-                'schedule' => $schedule,
+                'schedule' => $schedule->paginate(15),
                 'profile_picture' => $profile_picture,
                 'email' => $email,
                 'phone' => $phone
