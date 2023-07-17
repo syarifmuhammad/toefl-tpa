@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/history', [ExamController::class, 'history'])->name('history');
         Route::get('/history/{id}', [ExamController::class, 'detail_history'])->name('history.detail');
     });
-
+});
 
 
 Route::name('admin.')->prefix('admin')->group(function() {
@@ -47,9 +47,8 @@ Route::name('admin.')->prefix('admin')->group(function() {
     Route::get('/monitor/{id}', [AdminController::class, 'monitor'])->name('monitor');
 
     Route::name('bank-soal.')->prefix('bank-soal')->group(function() {
-        Route::get('/', function () {
-            return Inertia::render('Admin/BankSoal/Index');
-        })->name('index');
+        Route::get('/', [AdminController::class, 'bankSoal'])->name('index');
+        Route::post('/', [AdminController::class, 'bankSoalAdd'])->name('store');
         Route::get('/{id}', function () {
             return Inertia::render('Admin/BankSoal/Detail');
         })->name('detail');

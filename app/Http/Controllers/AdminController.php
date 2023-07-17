@@ -25,7 +25,6 @@ class AdminController extends Controller
     
   }
   
-
   public function index()
   {
     return Inertia::render('Admin/Dashboard');
@@ -34,11 +33,6 @@ class AdminController extends Controller
   public function monitor($id)
   {
     return Inertia::render('Admin/MonitorUjian');
-  }
-
-  public function bank_soal(Request $request)
-  {
-    return Inertia::render('Admin/BankSoal/Index');
   }
 
   public function add_soal()
