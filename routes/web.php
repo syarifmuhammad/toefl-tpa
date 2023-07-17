@@ -47,12 +47,12 @@ Route::name('admin.')->prefix('admin')->group(function() {
     Route::get('/monitor/{id}', [AdminController::class, 'monitor'])->name('monitor');
 
     Route::name('bank-soal.')->prefix('bank-soal')->group(function() {
-        Route::get('/', function () {
-            return Inertia::render('Admin/BankSoal/Index');
-        })->name('index');
+        Route::get('/', [AdminController::class, 'bankSoal'])->name('index');
         Route::get('/{id}', function () {
             return Inertia::render('Admin/BankSoal/Detail');
         })->name('detail');
+
+        Route::post('/add', [AdminController::class,'bankSoalAdd'])->name('add');
     });
 });
 

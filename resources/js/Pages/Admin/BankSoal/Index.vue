@@ -15,7 +15,14 @@ const formBankSoal = useForm({
     type: '',
 })
 
+
 const modal = ref(false)
+
+const submit = () => {
+    formBankSoal.post(route('admin.bank-soal.add'), {
+        onFinish: () => formBankSoal.reset(),
+    });
+};
 
 </script>
 
@@ -27,7 +34,7 @@ const modal = ref(false)
         </template>
 
         <Modal :show="modal" @close="modal = false">
-            <form class="p-5" action="">
+            <form class="p-5" @submit.prevent="submit">
                 <div>
                     <InputLabel class="mb-2">Nama soal</InputLabel>
                     <TextInput class="w-full" type="text" placeholder="Tambahkan nama soal" autocomplete="name"
@@ -43,7 +50,8 @@ const modal = ref(false)
                     </select>
                 </div>
                 <div class="flex justify-between gap-x-4 mt-4">
-                    <PrimaryButton class="w-full flex justify-center">Tambah</PrimaryButton>
+                    <PrimaryButton class="w-full flex justify-center" type="submit">Tambah
+                    </PrimaryButton>
                     <SecondaryButton class="w-full flex justify-center" @click="modal = false">Batal</SecondaryButton>
                 </div>
             </form>
