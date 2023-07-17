@@ -8,48 +8,115 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import DashboardIcon from '@/Components/IconMenu/Dashboard.vue';
 import HistoryIcon from '@/Components/IconMenu/History.vue';
 import ProfileIcon from '@/Components/IconMenu/Profile.vue';
+import JadwalTesIcon from '@/Components/IconMenu/JadwalTes.vue';
+import LegalisirIcon from '@/Components/IconMenu/Legalisir.vue';
+import PembayaranIcon from '@/Components/IconMenu/Pembayaran.vue';
+import SoalIcon from '@/Components/IconMenu/Soal.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+const sidebar_open = ref(false)
+const is_admin = ref(true)
 </script>
 
 <template>
-    <div class="h-screen overflow-hidden bg-gray-100 grid sm:grid-cols-[80px_auto]">
-        <aside class="h-full overflow-hidden bg-merah-primary relative hidden sm:block">
-            <div class="mb-36 flex justify-center py-4">
-                <div>
+    <div class="h-screen overflow-hidden bg-gray-100 flex">
+        <Teleport to="body">
+            <div v-if="sidebar_open" class="w-full h-full bg-black/50 absolute top-0 left-0 z-20"></div>
+        </Teleport>
+        <aside
+            class="fixed top-0 w-[350px] h-screen transition-all z-30 overflow-y-auto overflow-x-hidden bg-merah-primary sm:block"
+            @mouseenter="sidebar_open = true" @mouseleave="sidebar_open = false"
+            :class="sidebar_open ? 'w-[350px]' : 'w-[80px]'">
+            <div class="mb-24 px-[24px] flex py-8">
+                <div class="flex gap-x-6">
                     <ApplicationLogo />
+                    <span class="text-white text-xl">Logo</span>
                 </div>
             </div>
-            <nav class="flex flex-col">
-                <Link :href="route('dashboard')" class="w-full hover:bg-merah-secondary flex justify-center py-8" :class="{
-                    'bg-merah-secondary': route().current('dashboard') || route().current('index') || route().current('exam.detail') || route().current('exam.payment')
-                }">
-                <div>
-                   <DashboardIcon />
-                </div>
-                </Link>
-                <Link :href="route('exam.history')" class="w-full hover:bg-merah-secondary flex justify-center py-8" :class="{
-                    'bg-merah-secondary': route().current('exam.history') | route().current('exam.history.*')
-                }">
-                <div>
-                    <HistoryIcon />
-                </div>
+            <nav class="flex flex-col w-full">
+                <template v-if="!is_admin">
+                    <Link :href="route('dashboard')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]" :class="{
+                        'bg-merah-secondary': route().current('dashboard') || route().current('index') || route().current('exam.detail') || route().current('exam.payment'),
 
-                </Link>
-                <Link :href="route('profile.index')" class="w-full hover:bg-merah-secondary flex justify-center py-8"
-                    :class="{
-                        'bg-merah-secondary': route().current('profile.*')
                     }">
-                <div>
-                    <ProfileIcon />
-                </div>
+                    <div class="flex items-center text-white font-medium text-md gap-x-6">
+                        <DashboardIcon />
+                        <span class="mt-1">Dashboard</span>
+                    </div>
+                    </Link>
+                    <Link :href="route('exam.history')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]"
+                        :class="{
+                            'bg-merah-secondary': route().current('exam.history') | route().current('exam.history.*'),
+                        }">
+                    <div class="flex items-center text-white font-medium text-md gap-x-6">
+                        <HistoryIcon />
+                        <span class="inline-block">Riwayat Ujian</span>
+                    </div>
 
-                </Link>
+                    </Link>
+                    <Link :href="route('profile.index')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]"
+                        :class="{
+                            'bg-merah-secondary': route().current('profile.*'),
+                        }">
+                    <div class="flex items-center text-white font-medium text-md gap-x-6">
+                        <ProfileIcon />
+                        <span>Akun Profile</span>
+                    </div>
+                    </Link>
+                </template>
+                <template v-else>
+                    <Link :href="route('admin.dashboard')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]" :class="{
+                        'bg-merah-secondary': route().current('admin.dashboard') || route().current('index'),
+
+                    }">
+                    <div class="flex items-center text-white font-medium text-md gap-x-6">
+                        <DashboardIcon />
+                        <span class="mt-1">Dashboard</span>
+                    </div>
+                    </Link>
+                    <Link :href="route('admin.jadwal_tes.index')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[20px]"
+                        :class="{
+                            'bg-merah-secondary': route().current('admin.jadwal_tes.*'),
+                        }">
+                    <div class="flex items-center text-white font-medium text-md gap-x-6">
+                        <JadwalTesIcon class="w-[40px] h-[40px]" />
+                        <span class="inline-block">Jadwal Tes</span>
+                    </div>
+
+                    </Link>
+                    <Link :href="route('admin.legalisir.index')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[17px]"
+                        :class="{
+                            'bg-merah-secondary': route().current('admin.legalisir.*'),
+                        }">
+                    <div class="flex items-center text-white font-medium text-md gap-x-6">
+                        <LegalisirIcon class="w-[46px]" />
+                        <span>Legalisir</span>
+                    </div>
+                    </Link>
+                    <Link :href="route('profile.index')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]"
+                        :class="{
+                            'bg-merah-secondary': route().current('profile.*'),
+                        }">
+                    <div class="flex items-center text-white font-medium text-md gap-x-6">
+                        <PembayaranIcon class="w-[32px]" />
+                        <span>Pembayaran</span>
+                    </div>
+                    </Link>
+                    <Link :href="route('admin.bank_soal.index')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[22px]"
+                        :class="{
+                            'bg-merah-secondary': route().current('admin.bank_soal.*'),
+                        }">
+                    <div class="flex items-center text-white font-medium text-md gap-x-6">
+                        <SoalIcon class="w-[36px]" />
+                        <span>Soal</span>
+                    </div>
+                    </Link>
+                </template>
             </nav>
         </aside>
-        <div class="min-h-full overflow-y-scroll">
-            <header class="bg-white sticky top-0">
+        <div class="min-h-full overflow-y-scroll w-full ml-[80px]">
+            <header class="bg-white sticky top-0 z-10">
                 <!-- Primary Navigation Menu -->
                 <div class="px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -144,3 +211,8 @@ const showingNavigationDropdown = ref(false);
         </div>
     </div>
 </template>
+
+<style>
+.tox-tinymce {
+    z-index: 1;
+}</style>

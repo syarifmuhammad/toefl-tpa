@@ -17,6 +17,7 @@ const formBankSoal = useForm({
 
 
 const modal = ref(false)
+const modal_delete = ref(false)
 
 const submit = () => {
     formBankSoal.post(route('admin.bank-soal.add'), {
@@ -57,6 +58,27 @@ const submit = () => {
             </form>
         </Modal>
 
+        <Modal :show="modal_delete" @close="modal_delete = false">
+            <div class="p-8 flex flex-col justify-between items-center relative">
+                <svg class="absolute right-8 cursor-pointer" @click="modal_delete = false" width="43" height="43" viewBox="0 0 86 86" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M53.2942 32.7051L32.0986 53.9006M53.2942 53.9007L32.0986 32.7051" stroke="#5F6D7E"
+                        stroke-width="3.53966" stroke-linecap="round" />
+                </svg>
+
+                <svg width="45" height="45" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M34.9115 48.9145V31.958M34.9115 23.4798V23.4515M65.9983 34.7841C65.9983 51.9529 52.0803 65.8709 34.9115 65.8709C17.7427 65.8709 3.82471 51.9529 3.82471 34.7841C3.82471 17.6153 17.7427 3.69727 34.9115 3.69727C52.0803 3.69727 65.9983 17.6153 65.9983 34.7841Z"
+                        stroke="#A22122" stroke-width="4.23911" stroke-linecap="round" />
+                </svg>
+                <div class="text-center mt-4">
+                    <h1 class="font-medium text-lg mb-3">Peringatan</h1>
+                    <p class="text-abu-text">Apakah Anda yakin akan menghapus Bank Soal “(nama bank soal)” ini?</p>
+                </div>
+                <PrimaryButton class="px-4 w-full flex justify-center mt-3">Continue</PrimaryButton>
+            </div>
+        </Modal>
+
+
         <section class="mt-8 px-4 sm:px-6 lg:px-8 w-full">
             <h1 class="font-semibold text-lg text-merah-component pb-1 border-merah-component">List Bank Soal</h1>
             <div class="bg-white rounded-lg mt-4 px-8 py-6">
@@ -83,7 +105,9 @@ const submit = () => {
                             <td class="py-5">40</td>
                             <td class="py-5">
                                 <div class="flex gap-x-4 justify-end" v-if="n != 3">
-                                    <PrimaryButton class="px-4">Detail</PrimaryButton>
+                                    <Link :href="route('admin.bank_soal.detail', n)">
+                                        <PrimaryButton class="px-4">Detail</PrimaryButton>
+                                    </Link>
                                     <SecondaryButton2 @click="formBankSoal.id = n, modal = true" class="px-4">
                                         <svg width="22" height="21" viewBox="0 0 22 21" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -93,7 +117,7 @@ const submit = () => {
                                         </svg>
 
                                     </SecondaryButton2>
-                                    <SecondaryButton2 class="px-4">
+                                    <SecondaryButton2 class="px-4" @click="formBankSoal.id = n, modal_delete = true">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24px"
                                             height="24px">
                                             <path

@@ -34,10 +34,10 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
                 <PembayaranIcon class="mx-auto" />
                 <span class="block text-center mx-auto text-white mt-6 font-semibold">Pembayaran</span>
             </div>
-            <div class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
+            <Link href="admin/bank-soal" class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
                 <SoalIcon class="mx-auto" />
                 <span class="block text-center mx-auto text-white mt-6 font-semibold">Soal</span>
-            </div>
+            </Link>
         </section>
 
         <section class="mt-8 px-4 sm:px-6 lg:px-8 w-full">
