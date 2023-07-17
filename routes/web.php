@@ -21,7 +21,7 @@ use Inertia\Inertia;
 
 
 Route::middleware('auth')->group(function () {
-    
+
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -40,35 +40,36 @@ Route::middleware('auth')->group(function () {
         Route::get('/history/{id}', [ExamController::class, 'detail_history'])->name('history.detail');
     });
 
-    
-    
-    Route::name('admin.')->prefix('admin')->group(function() {
-        Route::get('/', [AdminController::class, 'index'])->name('index');
+
+
+    Route::name('admin.')->prefix('admin')->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('dashboard');
         Route::get('/monitor/{id}', [AdminController::class, 'monitor'])->name('monitor');
-        Route::name('bank-soal.')->prefix('bank-soal')->group(function() {
+        Route::name('bank_soal.')->prefix('bank-soal')->group(function () {
             Route::get('/', [AdminController::class, 'bank_soal'])->name('index');
             Route::get('/{id}', function () {
                 return Inertia::render('Admin/BankSoal/Detail');
             })->name('detail');
         });
-    });
 
-    Route::name('jadwal_tes.')->prefix('jadwal-tes')->group(function() {
-        Route::get('/', function () {
-            return Inertia::render('Admin/Jadwal/Index');
-        })->name('index');
-        Route::get('/{id}', function () {
-            return Inertia::render('Admin/Jadwal/Detail');
-        })->name('detail');
-    });
+        Route::name('jadwal_tes.')->prefix('jadwal-tes')->group(function () {
+            Route::get('/', function () {
+                return Inertia::render('Admin/Jadwal/Index');
+            })->name('index');
+            Route::get('/{id}', function () {
+                return Inertia::render('Admin/Jadwal/Detail');
+            })->name('detail');
+        });
 
-    Route::name('legalisir.')->prefix('legalisir')->group(function() {
-        Route::get('/', function () {
-            return Inertia::render('Admin/Legalisir/Index');
-        })->name('index');
-        Route::get('/{id}', function () {
-            return Inertia::render('Admin/Legalisir/Detail');
-        })->name('detail');
+        Route::name('legalisir.')->prefix('legalisir')->group(function () {
+            Route::get('/', function () {
+                return Inertia::render('Admin/Legalisir/Index');
+            })->name('index');
+            Route::get('/{id}', function () {
+                return Inertia::render('Admin/Legalisir/Detail');
+            })->name('detail');
+        });
+        
     });
 });
 
@@ -80,16 +81,16 @@ Route::middleware('auth')->group(function () {
 // });
 
 
-    //     Route::get('/monitor/{id}', [AdminController::class, 'monitor'])->name('monitor');
+//     Route::get('/monitor/{id}', [AdminController::class, 'monitor'])->name('monitor');
 
-    //     Route::name('bank-soal.')->prefix('bank-soal')->group(function() {
-    //         Route::get('/', function () {
-    //             return Inertia::render('Admin/BankSoal/Index');
-    //         })->name('index');
-    //         Route::get('/{id}', function () {
-    //             return Inertia::render('Admin/BankSoal/Detail');
-    //         })->name('detail');
-    //     });
+//     Route::name('bank-soal.')->prefix('bank-soal')->group(function() {
+//         Route::get('/', function () {
+//             return Inertia::render('Admin/BankSoal/Index');
+//         })->name('index');
+//         Route::get('/{id}', function () {
+//             return Inertia::render('Admin/BankSoal/Detail');
+//         })->name('detail');
+//     });
 // });
 
 
