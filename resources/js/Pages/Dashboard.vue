@@ -13,7 +13,7 @@ const props = defineProps(
     },
 )
 
-console.debug(props.profile_picture) //?.length)
+console.debug(props.schedule) //?.length)
 
 // console.log($this.props.id)
 </script>
@@ -89,9 +89,9 @@ console.debug(props.profile_picture) //?.length)
                             <th class="py-5">Action</th>
                         </tr>
                     </thead>
+                    
                     <tbody class="text-center">
-                        <div v-if="schedule.data.length != 0">
-                            <tr v-for="(row, idx) in schedule" :key="idx" class="border-b-2 border-abu-component">
+                            <tr v-if="schedule.data.length != 0" v-for="(row, idx) in schedule.data" :key="idx" class="border-b-2 border-abu-component">
                                 <td class="py-5">{{ idx + 1 }}.</td>
                                 <td class="py-5">{{ row.tanggal }}</td>
                                 <td class="py-5">{{ row.waktu }}</td>
@@ -103,9 +103,9 @@ console.debug(props.profile_picture) //?.length)
                                     </Link>
                                 </td>
                             </tr>
-                        </div>
-                        
-                    </tbody>
+                            
+                        </tbody>
+                    
                 </table>
             </div>
         </section>

@@ -25,7 +25,8 @@ class DashboardController extends Controller
         }
         $email = $user["email"];
         $phone = $user["phone"];
-        
+
+        $schedule = Schedule::paginate(15);
         
 
         if ($user["is_admin"]) {
@@ -33,7 +34,7 @@ class DashboardController extends Controller
         }
         else {
             return Inertia::render('Dashboard', [
-                'schedule' => Schedule::paginate(15),
+                'schedule' => $schedule,
                 'profile_picture' => $profile_picture,
                 'email' => $email,
                 'phone' => $phone
