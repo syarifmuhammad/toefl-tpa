@@ -10,7 +10,8 @@ class QuestionBanks extends Migration{
         Schema::create('QuestionBanks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('type', 5);
+            $table->string('category', 5);
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }

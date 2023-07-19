@@ -22,7 +22,6 @@ class AdminController extends Controller
       }
       return $next($request);
     });
-    
   }
   
   public function index()
@@ -50,7 +49,8 @@ class AdminController extends Controller
   {
     $request->validate([
       'name' => 'required|string|max:255',
-      'type' => 'required',
+      'category' => 'required',
+      // 'content' => 'required',
     ]);
 
     QuestionBank::create([

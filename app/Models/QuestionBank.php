@@ -13,6 +13,7 @@ class QuestionBank extends Model
 
     protected $fillable = [
         'name',
-        'type',
+        'category',
+        'content',
     ];
 }
