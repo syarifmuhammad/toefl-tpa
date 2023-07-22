@@ -39,9 +39,10 @@ const props = defineProps(({
                 <PembayaranIcon class="mx-auto" />
                 <span class="block text-center mx-auto text-white mt-6 font-semibold">Pembayaran</span>
             </div>
-            <Link href="admin/bank-soal" class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
-                <SoalIcon class="mx-auto" />
-                <span class="block text-center mx-auto text-white mt-6 font-semibold">Soal</span>
+            <Link :href="route('admin.bank_soal.index')"
+                class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
+            <SoalIcon class="mx-auto" />
+            <span class="block text-center mx-auto text-white mt-6 font-semibold">Soal</span>
             </Link>
         </section>
 
@@ -59,8 +60,9 @@ const props = defineProps(({
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr v-if="schedule.data.length > 0" v-for="(i, index) in schedule.data" class="border-b-2 border-abu-component">
-                            <td class="py-5">{{ index+1 }}.</td>
+                        <tr v-if="schedule.data.length > 0" v-for="(i, index) in schedule.data"
+                            class="border-b-2 border-abu-component">
+                            <td class="py-5">{{ index + 1 }}.</td>
                             <td class="py-5">{{ i.category }}</td>
                             <td class="py-5">{{ i.waktu }}</td>
                             <td class="py-5">{{ i.terisi }}/{{ i.kuota }}</td>
@@ -107,7 +109,8 @@ const props = defineProps(({
                                 </Link>
                                 <Link :href="route('exam.detail', n)">
                                 <SecondaryButton class="px-4">
-                                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
                                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                         <g id="SVGRepo_iconCarrier">
@@ -120,8 +123,9 @@ const props = defineProps(({
                                 </Link>
                             </td>
                         </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-</AuthenticatedLayout></template>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </AuthenticatedLayout>
+</template>
