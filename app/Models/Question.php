@@ -14,6 +14,5 @@ class Question extends Model
     protected $fillable = [
         'group_question_id',
         'question',
-        'correct_answer',
     ];
 }

@@ -13,12 +13,13 @@ defineProps({
     },
     status: {
         type: String,
-    },
+    },    
 });
 
 const form = useForm({
     nim_or_nik: '',
     password: '',
+    error: '',
     remember: false,
 });
 
@@ -44,6 +45,7 @@ const submit = () => {
                 <label for="email" class="font-medium">NIK / NIM</label>
                 <input type="text" class="mt-2 border-[#DAE0E6] px-3 py-2 w-full rounded-lg text-abu-text" v-model="form.nim_or_nik" placeholder="Masukkan NIK / NIM anda" required autocomplete="username">
                 <InputError class="mt-2" :message="form.errors.nim_or_nik" />
+            
             </div>
 
             <div class="mt-6">
@@ -53,6 +55,8 @@ const submit = () => {
 
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
+
+            <InputError class="mt-2 text-center" :message="form.errors.error" />
 
             <div class="flex items-center justify-center mt-6">
                 <button type="submit" class="px-11 py-2 bg-merah-primary text-white font-bold rounded-lg flex gap-x-2 items-center"
@@ -64,8 +68,8 @@ const submit = () => {
                             fill="white" />
                     </svg>
     
-    
                 </button>
+                
                 <!-- <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"

@@ -18,7 +18,6 @@ class AddressFactory extends Factory
      */
     public function definition(): array
     {
-        // fake()-
 
         return [
             'user_id' =>  fake()->unique()->numberBetween(1, User::count()),

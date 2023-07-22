@@ -24,17 +24,16 @@ class DashboardController extends Controller
         if (strpos($profile_picture, "http") !== 0) {
             $profile_picture = "/images/profile_picture/" . $profile_picture;
         }
+        
         $email = $user["email"];
         $phone = $user["phone"];
 
         $schedule = Schedule::orderBy('tanggal', 'asc')->orderBy('waktu', 'asc');
-        // paginate(15);
+        
 
         if ($user["is_admin"]) {
             return redirect('admin');
         } else {
-            // dd($user["is_admin"]);
-            return Inertia::render('Dashboard');
             return Inertia::render('Dashboard', [
                 'schedule' => $schedule->paginate(15),
                 'profile_picture' => $profile_picture,

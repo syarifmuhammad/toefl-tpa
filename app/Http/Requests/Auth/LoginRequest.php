@@ -44,9 +44,9 @@ class LoginRequest extends FormRequest
         if (! Auth::attempt($this->only('nim_or_nik', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
-            // throw ValidationException::withMessages([
-            //     'email' => trans('auth.failed'),
-            // ]);
+            throw ValidationException::withMessages([
+                'error' => trans('auth.failed'),
+            ]);
         }
 
         RateLimiter::clear($this->throttleKey());

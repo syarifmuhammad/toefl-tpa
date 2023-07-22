@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
         $user = User::where('nim_or_nik','1201202020')->exists();
         if(!$user){
             User::factory()

@@ -9,7 +9,7 @@ class GroupQuestion extends Model
 {
     use HasFactory;
 
-    protected $table = 'group_question';
+    protected $table = 'group_questions';
 
     protected $fillable = [
         'question_bank_id',
