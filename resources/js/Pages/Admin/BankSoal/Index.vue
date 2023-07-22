@@ -25,12 +25,27 @@ const modal_delete = ref(false)
 
 const submit = () => {
     formBankSoal.post(route('admin.bank_soal.store'), {
-        onSuccess: () => modal.value = false,
+        onSuccess: () => {
+            modal.value = false,
+                formBankSoal.reset()
+        },
         onError: (errors) => {
             console.log(errors)
         }
     });
 };
+
+const deleteBanks = () => {
+    formBankSoal.delete(route('admin.bank_soal.destroy', formBankSoal.id), {
+        onSuccess: () => {
+            modal_delete.value = false,
+                formBankSoal.reset()
+        },
+        onError: (errors) => {
+            console.log(errors)
+        }
+    })
+}
 
 </script>
 
@@ -67,8 +82,8 @@ const submit = () => {
 
         <Modal :show="modal_delete" @close="modal_delete = false">
             <div class="p-8 flex flex-col justify-between items-center relative">
-                <svg class="absolute right-8 cursor-pointer" @click="modal_delete = false" width="43" height="43"
-                    viewBox="0 0 86 86" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="absolute right-8 cursor-pointer" @click="modal_delete = false, formBankSoal.reset()" width="43"
+                    height="43" viewBox="0 0 86 86" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M53.2942 32.7051L32.0986 53.9006M53.2942 53.9007L32.0986 32.7051" stroke="#5F6D7E"
                         stroke-width="3.53966" stroke-linecap="round" />
                 </svg>
@@ -80,9 +95,9 @@ const submit = () => {
                 </svg>
                 <div class="text-center mt-4">
                     <h1 class="font-medium text-lg mb-3">Peringatan</h1>
-                    <p class="text-abu-text">Apakah Anda yakin akan menghapus Bank Soal “(nama bank soal)” ini?</p>
+                    <p class="text-abu-text">Apakah Anda yakin akan menghapus Bank Soal “{{ formBankSoal.name }}” ini?</p>
                 </div>
-                <PrimaryButton class="px-4 w-full flex justify-center mt-3">Continue</PrimaryButton>
+                <PrimaryButton class="px-4 w-full flex justify-center mt-3" @click="deleteBanks()">Continue</PrimaryButton>
             </div>
         </Modal>
 
@@ -102,10 +117,10 @@ const submit = () => {
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr v-if="questionBanks.data.length > 0" v-for="(i, index) in questionBanks.data"
+                        <tr v-if="questionBanks.data.length > 0" v-for="(i) in questionBanks.data"
                             class="border-b-2 border-abu-component">
                             <td>
-                                
+
                             </td>
                             <td class="py-5 uppercase">{{ i.category }}</td>
                             <td class="py-5">{{ i.name }}</td>
@@ -125,7 +140,8 @@ const submit = () => {
                                         </svg>
 
                                     </SecondaryButton2>
-                                    <SecondaryButton2 class="px-4" @click="formBankSoal.id = n, modal_delete = true">
+                                    <SecondaryButton2 class="px-4"
+                                        @click="formBankSoal.id = i.id, formBankSoal.name = i.name, modal_delete = true">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24px"
                                             height="24px">
                                             <path

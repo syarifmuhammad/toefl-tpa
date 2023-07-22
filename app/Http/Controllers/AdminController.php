@@ -48,13 +48,6 @@ class AdminController extends Controller
     ]);
   }
 
-  public function add_soal()
-  {
-
-    return Inertia::render('Admin/AddSoal');
-  }
-
-
   public function bankSoalAdd(Request $request)
   {
     $request->validate([
@@ -67,6 +60,21 @@ class AdminController extends Controller
       'name' => $request->name,
       'category' => $request->category,
     ]);
+  }
+
+  public function bankSoalDelete(Request $request)
+  {
+    $request->validate([
+      'id' => 'required',
+    ]);
+
+    QuestionBank::where('id', $request->id)->delete();
+  }
+
+  public function add_soal()
+  {
+
+    return Inertia::render('Admin/AddSoal');
   }
 
   public function bankSoalDetail($id)
