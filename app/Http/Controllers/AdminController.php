@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Routing\Redirector;
 use Inertia\Inertia;
+use App\Models\Schedule;
 
 class AdminController extends Controller
 {
@@ -21,13 +22,17 @@ class AdminController extends Controller
       }
       return $next($request);
     });
-    
+
   }
   
 
   public function index()
   {
-    return Inertia::render('Admin/Dashboard');
+    $schedule = Schedule::paginate(50);
+    
+    return Inertia::render('Admin/Dashboard', [
+      'schedule' => $schedule
+    ]);
   }
 
   public function monitor($id)
@@ -37,6 +42,7 @@ class AdminController extends Controller
 
   public function bank_soal(Request $request)
   {
+    
     return Inertia::render('Admin/BankSoal/Index');
   }
 

@@ -8,6 +8,10 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Log;
+use App\Models\Address;
+use App\Models\GroupQuestion;
+use App\Models\Question;
+use App\Models\QuestionBank;
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,35 +33,16 @@ class DatabaseSeeder extends Seeder
                     ]
                 ))->create();
             User::factory(10)->create();
+            Address::factory(11)->create();
         }
 
         if(Schedule::count() < 10){
             Schedule::factory(10)->create();
         }
 
-
-        // User::factory()->create([
-        //     'nim_or_nik' => '1201202020',
-        //     'password' => 'password',
-        //     'email' => 'test@mail.com',
-        //     'name' => 'test',
-        //     'profile_picture' => 'https://i.pravatar.cc/300',
-        //     'address_id' => 
-        // ]);
-
-        // User::factory()->create([
-        //     'nim_or_nik' => '1234567890',
-        //     'password' => '12345678',
-        //     'email' => 'test@mail.com',
-        //     'name' => 'Test User',
-        //     'profile_picture' => 'https://i.pravatar.cc/300',
-        //     'phone' => '081234567890',
-        //     'is_admin' => '0'
-        // ]);
-        
-        // Schedule::factory()
-        //     ->count(10)
-        //     ->create();
+        if(Question::count() < 3){
+            
+        }
 
     }
 }

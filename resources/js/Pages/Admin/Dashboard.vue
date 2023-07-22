@@ -8,6 +8,11 @@ import PembayaranIcon from '@/Components/IconMenu/Pembayaran.vue';
 import SoalIcon from '@/Components/IconMenu/Soal.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+
+const props = defineProps(({
+    schedule: Array
+}))
+
 </script>
 
 <template>
@@ -54,13 +59,13 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr v-for="n in 2" class="border-b-2 border-abu-component">
-                            <td class="py-5">{{ n }}.</td>
-                            <td class="py-5">TOEFL</td>
-                            <td class="py-5">10.00 WIB</td>
-                            <td class="py-5">14/40</td>
+                        <tr v-if="schedule.data.length > 0" v-for="(i, index) in schedule.data" class="border-b-2 border-abu-component">
+                            <td class="py-5">{{ index+1 }}.</td>
+                            <td class="py-5">{{ i.category }}</td>
+                            <td class="py-5">{{ i.waktu }}</td>
+                            <td class="py-5">{{ i.terisi }}/{{ i.kuota }}</td>
                             <td class="py-5">
-                                <Link :href="route('admin.monitor', n)">
+                                <Link :href="route('admin.monitor', index)">
                                 <PrimaryButton class="px-4">Monitor</PrimaryButton>
                                 </Link>
                             </td>

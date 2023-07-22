@@ -9,6 +9,10 @@ class Address extends Migration{
     public function up(){
         Schema::create('address', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('street');
             $table->string('village');
             $table->string('sub_district');

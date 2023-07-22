@@ -19,7 +19,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('profile_picture');
             $table->string('phone');
-            $table->string('address_id')->default('0');
+            // $table->unsignedBigInteger('address_id')->nullable();
+            // $table->foreign('address_id')->references('id')->on('address');
+            // $table->foreignId('address_id')
+            //     ->constrained()
+            //     ->onUpdate('cascade')
+            //     ->onDelete('cascade');
+            // $table->string('address_id')->default('0');
             $table->boolean('is_admin')->default('0');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

@@ -44,7 +44,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'profile_picture' => fake()->imageUrl(),
             'password' => 'password',
-            'address_id' => Address::factory(),
+            // 'address_id' => Address::factory(),
             'phone' => fake()->phoneNumber(),
             'remember_token' => Str::random(10),
         ];
