@@ -21,18 +21,32 @@ const props = defineProps(({
 }))
 
 const modal = ref(false)
+const modal_update = ref(false)
 const modal_delete = ref(false)
 
 const submit = () => {
-    formBankSoal.post(route('admin.bank_soal.store'), {
-        onSuccess: () => {
-            modal.value = false,
-                formBankSoal.reset()
-        },
-        onError: (errors) => {
-            console.log(errors)
-        }
-    });
+    if (!modal_update.value) {
+        formBankSoal.post(route('admin.bank_soal.store'), {
+            onSuccess: () => {
+                modal.value = false,
+                    formBankSoal.reset()
+            },
+            onError: (errors) => {
+                console.log(errors)
+            }
+        });
+    } else {
+        formBankSoal.put(route('admin.bank_soal.update', formBankSoal.id), {
+            onSuccess: () => {
+                modal_update.value = false,
+                    modal.value = false,
+                    formBankSoal.reset()
+            },
+            onError: (errors) => {
+                console.log(errors)
+            }
+        });
+    }
 };
 
 const deleteBanks = () => {
@@ -73,9 +87,12 @@ const deleteBanks = () => {
                     </select>
                 </div>
                 <div class="flex justify-between gap-x-4 mt-4">
-                    <PrimaryButton class="w-full flex justify-center" type="submit">Tambah
+                    <PrimaryButton class="w-full flex justify-center" type="submit" v-if="modal_update == false">Tambah
                     </PrimaryButton>
-                    <SecondaryButton class="w-full flex justify-center" @click="modal = false">Batal</SecondaryButton>
+                    <PrimaryButton class="w-full flex justify-center" type="submit" v-if="modal_update == true">Update
+                    </PrimaryButton>
+                    <SecondaryButton class="w-full flex justify-center" @click="modal = false, formBankSoal.reset()">Batal
+                    </SecondaryButton>
                 </div>
             </form>
         </Modal>
@@ -131,7 +148,9 @@ const deleteBanks = () => {
                                     <Link :href="route('admin.bank_soal.detail', i)">
                                     <PrimaryButton class="px-4">Detail</PrimaryButton>
                                     </Link>
-                                    <SecondaryButton2 @click="formBankSoal.id = n, modal = true" class="px-4">
+                                    <SecondaryButton2
+                                        @click="formBankSoal.id = i.id, formBankSoal.name = i.name, formBankSoal.category = i.category, modal = true, modal_update = true"
+                                        class="px-4">
                                         <svg width="22" height="21" viewBox="0 0 22 21" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -154,7 +173,7 @@ const deleteBanks = () => {
                         <tr>
                             <td class="py-5">
                                 <button class="border border-black w-7 aspect-square rounded-full"
-                                    @click="modal = true">+</button>
+                                    @click="formBankSoal.reset(), modal = true, modal_update = false">+</button>
                             </td>
                         </tr>
                     </tbody>

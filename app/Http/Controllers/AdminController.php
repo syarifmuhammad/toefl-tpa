@@ -39,6 +39,7 @@ class AdminController extends Controller
     return Inertia::render('Admin/MonitorUjian');
   }
 
+  //Bank Soal
   public function bank_soal(Request $request)
   {
     $questionBanks = QuestionBank::paginate(50);
@@ -71,6 +72,23 @@ class AdminController extends Controller
     QuestionBank::where('id', $request->id)->delete();
   }
 
+  public function bankSoalUpdate(Request $request)
+  {
+    $request->validate([
+      'id' => 'required',
+      'name' => 'required|string|max:255',
+      'category' => 'required',
+      // 'content' => 'required',
+    ]);
+
+    QuestionBank::where('id', $request->id)->update([
+      'name' => $request->name,
+      'category' => $request->category,
+    ]);
+  }
+
+
+  //Soal
   public function add_soal()
   {
 

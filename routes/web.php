@@ -50,6 +50,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [AdminController::class, 'bank_soal'])->name('index');
             Route::post('/', [AdminController::class, 'bankSoalAdd'])->name('store');
             Route::delete('/', [AdminController::class, 'bankSoalDelete'])->name('destroy');
+            Route::put('/', [AdminController::class, 'bankSoalUpdate'])->name('update');
+
             Route::get('/{id}', function () {
                 return Inertia::render('Admin/BankSoal/Detail');
             })->name('detail');
