@@ -12,7 +12,7 @@ import { ref } from 'vue'
 const formBankSoal = useForm({
     id: null,
     name: '',
-    type: '',
+    category: '',
 })
 
 
@@ -20,8 +20,12 @@ const modal = ref(false)
 const modal_delete = ref(false)
 
 const submit = () => {
-    formBankSoal.post(route('admin.bank-soal.add'), {
-        onFinish: () => formBankSoal.reset(),
+    formBankSoal.post(route('admin.bank_soal.store'), {
+        onSuccess: () => modal.value = false,
+        onError: (errors) => {
+            //display the error message
+            console.log(errors)
+        }
     });
 };
 
@@ -44,7 +48,7 @@ const submit = () => {
                 <div class="mt-4">
                     <InputLabel class="mb-2">Tipe soal</InputLabel>
                     <select class="border-abu-text rounded-md shadow-sm focus:border-2 focus:ring-0 w-full"
-                        :class="{ 'text-black/70': formBankSoal.type == '' }" v-model="formBankSoal.type">
+                        :class="{ 'text-black/70': formBankSoal.type == '' }" v-model="formBankSoal.category">
                         <option value="" disabled>Pilih tipe soal</option>
                         <option value="toefl">TOEFL</option>
                         <option value="tpa">TPA</option>
@@ -60,7 +64,8 @@ const submit = () => {
 
         <Modal :show="modal_delete" @close="modal_delete = false">
             <div class="p-8 flex flex-col justify-between items-center relative">
-                <svg class="absolute right-8 cursor-pointer" @click="modal_delete = false" width="43" height="43" viewBox="0 0 86 86" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="absolute right-8 cursor-pointer" @click="modal_delete = false" width="43" height="43"
+                    viewBox="0 0 86 86" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M53.2942 32.7051L32.0986 53.9006M53.2942 53.9007L32.0986 32.7051" stroke="#5F6D7E"
                         stroke-width="3.53966" stroke-linecap="round" />
                 </svg>
@@ -106,7 +111,7 @@ const submit = () => {
                             <td class="py-5">
                                 <div class="flex gap-x-4 justify-end" v-if="n != 3">
                                     <Link :href="route('admin.bank_soal.detail', n)">
-                                        <PrimaryButton class="px-4">Detail</PrimaryButton>
+                                    <PrimaryButton class="px-4">Detail</PrimaryButton>
                                     </Link>
                                     <SecondaryButton2 @click="formBankSoal.id = n, modal = true" class="px-4">
                                         <svg width="22" height="21" viewBox="0 0 22 21" fill="none"

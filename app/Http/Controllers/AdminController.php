@@ -61,7 +61,7 @@ class AdminController extends Controller
 
     QuestionBank::create([
       'name' => $request->name,
-      'type' => $request->type,
+      'category' => $request->category,
     ]);
   }
 
