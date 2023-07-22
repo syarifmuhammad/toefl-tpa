@@ -12,8 +12,8 @@ class Question extends Model
     protected $table = 'questions';
     
     protected $fillable = [
-        'questions',
-        'choices',
-        'correct_choice'
+        'group_question_id',
+        'question',
+        'correct_answer',
     ];
 }

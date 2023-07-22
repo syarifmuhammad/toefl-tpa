@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Log;
 class DashboardController extends Controller
 {
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         // $schedule = Schedule::all(); //::paginate(10);
         $user = Auth::user();
         $profile_picture = $user["profile_picture"];
@@ -26,13 +27,14 @@ class DashboardController extends Controller
         $email = $user["email"];
         $phone = $user["phone"];
 
-        $schedule = Schedule::orderBy('tanggal','asc')->orderBy('waktu', 'asc');
+        $schedule = Schedule::orderBy('tanggal', 'asc')->orderBy('waktu', 'asc');
         // paginate(15);
 
         if ($user["is_admin"]) {
             return redirect('admin');
-        }
-        else {
+        } else {
+            // dd($user["is_admin"]);
+            return Inertia::render('Dashboard');
             return Inertia::render('Dashboard', [
                 'schedule' => $schedule->paginate(15),
                 'profile_picture' => $profile_picture,
@@ -41,5 +43,4 @@ class DashboardController extends Controller
             ]);
         }
     }
-
 }

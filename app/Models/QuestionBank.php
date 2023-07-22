@@ -12,8 +12,10 @@ class QuestionBank extends Model
     protected $table = 'question_banks';
 
     protected $fillable = [
+        'name',
         'category',
         'title',
+        'content',
         'group_questions'
     ]; 
 }

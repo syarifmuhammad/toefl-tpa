@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\QuestionBank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,10 +23,8 @@ class AdminController extends Controller
       }
       return $next($request);
     });
-
   }
   
-
   public function index()
   {
     $schedule = Schedule::paginate(50);
@@ -41,8 +40,7 @@ class AdminController extends Controller
   }
 
   public function bank_soal(Request $request)
-  {
-    
+  { 
     return Inertia::render('Admin/BankSoal/Index');
   }
 
@@ -52,8 +50,27 @@ class AdminController extends Controller
     return Inertia::render('Admin/AddSoal');
   }
 
-  public function store_soal(Request $request)
+
+  public function bankSoalAdd(Request $request)
   {
-    dd($request->all());
+    $request->validate([
+      'name' => 'required|string|max:255',
+      'category' => 'required',
+      // 'content' => 'required',
+    ]);
+
+    QuestionBank::create([
+      'name' => $request->name,
+      'type' => $request->type,
+    ]);
+  }
+
+  public function bankSoalDetail($id)
+  {
+    return Inertia::render('Admin/BankSoal/Detail');
+  }
+
+  public function GroupQuestionAdd(Request$request){
+    
   }
 }
