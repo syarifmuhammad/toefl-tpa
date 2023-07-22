@@ -7,7 +7,8 @@ import TextInput from '@/Components/TextInput.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import SecondaryButton2 from '@/Components/SecondaryButton2.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue'
+import { ref } from 'vue';
+import moment from 'moment';
 
 const formBankSoal = useForm({
     id: null,
@@ -15,6 +16,9 @@ const formBankSoal = useForm({
     category: '',
 })
 
+const props = defineProps(({
+    questionBanks: Array
+}))
 
 const modal = ref(false)
 const modal_delete = ref(false)
@@ -23,7 +27,6 @@ const submit = () => {
     formBankSoal.post(route('admin.bank_soal.store'), {
         onSuccess: () => modal.value = false,
         onError: (errors) => {
-            //display the error message
             console.log(errors)
         }
     });
@@ -99,18 +102,18 @@ const submit = () => {
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr v-for="n in 2 + 1" class="border-b-2 border-abu-component">
-                            <td class="py-5">
-                                <button class="border border-black w-7 aspect-square rounded-full" v-if="n == 3"
-                                    @click="modal = true">+</button>
+                        <tr v-if="questionBanks.data.length > 0" v-for="(i, index) in questionBanks.data"
+                            class="border-b-2 border-abu-component">
+                            <td>
+                                
                             </td>
-                            <td class="py-5">TOEFL</td>
-                            <td class="py-5">BANK_SOAL_TOEFL_TERBARU2...</td>
-                            <td class="py-5">10 Februari 2019</td>
+                            <td class="py-5 uppercase">{{ i.category }}</td>
+                            <td class="py-5">{{ i.name }}</td>
+                            <td class="py-5">{{ moment(i.created_at).format("DD MMMM YYYY") }}</td>
                             <td class="py-5">40</td>
                             <td class="py-5">
-                                <div class="flex gap-x-4 justify-end" v-if="n != 3">
-                                    <Link :href="route('admin.bank_soal.detail', n)">
+                                <div class="flex gap-x-4 justify-end">
+                                    <Link :href="route('admin.bank_soal.detail', i)">
                                     <PrimaryButton class="px-4">Detail</PrimaryButton>
                                     </Link>
                                     <SecondaryButton2 @click="formBankSoal.id = n, modal = true" class="px-4">
@@ -130,6 +133,12 @@ const submit = () => {
                                         </svg>
                                     </SecondaryButton2>
                                 </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-5">
+                                <button class="border border-black w-7 aspect-square rounded-full"
+                                    @click="modal = true">+</button>
                             </td>
                         </tr>
                     </tbody>

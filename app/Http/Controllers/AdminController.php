@@ -16,7 +16,7 @@ class AdminController extends Controller
 
   public function __construct(Request $request, Redirector $redirect)
   {
-    $this->middleware(function ($request, $next){
+    $this->middleware(function ($request, $next) {
       $is_admin =  Auth::user()['is_admin'];
       if ($is_admin === 0) {
         return redirect('/');
@@ -24,11 +24,11 @@ class AdminController extends Controller
       return $next($request);
     });
   }
-  
+
   public function index()
   {
     $schedule = Schedule::paginate(50);
-    
+
     return Inertia::render('Admin/Dashboard', [
       'schedule' => $schedule
     ]);
@@ -40,13 +40,17 @@ class AdminController extends Controller
   }
 
   public function bank_soal(Request $request)
-  { 
-    return Inertia::render('Admin/BankSoal/Index');
+  {
+    $questionBanks = QuestionBank::paginate(50);
+
+    return Inertia::render('Admin/BankSoal/Index', [
+      'questionBanks' => $questionBanks
+    ]);
   }
 
   public function add_soal()
   {
-    
+
     return Inertia::render('Admin/AddSoal');
   }
 
@@ -70,7 +74,7 @@ class AdminController extends Controller
     return Inertia::render('Admin/BankSoal/Detail');
   }
 
-  public function GroupQuestionAdd(Request$request){
-    
+  public function GroupQuestionAdd(Request $request)
+  {
   }
 }

@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "@tinymce/tinymce-vue": "^5.1.0",
+        "moment": "^2.29.4",
         "tinymce": "^6.6.0"
     }
 }
