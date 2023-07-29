@@ -23,7 +23,8 @@ class ScheduleFactory extends Factory
             'waktu' => fake()->time(),
             'kuota' => rand(30,40),
             'terisi' => rand(0,40),
-            'category' => (rand(1,10) % 2 == 0) ? 'tpa' : 'tps',
+            'questionbank_id' => 1,
+            'biaya' => 200000,
             'status' => (bool) rand(0,1)
         ];
     }

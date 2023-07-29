@@ -6,7 +6,7 @@ import { defineProps, ref } from 'vue';
 
 const props = defineProps(
     { 
-        schedule: Array,
+        schedule: Object,
         profile_picture: String,
         email: String,
         phone: String,
@@ -98,7 +98,7 @@ console.debug(props.schedule) //?.length)
                                 <td class="py-5">{{ row.terisi }}/{{ row.kuota }}</td>
                                 <td class="py-5">{{ (row.status == 1) ? "ready" : "not ready" }}</td>
                                 <td class="py-5">
-                                    <Link :href="route('exam.detail', row.id)">
+                                    <Link :href="route('jadwal.detail', row.id)">
                                     <PrimaryButton class="px-4">Pilih</PrimaryButton>
                                     </Link>
                                 </td>

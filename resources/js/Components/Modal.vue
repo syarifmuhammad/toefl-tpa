@@ -42,7 +42,6 @@ const closeOnEscape = (e) => {
 };
 
 onMounted(() => {
-    console.log("ds")
     document.addEventListener('keydown', closeOnEscape)
 });
 

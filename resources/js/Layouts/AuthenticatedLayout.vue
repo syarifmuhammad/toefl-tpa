@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -12,11 +12,15 @@ import JadwalTesIcon from '@/Components/IconMenu/JadwalTes.vue';
 import LegalisirIcon from '@/Components/IconMenu/Legalisir.vue';
 import PembayaranIcon from '@/Components/IconMenu/Pembayaran.vue';
 import SoalIcon from '@/Components/IconMenu/Soal.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+
+const page = usePage()
+
+const user = computed(() => page.props.auth.user)
 
 const showingNavigationDropdown = ref(false);
 const sidebar_open = ref(false)
-const is_admin = ref(true)
+const is_admin = user.value.is_admin
 </script>
 
 <template>
@@ -37,7 +41,7 @@ const is_admin = ref(true)
             <nav class="flex flex-col w-full">
                 <template v-if="!is_admin">
                     <Link :href="route('dashboard')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]" :class="{
-                        'bg-merah-secondary': route().current('dashboard') || route().current('index') || route().current('exam.detail') || route().current('exam.payment'),
+                        'bg-merah-secondary': route().current('dashboard') || route().current('index') || route().current('jadwal.detail') || route().current('jadwal.payment'),
 
                     }">
                     <div class="flex items-center text-white font-medium text-md gap-x-6">
@@ -45,9 +49,9 @@ const is_admin = ref(true)
                         <span class="mt-1">Dashboard</span>
                     </div>
                     </Link>
-                    <Link :href="route('exam.history')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]"
+                    <Link :href="route('jadwal.history')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]"
                         :class="{
-                            'bg-merah-secondary': route().current('exam.history') | route().current('exam.history.*'),
+                            'bg-merah-secondary': route().current('jadwal.history') | route().current('jadwal.history.*'),
                         }">
                     <div class="flex items-center text-white font-medium text-md gap-x-6">
                         <HistoryIcon />
@@ -94,9 +98,9 @@ const is_admin = ref(true)
                         <span>Legalisir</span>
                     </div>
                     </Link>
-                    <Link :href="route('profile.index')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]"
+                    <Link :href="route('admin.pembayaran.index')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]"
                         :class="{
-                            'bg-merah-secondary': route().current('profile.*'),
+                            'bg-merah-secondary': route().current('admin.pembayaran.*'),
                         }">
                     <div class="flex items-center text-white font-medium text-md gap-x-6">
                         <PembayaranIcon class="w-[32px]" />

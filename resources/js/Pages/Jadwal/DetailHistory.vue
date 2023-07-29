@@ -3,9 +3,12 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import SuccessLogo from '@/Components/SuccessLogo.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { ref } from 'vue'
+import { ref, defineProps } from 'vue'
 
-const status = ref('canceled')
+const props = defineProps({
+    history: Object
+})
+const status = ref('unpaid')
 
 </script>
 
@@ -110,7 +113,7 @@ const status = ref('canceled')
                 </svg>
                 <span class="ml-4">Konfirmasi Pembayaran</span>
             </button>
-            <Link class="ml-4" :href="route('exam.history')"><SecondaryButton class="px-4">Kembali</SecondaryButton></Link>
+            <Link class="ml-4" :href="route('jadwal.history')"><SecondaryButton class="px-4">Kembali</SecondaryButton></Link>
         </section>
     </AuthenticatedLayout>
 </template>

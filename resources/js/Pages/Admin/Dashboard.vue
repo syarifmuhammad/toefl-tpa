@@ -23,22 +23,22 @@ const props = defineProps(({
         </template>
 
         <section class="mt-6 px-4 sm:px-6 lg:px-8 flex gap-x-4 w-full">
-            <div class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
+            <Link :href="route('admin.dashboard')" class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
                 <DashboardIcon class="mx-auto w-[51px] h-[51px]" />
                 <span class="block text-center mx-auto text-white mt-6 font-semibold">Dashboard</span>
-            </div>
-            <div class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
+            </Link>
+            <Link :href="route('admin.jadwal_tes.index')" class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
                 <JadwalTesIcon class="mx-auto"></JadwalTesIcon>
                 <span class="block text-center mx-auto text-white mt-6 font-semibold">Jadwal Tes</span>
-            </div>
-            <div class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
+            </Link>
+            <Link :href="route('admin.legalisir.index')" class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
                 <LegalisirIcon class="mx-auto"></LegalisirIcon>
                 <span class="block text-center mx-auto text-white mt-6 font-semibold">Legalisir</span>
-            </div>
-            <div class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
+            </Link>
+            <Link :href="route('admin.pembayaran.index')" class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
                 <PembayaranIcon class="mx-auto" />
                 <span class="block text-center mx-auto text-white mt-6 font-semibold">Pembayaran</span>
-            </div>
+            </Link>
             <Link :href="route('admin.bank_soal.index')"
                 class="bg-merah-primary rounded-3xl pt-12 pb-8 w-1/5 flex flex-col justify-between">
             <SoalIcon class="mx-auto" />
@@ -107,7 +107,7 @@ const props = defineProps(({
                                 <Link :href="route('admin.monitor', n)">
                                 <PrimaryButton class="px-4">Detail</PrimaryButton>
                                 </Link>
-                                <Link :href="route('exam.detail', n)">
+                                <Link :href="route('jadwal.detail', n)">
                                 <SecondaryButton class="px-4">
                                     <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">

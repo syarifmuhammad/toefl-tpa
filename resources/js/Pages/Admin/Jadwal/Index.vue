@@ -4,24 +4,91 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Modal from "@/Components/Modal.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import InputError from "@/Components/InputError.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import SecondaryButton2 from "@/Components/SecondaryButton2.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { ref, defineProps } from "vue";
+
+defineProps({
+  schedules: Object,
+  questionbanks: Array,
+})
+
 
 const formJadwalTes = useForm({
   id: null,
-  date: "",
-  time: "",
-  class: "",
-  quota: 1,
-  bank_soal: "",
+  tanggal: '',
+  waktu: '',
+  kuota: '',
+  questionbank_id: null,
 });
 
 const message_errors = ref("");
 
 const modal = ref(false);
-const modal_errors = ref(false);
+const modal_delete = ref(false);
+
+const editSchedule = (schedule, edit = true) => {
+  formJadwalTes.id = schedule.id
+  formJadwalTes.tanggal = schedule.tanggal
+  formJadwalTes.waktu = schedule.waktu
+  formJadwalTes.kuota = schedule.kuota
+  formJadwalTes.questionbank_id = schedule.questionbank_id
+  if (edit) {
+    modal.value = true
+  } else {
+    modal_delete.value = true
+    message_errors.value = "Anda yakin ingin menghapus Jadwal ini?"
+  }
+}
+
+const submit = () => {
+  if (formJadwalTes.id == null) {
+    formJadwalTes.post(route('admin.jadwal_tes.store'), {
+      onSuccess: () => {
+        modal.value = false,
+          formJadwalTes.reset()
+      },
+      onError: (errors) => {
+        console.log(errors)
+      }
+    })
+  } else {
+    formJadwalTes.put(route('admin.jadwal_tes.update', formJadwalTes.id), {
+      onSuccess: () => {
+        modal.value = false,
+          formJadwalTes.reset()
+      },
+      onError: (errors) => {
+        console.log(errors)
+      }
+    })
+  }
+}
+
+const closeModal = (is_delete = false) => {
+  console.log(is_delete)
+  if (is_delete) {
+    modal_delete.value = false
+  } else {
+    modal.value = false
+  }
+  formJadwalTes.reset()
+}
+
+const remove = () => {
+  formJadwalTes.delete(route('admin.jadwal_tes.destroy', formJadwalTes.id), {
+    onSuccess: () => {
+      modal_delete.value = false,
+      formJadwalTes.reset()
+    },
+    onError: (errors) => {
+      console.log(errors)
+    }
+  })
+}
+
 </script>
 
 <template>
@@ -32,45 +99,51 @@ const modal_errors = ref(false);
         Dashboard > Jadwal Tes
       </h2>
     </template>
-
-    <Modal :show="modal" @close="modal = false">
-      <form class="p-5" action="">
+    <Modal :maxWidth="'xl'" :show="modal" @close="closeModal()">
+      <form class="p-5" @submit.prevent="submit">
         <div>
           <InputLabel class="mb-2">Detail Jadwal</InputLabel>
           <div class="flex gap-x-2">
-            <TextInput class="w-5/12" type="date" placeholder="hari/bulan/tahun" v-model="formJadwalTes.date"></TextInput>
-            <TextInput class="w-3/12" type="time" placeholder="Waktu" v-model="formJadwalTes.time"></TextInput>
-            <TextInput class="w-2/12" type="text" placeholder="Kelas" v-model="formJadwalTes.class"></TextInput>
-            <TextInput class="w-2/12" type="number" placeholder="Kuota" v-model="formJadwalTes.quota"></TextInput>
+            <div class="w-6/12">
+              <TextInput class="w-full" type="date" placeholder="hari/bulan/tahun" required v-model="formJadwalTes.tanggal">
+              </TextInput>
+              <InputError class="mt-2" :message="formJadwalTes.errors.tanggal" />
+            </div>
+            <div class="w-3/12">
+              <TextInput class="w-full" type="time" placeholder="Waktu" required v-model="formJadwalTes.waktu"></TextInput>
+              <InputError class="mt-2" :message="formJadwalTes.errors.waktu" />
+            </div>
+            <div class="w-3/12">
+              <TextInput class="w-full" type="number" placeholder="Kuota" required v-model="formJadwalTes.kuota"></TextInput>
+              <InputError class="mt-2" :message="formJadwalTes.errors.kuota" />
+            </div>
           </div>
         </div>
         <div class="mt-4">
-          <InputLabel class="mb-2">Nama Soal</InputLabel>
-          <select class="border-abu-text rounded-md shadow-sm focus:border-2 focus:ring-0 w-full"
-            :class="{ 'text-black/70': formJadwalTes.bank_soal == '' }" v-model="formJadwalTes.bank_soal">
-            <option value="" disabled>Pilih tipe soal</option>
-            <option value="toefl-01">TOEFL 01</option>
-            <option value="toefl-02">TOEFL 02</option>
-            <option value="toefl-03">TOEFL 03</option>
-            <option value="toefl-04">TOEFL 04</option>
-            <option value="toefl-05">TOEFL 05</option>
+          <InputLabel class="mb-2">Bank Soal</InputLabel>
+          <select requried class="border-abu-text rounded-md shadow-sm focus:border-2 focus:ring-0 w-full"
+            :class="{ 'text-black/70': formJadwalTes.questionbank_id == '' }" v-model="formJadwalTes.questionbank_id">
+            <option selected value="" disabled>Pilih bank soal</option>
+            <option v-for="questionbank in questionbanks" :value="questionbank.id">{{ questionbank.category }} - {{
+              questionbank.name }}</option>
           </select>
         </div>
         <div class="flex justify-between gap-x-4 mt-4">
-          <PrimaryButton class="w-full flex justify-center">Tambah</PrimaryButton>
-          <SecondaryButton class="w-full flex justify-center" @click="modal = false">Batal</SecondaryButton>
+          <PrimaryButton class="w-full flex justify-center">
+            {{ formJadwalTes.id != null ? 'Ubah' : 'Tambah' }}
+          </PrimaryButton>
+          <SecondaryButton class="w-full flex justify-center" :type="'button'" @click="closeModal()">Batal</SecondaryButton>
         </div>
       </form>
     </Modal>
 
-    <Modal :show="modal_errors" @close="modal_errors = false">
+    <Modal :show="modal_delete" @close="closeModal(true)">
       <div class="p-8 flex flex-col justify-between items-center relative">
-        <svg class="absolute right-8 cursor-pointer" @click="modal_errors = false" width="43" height="43"
+        <svg class="absolute right-8 cursor-pointer" @click="closeModal(true)" width="43" height="43"
           viewBox="0 0 86 86" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M53.2942 32.7051L32.0986 53.9006M53.2942 53.9007L32.0986 32.7051" stroke="#5F6D7E"
             stroke-width="3.53966" stroke-linecap="round" />
         </svg>
-
         <svg width="45" height="45" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M34.9115 48.9145V31.958M34.9115 23.4798V23.4515M65.9983 34.7841C65.9983 51.9529 52.0803 65.8709 34.9115 65.8709C17.7427 65.8709 3.82471 51.9529 3.82471 34.7841C3.82471 17.6153 17.7427 3.69727 34.9115 3.69727C52.0803 3.69727 65.9983 17.6153 65.9983 34.7841Z"
@@ -80,7 +153,7 @@ const modal_errors = ref(false);
           <h1 class="font-medium text-lg mb-3">Peringatan</h1>
           <p class="text-abu-text">{{ message_errors }}</p>
         </div>
-        <PrimaryButton class="px-4 w-full flex justify-center mt-3">Continue</PrimaryButton>
+        <PrimaryButton class="px-4 w-full flex justify-center mt-3" @click="remove">Continue</PrimaryButton>
       </div>
     </Modal>
 
@@ -92,47 +165,42 @@ const modal_errors = ref(false);
         <table class="w-full border-b-2 border-abu-component text-medium">
           <thead class="text-merah-component">
             <tr class="border-b-2 border-abu-component">
-              <th class="py-5"></th>
+              <th class="py-5">No. </th>
               <th class="py-5">Soal</th>
               <th class="py-5">Tanggal</th>
               <th class="py-5">Waktu</th>
-              <th class="py-5">Ruangan</th>
               <th class="py-5">Maks. Peserta</th>
               <th class="py-5">Action</th>
             </tr>
           </thead>
           <tbody class="text-center">
-            <tr v-for="n in 2 + 1" class="border-b-2 border-abu-component">
-              <td class="py-5">
-                <button class="border border-black w-7 aspect-square rounded-full" v-if="n == 3" @click="modal = true">
-                  +
-                </button>
-              </td>
-              <td class="py-5">TOEFL 01</td>
-              <td class="py-5">10 Februari 2019</td>
-              <td class="py-5">10.00</td>
-              <td class="py-5">2.23</td>
-              <td class="py-5">40</td>
-              <td class="py-5">
-                <div class="flex gap-x-4 justify-end" v-if="n != 3">
-                  <Link :href="route('admin.bank_soal.detail', n)">
-                  <PrimaryButton class="px-4">Detail</PrimaryButton>
-                  </Link>
-                  <SecondaryButton2 @click="(formBankSoal.id = n), (modal = true)" class="px-4">
-                    <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M15.7622 0.512126C16.0903 0.184205 16.5353 0 16.9992 0C17.4631 0 17.908 0.184205 18.2362 0.512126L20.8222 3.09813C21.1501 3.42628 21.3343 3.87121 21.3343 4.33513C21.3343 4.79904 21.1501 5.24397 20.8222 5.57213L18.0292 8.36513L18.0172 8.37813L7.18917 18.7131C6.99129 18.9022 6.7519 19.0422 6.49017 19.1221L0.967169 20.8021C0.837313 20.8415 0.699196 20.8448 0.567608 20.8117C0.436021 20.7786 0.31592 20.7103 0.220169 20.6141C0.124024 20.5184 0.055737 20.3983 0.0226199 20.2667C-0.0104972 20.1351 -0.00719635 19.997 0.0321688 19.8671L1.70517 14.3671C1.79291 14.0792 1.95341 13.8189 2.17117 13.6111L12.9752 3.29813L15.7622 0.512126ZM3.20717 14.6961C3.17625 14.726 3.15322 14.7631 3.14017 14.8041L1.87617 18.9581L6.05317 17.6871C6.09063 17.6755 6.12486 17.6553 6.15317 17.6281L16.4262 7.82213L13.4862 4.88313L3.20717 14.6961ZM17.4992 6.77513L19.7622 4.51313C19.7854 4.4899 19.8039 4.46232 19.8165 4.43194C19.8291 4.40157 19.8356 4.36901 19.8356 4.33613C19.8356 4.30324 19.8291 4.27068 19.8165 4.24031C19.8039 4.20994 19.7854 4.18235 19.7622 4.15913L17.1762 1.57313C17.1529 1.54984 17.1254 1.53137 17.095 1.51877C17.0646 1.50617 17.0321 1.49968 16.9992 1.49968C16.9663 1.49968 16.9337 1.50617 16.9034 1.51877C16.873 1.53137 16.8454 1.54984 16.8222 1.57313L14.5602 3.83513L17.4992 6.77513Z"
-                        fill="black" />
-                    </svg>
-                  </SecondaryButton2>
-                  <SecondaryButton2 class="px-4" @click="(formBankSoal.id = n), (modal_errors = true)">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24px" height="24px">
-                      <path
-                        d="M 15 4 C 14.476563 4 13.941406 4.183594 13.5625 4.5625 C 13.183594 4.941406 13 5.476563 13 6 L 13 7 L 7 7 L 7 9 L 8 9 L 8 25 C 8 26.644531 9.355469 28 11 28 L 23 28 C 24.644531 28 26 26.644531 26 25 L 26 9 L 27 9 L 27 7 L 21 7 L 21 6 C 21 5.476563 20.816406 4.941406 20.4375 4.5625 C 20.058594 4.183594 19.523438 4 19 4 Z M 15 6 L 19 6 L 19 7 L 15 7 Z M 10 9 L 24 9 L 24 25 C 24 25.554688 23.554688 26 23 26 L 11 26 C 10.445313 26 10 25.554688 10 25 Z M 12 12 L 12 23 L 14 23 L 14 12 Z M 16 12 L 16 23 L 18 23 L 18 12 Z M 20 12 L 20 23 L 22 23 L 22 12 Z" />
-                    </svg>
-                  </SecondaryButton2>
-                </div>
-              </td>
+            <tr v-for="(schedule, n) in schedules.data" class="border-b-2 border-abu-component">
+              <template v-if="n == schedules.data.length - 1">
+                <td class="py-5"><button class="border border-black w-7 aspect-square rounded-full" @click="modal = true">
+                    +
+                  </button>
+                </td>
+                <td colspan="5" class="py-5"></td>
+              </template>
+              <template v-else>
+                <td>{{ n + 1 }}</td>
+                <td class="py-5">{{ schedule.questionbank.name }}</td>
+                <td class="py-5">{{ schedule.tanggal }}</td>
+                <td class="py-5">{{ schedule.waktu }}</td>
+                <td class="py-5">{{ schedule.kuota }}</td>
+                <td class="py-5">
+                  <div class="flex gap-x-4 justify-center">
+                    <PrimaryButton class="px-4" @click="editSchedule(schedule)">Ubah
+                    </PrimaryButton>
+                    <SecondaryButton2 class="px-4" @click="editSchedule(schedule, false)">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24px" height="24px">
+                        <path
+                          d="M 15 4 C 14.476563 4 13.941406 4.183594 13.5625 4.5625 C 13.183594 4.941406 13 5.476563 13 6 L 13 7 L 7 7 L 7 9 L 8 9 L 8 25 C 8 26.644531 9.355469 28 11 28 L 23 28 C 24.644531 28 26 26.644531 26 25 L 26 9 L 27 9 L 27 7 L 21 7 L 21 6 C 21 5.476563 20.816406 4.941406 20.4375 4.5625 C 20.058594 4.183594 19.523438 4 19 4 Z M 15 6 L 19 6 L 19 7 L 15 7 Z M 10 9 L 24 9 L 24 25 C 24 25.554688 23.554688 26 23 26 L 11 26 C 10.445313 26 10 25.554688 10 25 Z M 12 12 L 12 23 L 14 23 L 14 12 Z M 16 12 L 16 23 L 18 23 L 18 12 Z M 20 12 L 20 23 L 22 23 L 22 12 Z" />
+                      </svg>
+                    </SecondaryButton2>
+                  </div>
+                </td>
+              </template>
             </tr>
           </tbody>
         </table>

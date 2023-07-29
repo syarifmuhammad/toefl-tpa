@@ -145,7 +145,7 @@ const deleteBanks = () => {
                             <td class="py-5">40</td>
                             <td class="py-5">
                                 <div class="flex gap-x-4 justify-end">
-                                    <Link :href="route('admin.bank_soal.detail', i)">
+                                    <Link :href="route('admin.bank_soal.detail', i.id)">
                                     <PrimaryButton class="px-4">Detail</PrimaryButton>
                                     </Link>
                                     <SecondaryButton2

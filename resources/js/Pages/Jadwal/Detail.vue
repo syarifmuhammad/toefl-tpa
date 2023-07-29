@@ -3,9 +3,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import KartuUjian from '@/Components/KartuUjian.vue';
-// import { computed } from 'vue'
+import moment from 'moment';
+import { defineProps } from 'vue'
 import { Head, Link } from '@inertiajs/vue3'
 
+defineProps({
+    schedule: Object
+})
 </script>
 
 <template>
@@ -19,7 +23,7 @@ import { Head, Link } from '@inertiajs/vue3'
         <section class="mt-10 px-4 sm:px-6 lg:px-8 w-full">
             <div class="bg-white rounded-lg overflow-hidden">
                 <div class="px-8 py-3 w-full flex items-center bg-merah-primary">
-                    <h3 class="font-semibold text-2xl text-white">TOEFL</h3>
+                    <h3 class="font-semibold text-2xl text-white">{{ String(schedule.questionbank.category).toUpperCase() }}</h3>
                 </div>
                 <div class="px-4 sm:px-6 lg:px-8 py-8">
                     <div>
@@ -28,17 +32,17 @@ import { Head, Link } from '@inertiajs/vue3'
                             <tr>
                                 <td class="w-[175px]">Jenis tes</td>
                                 <td class="font-semibold">:</td>
-                                <td class="font-semibold">TOEFL</td>
+                                <td class="font-semibold">{{ String(schedule.questionbank.category).toUpperCase() }}</td>
                             </tr>
                             <tr>
                                 <td class="w-[175px]">Tanggal tes</td>
                                 <td class="font-semibold">:</td>
-                                <td class="font-semibold">2 Mei 2023</td>
+                                <td class="font-semibold">{{ moment(schedule.tanggal).format("DD MMMM YYYY") }}</td>
                             </tr>
                             <tr>
                                 <td class="w-[175px]">Waktu</td>
                                 <td class="font-semibold">:</td>
-                                <td class="font-semibold">10.00</td>
+                                <td class="font-semibold">{{ schedule.waktu }}</td>
                             </tr>
                             <tr>
                                 <td class="w-[175px]">Lokasi</td>
@@ -75,10 +79,10 @@ import { Head, Link } from '@inertiajs/vue3'
                         </div>
                     </div> -->
                     <div class="mt-8 flex gap-x-4">
-                        <Link :href="route('exam.payment', { id: $page.props.id })">
+                        <Link :href="route('jadwal.payment', { id: schedule.id })">
                         <PrimaryButton class="px-4">Daftar</PrimaryButton>
                         </Link>
-                        <Link :href="route('index')">
+                        <Link :href="route('dashboard')">
                         <SecondaryButton class="px-4">Kembali</SecondaryButton>
                         </Link>
                     </div>

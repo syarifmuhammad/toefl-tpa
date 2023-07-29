@@ -31,7 +31,7 @@ import { Head, Link } from '@inertiajs/vue3';
                             <td class="py-5">10 April 2023</td>
                             <td class="py-5">Menunggu Pembayaran</td>
                             <td class="py-5">
-                                <Link :href="route('exam.history.detail', n)">
+                                <Link :href="route('jadwal.history.detail', n)">
                                 <PrimaryButton class="px-4">Detail</PrimaryButton>
                                 </Link>
                             </td>

@@ -27,8 +27,18 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nim_or_nik' => ['required', 'string', 'min:10', 'max:16'],
-            'password' => ['required', 'string', 'min:8'],
+            'nim_or_nik' => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'nim_or_nik.required' => 'Nim atau nik wajib diisi',
+            'nim_or_nik.string' => 'Format nim atau nik tidak valid',
+            'password.required' => 'Password wajib diisi',
+            'password.string' => 'Format password tidak valid',
         ];
     }
 
@@ -45,7 +55,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'error' => trans('auth.failed'),
+                'error' => "NIM/NIK dan Password salah !",
             ]);
         }
 
