@@ -18,27 +18,22 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-        // $schedule = Schedule::all(); //::paginate(10);
         $user = Auth::user();
-        $profile_picture = $user["profile_picture"];
-        if (strpos($profile_picture, "http") !== 0) {
-            $profile_picture = "/images/profile_picture/" . $profile_picture;
+
+        if ($request->has('category') && $request->category == 'tpa') {
+            $schedule = Schedule::join('questionbanks', 'schedules.questionbank_id', '=', 'questionbanks.id')->select("schedules.*", "questionbanks.category as category")->where('category', 'tpa')->orderBy('tanggal', 'asc')->orderBy('waktu', 'asc');
+        } else {
+            $schedule = Schedule::join('questionbanks', 'schedules.questionbank_id', '=', 'questionbanks.id')->select("schedules.*", "questionbanks.category as category")->where('category', 'toefl')->orderBy('tanggal', 'asc')->orderBy('waktu', 'asc');
         }
         
-        $email = $user["email"];
-        $phone = $user["phone"];
-
-        $schedule = Schedule::orderBy('tanggal', 'asc')->orderBy('waktu', 'asc');
-        
+        $category = $request->has('category') ? $request->category : 'toefl';
 
         if ($user["is_admin"]) {
             return redirect('admin');
         } else {
             return Inertia::render('Dashboard', [
-                'schedule' => $schedule->paginate(15),
-                'profile_picture' => $profile_picture,
-                'email' => $email,
-                'phone' => $phone
+                'schedule' => $schedule->paginate(),
+                'category' => $category,
             ]);
         }
     }

@@ -21,13 +21,18 @@ class ExamController extends Controller
     }
 
     public function history(Request $request): Response {
-        return Inertia::render('Jadwal/History');
+        $histories = AttemptSchedule::with('schedule')->where('user_id', Auth::id())->paginate();
+        return Inertia::render('Jadwal/History', [
+            'histories' => AttemptScheduleResource::collection($histories)
+        ]);
     }
 
     public function detail_history(Request $request, $id): Response {
-        $history = AttemptSchedule::find($id);
+        $history = AttemptSchedule::with('schedule')->find($id);
+        $user = Auth::user();
         return Inertia::render('Jadwal/DetailHistory', [
-            'history' => new AttemptScheduleResource($history)
+            'history' => new AttemptScheduleResource($history),
+            'user' => $user,
         ]);
     }
 

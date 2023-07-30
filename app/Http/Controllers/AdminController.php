@@ -14,17 +14,6 @@ use App\Models\Schedule;
 class AdminController extends Controller
 {
 
-  public function __construct(Request $request, Redirector $redirect)
-  {
-    $this->middleware(function ($request, $next) {
-      $is_admin =  Auth::user()['is_admin'];
-      if ($is_admin === 0) {
-        return redirect('/');
-      }
-      return $next($request);
-    });
-  }
-
   public function index()
   {
     $schedule = Schedule::paginate(50);

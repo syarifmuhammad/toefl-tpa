@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Log;
 use App\Models\Address;
+use App\Models\AttemptSchedule;
 use App\Models\GroupQuestion;
 use App\Models\Question;
 use App\Models\QuestionBank;
@@ -41,6 +42,10 @@ class DatabaseSeeder extends Seeder
 
         if(Schedule::count() < 10){
             Schedule::factory(5)->create();
+        }
+
+        if(AttemptSchedule::count() < 10){
+            AttemptSchedule::factory(5)->create();
         }
 
     }

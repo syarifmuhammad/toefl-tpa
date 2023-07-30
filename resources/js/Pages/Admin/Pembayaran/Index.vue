@@ -3,6 +3,14 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton2 from '@/Components/SecondaryButton2.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import { defineProps } from 'vue';
+import moment from 'moment/min/moment-with-locales'
+moment.locale('id')
+
+defineProps({
+    registrars: Object,
+    status: String,
+})
 </script>
 
 <template>
@@ -19,17 +27,24 @@ import { Head, Link } from '@inertiajs/vue3';
                     Pembayaran
                 </h1>
                 <div class="flex gap-x-6 mt-6">
-                    <Link
-                        class="text-merah-component font-semibold text-md border-x-0 border-t-0 border-b border-merah-component">
+                    <Link href="?status=semua"
+                        :class="status == 'semua' ? 'text-merah-component border-b-2 border-merah-component' : 'text-black'"
+                        class="font-semibold text-md">
                     Semua
                     </Link>
-                    <Link class="text-black font-semibold text-md">
+                    <Link href="?status=selesai"
+                        :class="status == 'selesai' ? 'text-merah-component border-b-2 border-merah-component' : 'text-black'"
+                        class="font-semibold text-md">
                     Selesai
                     </Link>
-                    <Link class="text-black font-semibold text-md">
+                    <Link href="?status=proses"
+                        :class="status == 'proses' ? 'text-merah-component border-b-2 border-merah-component' : 'text-black'"
+                        class="font-semibold text-md">
                     Proses
                     </Link>
-                    <Link class="text-black font-semibold text-md">
+                    <Link href="?status=dibatalkan"
+                        :class="status == 'dibatalkan' ? 'text-merah-component border-b-2 border-merah-component' : 'text-black'"
+                        class="font-semibold text-md">
                     Dibatalkan
                     </Link>
                 </div>
@@ -38,24 +53,26 @@ import { Head, Link } from '@inertiajs/vue3';
                         <tr class="border-b-2 border-abu-component">
                             <th class="py-5">#</th>
                             <th class="py-5">ID</th>
-                            <th class="py-5">Tanggal Tes</th>
-                            <th class="py-5">Tanggal Permintaan</th>
-                            <th class="py-5">Metode</th>
+                            <th class="py-5">Tanggal Pendaftaran</th>
+                            <th class="py-5">Metode Pembayaran</th>
                             <th class="py-5">Status</th>
                             <th class="py-5">Action</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr v-for="n in 10" class="border-b-2 border-abu-component">
-                            <td class="py-5">{{ n }}</td>
-                            <td class="py-5">1234</td>
-                            <td class="py-5">2 Mei 2023</td>
-                            <td class="py-5">10 April 2023</td>
-                            <td class="py-5">Dikirim</td>
-                            <td class="py-5">Menunggu Pembayaran</td>
+                        <tr v-if="registrars.data.length > 0" v-for="(registrar, n) in registrars.data" class="border-b-2 border-abu-component">
+                            <td class="py-5">{{ (n + 1) * registrars.meta.current_page }}</td>
+                            <td class="py-5">{{ registrar.payment.payment_id }}</td>
+                            <td class="py-5">{{ moment(registrar.created_at).format('dddd, DD MMMM YYYY') }}</td>
+                            <td class="py-5">{{ String(registrar.payment.payment_type).toUpperCase() }}</td>
+                            <td class="py-5">
+                                <div v-if="registrar.status == 0" class="text-kuning-warning">Menunggu Pembayaran</div>
+                                <div v-if="registrar.status == 1" class="text-hijau-warning">Selesai</div>
+                                <div v-if="registrar.status == 2" class="text-merah-warning">Dibatalkan</div>
+                            </td>
                             <td class="py-5">
                                 <div class="flex gap-x-4 justify-end">
-                                    <Link :href="route('admin.pembayaran.detail', n)">
+                                    <Link :href="route('admin.pembayaran.detail', registrar.id)">
                                     <PrimaryButton class="px-4">Detail</PrimaryButton>
                                     </Link>
                                     <SecondaryButton2 class="px-4" @click="(formBankSoal.id = n), (modal_errors = true)">
@@ -66,6 +83,11 @@ import { Head, Link } from '@inertiajs/vue3';
                                         </svg>
                                     </SecondaryButton2>
                                 </div>
+                            </td>
+                        </tr>
+                        <tr v-else>
+                            <td colspan="6">
+                                <p class="text-center text-merah-warning font-semibold text-md">Data belum ada !</p>
                             </td>
                         </tr>
                     </tbody>

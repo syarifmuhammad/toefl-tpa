@@ -2,14 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class RedirectIfNotAdmin // extends Middleware
+class RedirectIfNotBasic
 {
     /**
      * Handle an incoming request.
@@ -19,10 +17,10 @@ class RedirectIfNotAdmin // extends Middleware
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
         $user = Auth::user();
-        if (!$user->is_admin) {
+        if ($user->is_admin) {
             return redirect()->route('dashboard');
         }
-        
+
         return $next($request);
     }
 }
