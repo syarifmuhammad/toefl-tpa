@@ -47,7 +47,6 @@ class AdminController extends Controller
   public function bankSoalAdd(Request $request)
   {
     $request->validate([
-      'id' => 'required',
       'name' => 'required|string|max:255',
       'category' => 'required',
       'file' => 'required',

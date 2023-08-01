@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
         Route::name('bank_soal.')->prefix('bank-soal')->group(function () {
             Route::get('/', [AdminController::class, 'bank_soal'])->name('index');
             Route::post('/', [AdminController::class, 'bankSoalAdd'])->name('store');
-            Route::post('/', [AdminController::class, 'bankSoalUpdate'])->name('update');
+            Route::post('/update', [AdminController::class, 'bankSoalUpdate'])->name('update');
             Route::delete('/', [AdminController::class, 'bankSoalDelete'])->name('destroy');
             // Route::put('/', [AdminController::class, 'bankSoalUpdate'])->name('update');
 
