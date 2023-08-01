@@ -23,14 +23,18 @@ const form = useForm({
     name: user.name,
     email: user.email,
     phone: user.phone,
-    street: user.street,
-    sub_district: user.sub_district,
-    district: user.district,
-    province: user.province,
-    village: user.village,
-    postal_code: user.postal_code,
+    street: user.address.street,
+    sub_district: user.address.sub_district,
+    district: user.address.district,
+    province: user.address.province,
+    village: user.address.village,
+    postal_code: user.address.postal_code,
     profile_picture: user.profile_picture,
 });
+
+const submit = () => {
+
+}
 
 </script>
 
@@ -46,14 +50,15 @@ const form = useForm({
                 <div class="md:px-8 md:py-8 px-4 py-4 flex flex-col justify-center items-center">
                     <h3 class="font-bold lg:text-xl text-lg text-center">Informasi Akun</h3>
                     <div class="max-w-[210px] w-full aspect-square bg-abu-component rounded-full mt-10 overflow-hidden">
+                        <img class="w-full h-full object-cover" :src="$page.props.auth.user.profile_picture" alt="">
                     </div>
-                    <h3 class="font-medium text-lg text-center mt-6 text-biru underline">Ubah foto profil</h3>
+                    <h3 class="font-medium text-lg text-center mt-6 text-biru hover:underline cursor-pointer">Ubah foto profil</h3>
 
                 </div>
             </section>
             <section class="bg-white rounded-lg w-2/3">
                 <div class="md:px-8 md:py-8 px-4 py-4 flex flex-col justify-between h-full">
-                    <form action="">
+                    <form @submit.prevent="submit">
                         <div>
                             <InputLabel for="name" value="Nama Lengkap Peserta (tercetak di sertifikat)" required>
                                 Nama sesuai KTP (tanpa gelar)
@@ -144,7 +149,7 @@ const form = useForm({
                                     Alamat Rumah
                                 </InputLabel>
 
-                                <TextArea id="address" class="mt-1 block w-full items-stretch h-full" v-model="form.address"
+                                <TextArea id="address" class="mt-1 block w-full items-stretch h-full" v-model="form.street"
                                     required autofocus />
 
                                 <!-- <InputError class="mt-2" :message="form.errors.name" /> -->

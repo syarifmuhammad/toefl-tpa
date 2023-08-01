@@ -7,15 +7,9 @@ import { defineProps, ref } from 'vue';
 const props = defineProps(
     { 
         schedule: Object,
-        profile_picture: String,
-        email: String,
-        phone: String,
+        category: String,
     },
 )
-
-console.debug(props.schedule) //?.length)
-
-// console.log($this.props.id)
 </script>
 
 
@@ -30,18 +24,18 @@ console.debug(props.schedule) //?.length)
 
         <section class="mt-2 px-4 sm:px-6 lg:px-8 py-12 bg-white flex flex-col gap-y-4 lg:flex-row items-center gap-x-8">
             <div>
-                <div class="w-[150px] aspect-square rounded-full">
-                    <img :src="profile_picture" alt="">
+                <div class="w-[150px] aspect-square rounded-full overflow-hidden">
+                    <img class="w-full h-full object-cover" :src="$page.props.auth.user.profile_picture" alt="">
                 </div>
             </div>
             <div class="w-full">
                 <h3 class="text-xl font-semibold text-merah-component">{{ $page.props.auth.user.name }}</h3>
                 <div class="flex flex-wrap gap-x-6 items-center mt-2">
-                    <p>{{ email }}</p>
+                    <p>{{ $page.props.auth.user.email }}</p>
                     <span class="w-[7px] aspect-square bg-abu-component rounded-full"></span>
-                    <p>{{ phone }}</p>
+                    <p>{{ $page.props.auth.user.phone }}</p>
                     <span class="w-[7px] aspect-square bg-abu-component rounded-full"></span>
-                    <p>IT Telkom Surabaya</p>
+                    <p>{{ $page.props.auth.user.address.street }}</p>
                 </div>
                 <hr class="bg-abu-component h-[2px] my-4" />
                 <div class="flex flex-col items-start gap-y-4 lg:flex-row lg:items-center justify-between ">
@@ -68,13 +62,14 @@ console.debug(props.schedule) //?.length)
             </div>
         </section>
         <section class="mt-10 px-4 sm:px-6 lg:px-8 py-12 w-full">
-            <div class="w-full flex divide-x-2">
-                <div class="pr-10">
-                    <a class="font-semibold text-merah-component border-b-2 pb-1 border-merah-component"
-                        href="">TOEFL</a>
+            <div class="w-full flex gap-x-6">
+                <div>
+                    <a class="font-semibold pb-1" :class="category == 'toefl' ? 'text-merah-component border-b-2 border-merah-component' : 'text-abu-text'"
+                        href="?category=toefl">TOEFL</a>
                 </div>
-                <div class="pl-10">
-                    <a class="font-semibold text-abu-text" href="">TPA</a>
+                <div class="w-[2px] bg-gray-200"></div>
+                <div :class="category == 'tpa' ? 'text-merah-component border-b-2 border-merah-component' : 'text-abu-text'">
+                    <a class="font-semibold" href="?category=tpa">TPA</a>
                 </div>
             </div>
             <div class="bg-white rounded-lg mt-10 px-8 py-12">
@@ -96,11 +91,16 @@ console.debug(props.schedule) //?.length)
                                 <td class="py-5">{{ row.tanggal }}</td>
                                 <td class="py-5">{{ row.waktu }}</td>
                                 <td class="py-5">{{ row.terisi }}/{{ row.kuota }}</td>
-                                <td class="py-5">{{ (row.status == 1) ? "ready" : "not ready" }}</td>
+                                <td class="py-5">{{ (row.status == 1) ? "Ready" : "Not Ready" }}</td>
                                 <td class="py-5">
                                     <Link :href="route('jadwal.detail', row.id)">
                                     <PrimaryButton class="px-4">Pilih</PrimaryButton>
                                     </Link>
+                                </td>
+                            </tr>
+                            <tr v-else>
+                                <td colspan="6">
+                                    <p class="text-center text-merah-warning font-semibold text-md">Jadwal ujian belum ada !</p>
                                 </td>
                             </tr>
                         </tbody>
@@ -109,11 +109,3 @@ console.debug(props.schedule) //?.length)
         </section>
     </AuthenticatedLayout>
 </template>
-
-<!-- <script>
-   import { defineComponent } from 'vue';
-   
-   export default defineComponent({
-     props: ['schedule'],
-   });
-</script> -->

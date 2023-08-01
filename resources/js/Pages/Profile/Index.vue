@@ -26,7 +26,9 @@ defineProps({
             <section class="bg-white rounded-lg">
                 <div class="md:px-8 md:py-8 px-4 py-4 flex flex-col justify-center items-center">
                     <h3 class="font-bold lg:text-xl text-lg text-center">Informasi Akun</h3>
-                    <div class="max-w-[210px] w-full aspect-square bg-abu-component rounded-full mt-10 overflow-hidden"></div>
+                    <div class="max-w-[210px] w-full aspect-square bg-abu-component rounded-full mt-10 overflow-hidden">
+                        <img class="w-full h-full object-cover" :src="$page.props.auth.user.profile_picture" alt="">
+                    </div>
                     <h3 class="font-bold lg:text-xl text-lg text-center mt-6 text-merah-component">{{ $page.props.auth.user.name }}</h3>
 
                 </div>
@@ -48,7 +50,7 @@ defineProps({
                         </div>
                         <div class="flex justify-between pb-4 border-b border-abu-component">
                             <label class="font-medium" for="number_phone">Alamat</label>
-                            <p>{{ $page.props.auth.user.street }}</p>
+                            <p>{{ $page.props.auth.user.address.street }}</p>
                         </div>
                     </div>
                     <div class="mt-20">

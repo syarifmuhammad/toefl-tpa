@@ -1,4 +1,12 @@
 <script setup>
+
+import { defineProps } from 'vue'
+import moment from 'moment/min/moment-with-locales'
+moment.locale('id')
+const props = defineProps({
+    registrar: Object,
+})
+
 </script>
 
 <template>
@@ -19,13 +27,15 @@
         <div class="w-[85%] p-4 flex flex-col justify-between">
             <h2 class="text-center font-semibold">Kartu Ujian Toefl</h2>
             <div class="flex gap-x-4 h-[100px]">
-                <div class="h-full aspect-[3/4] border border-[#808080]"></div>
+                <div class="h-full aspect-[3/4] border border-[#808080]">
+                    <img class="w-full h-full object-cover" :src="$page.props.auth.user.profile_picture" alt="">
+                </div>
                 <div class="h-full py-2">
                     <table class="h-full text-xs">
                         <tr>
                             <td class="w-[100px]">Nomor Peserta</td>
                             <td class="font-semibold">:</td>
-                            <td class="font-semibold">1001</td>
+                            <td class="font-semibold">{{ String(registrar.id).padStart(3, '0') }}</td>
                         </tr>
                         <tr>
                             <td class="w-[100px]">Nama</td>
@@ -35,7 +45,7 @@
                         <tr>
                             <td class="w-[100px]">NIM / NIK</td>
                             <td class="font-semibold">:</td>
-                            <td class="font-semibold">1201200016</td>
+                            <td class="font-semibold">{{ $page.props.auth.user.nim_or_nik }}</td>
                         </tr>
                     </table>
                 </div>
@@ -45,12 +55,7 @@
                     <tr>
                         <td class="w-[100px]">Tanggal Ujian</td>
                         <td>:</td>
-                        <td>10 Juni 2023</td>
-                    </tr>
-                    <tr>
-                        <td class="w-[100px]">Ruangan</td>
-                        <td>:</td>
-                        <td>2.01</td>
+                        <td>{{ moment(registrar.schedule.tanggal).format('DD MMMM YYYY') }} {{ registrar.schedule.waktu }} WIB</td>
                     </tr>
                 </table>
             </div>

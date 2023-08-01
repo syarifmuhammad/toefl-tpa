@@ -22,9 +22,9 @@ class Schedule extends Model
         // 'cost' 
     ];
 
-    protected $casts = [
-        'waktu' => 'datetime:H:i',
-    ];
+    // protected $casts = [
+    //     'waktu' => 'datetime:H:i',
+    // ];
     
     public function questionbank() {
         return $this->belongsTo(QuestionBank::class, 'questionbank_id', 'id');

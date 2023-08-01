@@ -2,6 +2,16 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import { defineProps } from 'vue';
+import 'moment/locale/id';
+import moment from 'moment/min/moment-with-locales';
+
+defineProps({
+    histories: Object,
+})
+
+moment.locale('id');
+
 </script>
 
 <template>
@@ -25,13 +35,17 @@ import { Head, Link } from '@inertiajs/vue3';
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        <tr v-for="n in 10" class="border-b-2 border-abu-component">
-                            <td class="py-5">TOEFL</td>
-                            <td class="py-5">Selasa, 2 Mei 2023</td>
-                            <td class="py-5">10 April 2023</td>
-                            <td class="py-5">Menunggu Pembayaran</td>
+                        <tr v-for="history in histories.data" class="border-b-2 border-abu-component">
+                            <td class="py-5">{{ String(history.questionbank.category).toUpperCase() }}</td>
+                            <td class="py-5">{{ moment(history.schedule.tanggal).format("dddd, DD MMMM YYYY") }}</td>
+                            <td class="py-5">{{ moment(history.created_at).format("dddd, DD MMMM YYYY") }}</td>
                             <td class="py-5">
-                                <Link :href="route('jadwal.history.detail', n)">
+                                <div v-if="history.status == 0" class="text-kuning-warning">Menunggu Pembayaran</div>
+                                <div v-if="history.status == 1" class="text-hijau-warning">Selesai</div>
+                                <div v-if="history.status == 2" class="text-merah-warning">Dibatalkan</div>
+                            </td>
+                            <td class="py-5">
+                                <Link :href="route('jadwal.history.detail', history.id)">
                                 <PrimaryButton class="px-4">Detail</PrimaryButton>
                                 </Link>
                             </td>
