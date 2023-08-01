@@ -21,9 +21,9 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         if ($request->has('category') && $request->category == 'tpa') {
-            $schedule = Schedule::join('questionbanks', 'schedules.questionbank_id', '=', 'questionbanks.id')->select("schedules.*", "questionbanks.category as category")->where('category', 'tpa')->orderBy('tanggal', 'asc')->orderBy('waktu', 'asc');
+            $schedule = Schedule::join('question_banks', 'schedules.questionbank_id', '=', 'question_banks.id')->select("schedules.*", "questionbanks.category as category")->where('category', 'tpa')->orderBy('tanggal', 'asc')->orderBy('waktu', 'asc');
         } else {
-            $schedule = Schedule::join('questionbanks', 'schedules.questionbank_id', '=', 'questionbanks.id')->select("schedules.*", "questionbanks.category as category")->where('category', 'toefl')->orderBy('tanggal', 'asc')->orderBy('waktu', 'asc');
+            $schedule = Schedule::join('question_banks', 'schedules.questionbank_id', '=', 'question_banks.id')->select("schedules.*", "questionbanks.category as category")->where('category', 'toefl')->orderBy('tanggal', 'asc')->orderBy('waktu', 'asc');
         }
         
         $category = $request->has('category') ? $request->category : 'toefl';
