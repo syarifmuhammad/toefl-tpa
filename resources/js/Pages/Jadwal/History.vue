@@ -41,7 +41,7 @@ moment.locale('id');
                             <td class="py-5">{{ moment(history.created_at).format("dddd, DD MMMM YYYY") }}</td>
                             <td class="py-5">
                                 <div v-if="history.status == 0" class="text-kuning-warning">Menunggu Pembayaran</div>
-                                <div v-if="history.status == 1" class="text-hijau-warning">Selesai</div>
+                                <div v-if="history.status == 1" class="text-hijau-warning">Sudah Lunas</div>
                                 <div v-if="history.status == 2" class="text-merah-warning">Dibatalkan</div>
                             </td>
                             <td class="py-5">

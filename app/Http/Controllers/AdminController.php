@@ -10,13 +10,15 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Routing\Redirector;
 use Inertia\Inertia;
 use App\Models\Schedule;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
 
   public function index()
   {
-    $schedule = Schedule::paginate(50);
+    $today = Carbon::today()->toDateString();
+    $schedule = Schedule::join('questionbanks', 'schedules.questionbank_id', '=', 'questionbanks.id')->select("schedules.*", "questionbanks.category as category")->whereDate('tanggal', $today)->orderBy('tanggal', 'asc')->paginate();
 
     return Inertia::render('Admin/Dashboard', [
       'schedule' => $schedule
@@ -25,7 +27,25 @@ class AdminController extends Controller
 
   public function monitor($id)
   {
-    return Inertia::render('Admin/MonitorUjian');
+    $today = Carbon::today()->toDateString();
+    $schedule = Schedule::with('questionbank')->whereDate('tanggal', $today)->find($id);
+    if (!$schedule) {
+      return to_route('admin.dashboard');
+    }
+    
+    $participants = [];
+    return Inertia::render('Admin/MonitorUjian', [
+      'schedule' => $schedule,
+    ]);
+  }
+
+  public function mulai_ujian($id)
+  {
+    $schedule = Schedule::find($id);
+    $schedule->status = 1;
+    $schedule->waktu_mulai = now();
+    $schedule->save();
+    return to_route('admin.monitor', $id);
   }
 
   //Bank Soal

@@ -23,6 +23,7 @@ class ScheduleController extends Controller
 
     public function show($id)
     {
+        
         return Inertia::render('Admin/Jadwal/Detail');
     }
 
@@ -30,10 +31,9 @@ class ScheduleController extends Controller
     {
         $schedule = new Schedule;
         $schedule->questionbank_id = $request->questionbank_id;
-        $schedule->tanggal = $request->tanggal;
-        $schedule->waktu = $request->waktu;
+        $schedule->tanggal = date('Y-m-d H:i', strtotime("$request->tanggal $request->waktu"));
         $schedule->kuota = $request->kuota;
-        $schedule->terisi = 0;
+        $schedule->biaya = 200000;
         $schedule->status = 0;
         $schedule->save();
 
@@ -44,8 +44,7 @@ class ScheduleController extends Controller
     {
         $schedule = Schedule::find($id);
         $schedule->questionbank_id = $request->questionbank_id;
-        $schedule->tanggal = $request->tanggal;
-        $schedule->waktu = $request->waktu;
+        $schedule->tanggal = date('Y-m-d H:i', strtotime("$request->tanggal $request->waktu"));
         $schedule->kuota = $request->kuota;
         $schedule->save();
 

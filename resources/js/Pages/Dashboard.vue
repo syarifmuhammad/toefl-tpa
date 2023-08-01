@@ -3,10 +3,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { defineProps, ref } from 'vue';
+import moment from 'moment/min/moment-with-locales'
+moment.locale('id')
 
 const props = defineProps(
     { 
-        schedule: Object,
+        my_schedule: Object,
+        schedules: Object,
         category: String,
     },
 )
@@ -41,22 +44,22 @@ const props = defineProps(
                 <div class="flex flex-col items-start gap-y-4 lg:flex-row lg:items-center justify-between ">
                     <div class="flex flex-col gap-y-1">
                         <label for="incoming_test" class="font-medium text-abu-text uppercase">Ujian Akan Datang</label>
-                        <p id="incoming_test" class="font-medium">TOEFL</p>
+                        <p id="incoming_test" class="font-medium">{{ my_schedule ? String(my_schedule.category).toUpperCase() : '-' }}</p>
                     </div>
                     <div class="flex flex-col gap-y-1">
                         <label for="incoming_test_date" class="font-medium text-abu-text uppercase">Tanggal</label>
-                        <p id="incoming_test_date" class="font-medium">10 Juni 2023</p>
+                        <p id="incoming_test_date" class="font-medium">{{ my_schedule ? moment(my_schedule.tanggal).format("DD MM YYYY") : '-' }}</p>
                     </div>
                     <div class="flex flex-col gap-y-1">
                         <label for="incoming_test_time" class="font-medium text-abu-text uppercase">Waktu</label>
-                        <p id="incoming_test_time" class="font-medium">10.00 WIB</p>
+                        <p id="incoming_test_time" class="font-medium">{{ my_schedule ? moment(my_schedule.tanggal).format("HH:mm") : '-' }}</p>
                     </div>
                     <div class="flex flex-col gap-y-1">
                         <label for="incoming_test_location" class="font-medium text-abu-text uppercase">Lokasi</label>
-                        <p id="incoming_test_location" class="font-medium">IT Telkom Surabaya</p>
+                        <p id="incoming_test_location" class="font-medium">{{ my_schedule ? "IT Telkom Surabaya" : "-" }}</p>
                     </div>
                     <div class="">
-                        <PrimaryButton class="px-10">Detail</PrimaryButton>
+                        <PrimaryButton v-if="my_schedule" class="px-10">Detail</PrimaryButton>
                     </div>
                 </div>
             </div>
@@ -86,11 +89,11 @@ const props = defineProps(
                     </thead>
                     
                     <tbody class="text-center">
-                            <tr v-if="schedule.data.length != 0" v-for="(row, idx) in schedule.data" :key="idx" class="border-b-2 border-abu-component">
+                            <tr v-if="schedules.data != null && schedules.data.length > 0" v-for="(row, idx) in schedules.data" :key="idx" class="border-b-2 border-abu-component">
                                 <td class="py-5">{{ idx + 1 }}.</td>
                                 <td class="py-5">{{ row.tanggal }}</td>
-                                <td class="py-5">{{ row.waktu }}</td>
-                                <td class="py-5">{{ row.terisi }}/{{ row.kuota }}</td>
+                                <td class="py-5">{{ row.tanggal }}</td>
+                                <td class="py-5">{{ row.attempt_schedules_count }}/{{ row.kuota }}</td>
                                 <td class="py-5">{{ (row.status == 1) ? "Ready" : "Not Ready" }}</td>
                                 <td class="py-5">
                                     <Link :href="route('jadwal.detail', row.id)">

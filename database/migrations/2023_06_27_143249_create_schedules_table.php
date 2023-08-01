@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('questionbank_id')->constrained('questionbanks')->onDelete('cascade');
-            $table->date('tanggal');
-            $table->time('waktu');
+            $table->datetime('tanggal');
             $table->integer('kuota');
-            $table->integer('terisi');
             $table->boolean('status');
             $table->integer('biaya');
+            $table->datetime('waktu_mulai')->nullable();
+            $table->datetime('waktu_berakhir')->nullable();
             $table->timestamps(); // important to include for update_at and include_at
         });
     }
