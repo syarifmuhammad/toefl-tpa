@@ -6,6 +6,7 @@
 /public/images/*
 /storage/*.key
 /vendor
+/public/soal/*
 .env
 .env.backup
 .env.production
