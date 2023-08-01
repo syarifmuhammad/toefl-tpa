@@ -38,8 +38,6 @@ const submit = () => {
             }
         });
     } else {
-        console.log(formBankSoal.id)
-        
         formBankSoal.post(route('admin.bank_soal.update'), {
             onSuccess: () => {
                 modal_update.value = false
@@ -47,6 +45,7 @@ const submit = () => {
                 formBankSoal.reset()
             },
             onError: (errors) => {
+                alert(errors.error)
                 console.log(errors)
             }
         });
@@ -173,9 +172,13 @@ const checkFile = (e) => {
                             <td class="py-5">{{ i.jumlah }}</td>
                             <td class="py-5">
                                 <div class="flex gap-x-4 justify-end">
-                                    <Link :href="route('admin.bank_soal.detail', i.id)">
-                                    <!-- <PrimaryButton class="px-4">Detail</PrimaryButton> -->
-                                    </Link>
+                                    <!-- <Link :href="route('admin.bank_soal.detail', i.id)">
+                                    <PrimaryButton class="px-4">Detail</PrimaryButton>
+                                    </Link> -->
+                                    <a :href="'/'+i.content" class="px-2 text-slate-800 inline-flex items-center py-2 border border-black rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-abu-component focus:ring-offset-2 transition ease-in-out duration-150">
+                                        <i className="fa fa-download mr-2"></i> Download
+                                    </a>
+
                                     <SecondaryButton2
                                         @click="formBankSoal.id = i.id, formBankSoal.name = i.name, formBankSoal.category = i.category ,modal = true, modal_update = true"
                                         class="px-4">

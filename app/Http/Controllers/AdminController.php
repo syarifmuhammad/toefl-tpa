@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Routing\Redirector;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Exceptions\Exception;
 use Inertia\Inertia;
 use App\Models\Schedule;
 use Illuminate\Support\Facades\Storage;
@@ -40,10 +42,6 @@ class AdminController extends Controller
     ]);
   }
 
-  public function CheckSoal($file) {
-
-  }
-
   public function bankSoalAdd(Request $request)
   {
     $request->validate([
@@ -71,8 +69,8 @@ class AdminController extends Controller
       $c = $line[4];
       $d = $line[5];
       if($num === 0 && ($soal != 'soal' || $correctAnswer != 'jawaban' || $a != 'a' || $b != 'b' || $c != 'c' || $d != 'd')){
-        if(Storage::exists($file))Storage::delete($file);
-        throw new Exception('format soal tidak sesuai');
+        if(Storage::exists('soal/'.$fileName))Storage::delete('soal/'.$fileName);
+        throw ValidationException::withMessages(['error' => ['format soal tidak sesuai']]);
       }
       $num++;
     }
@@ -129,8 +127,8 @@ class AdminController extends Controller
       $c = $line[4];
       $d = $line[5];
       if($num === 0 && ($soal != 'soal' || $correctAnswer != 'jawaban' || $a != 'a' || $b != 'b' || $c != 'c' || $d != 'd')){
-        if(Storage::exists($file))Storage::delete($file);
-        throw new Exception('format soal tidak sesuai');
+        if(Storage::exists('soal/'.$fileName))Storage::delete('soal/'.$fileName);
+        throw ValidationException::withMessages(['error' => ['format soal tidak sesuai']]);
       }
       $num++;
     }
