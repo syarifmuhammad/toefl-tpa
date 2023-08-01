@@ -14,6 +14,7 @@ const formBankSoal = useForm({
     id: null,
     name: '',
     category: '',
+    file: null
 })
 
 const props = defineProps(({
@@ -28,21 +29,23 @@ const submit = () => {
     if (!modal_update.value) {
         formBankSoal.post(route('admin.bank_soal.store'), {
             onSuccess: () => {
-                modal.value = false,
-                    formBankSoal.reset()
+                modal.value = false
+                formBankSoal.reset()
             },
             onError: (errors) => {
+                // alert(errors)
                 console.log(errors)
             }
         });
     } else {
-        formBankSoal.put(route('admin.bank_soal.update', formBankSoal.id), {
+        formBankSoal.post(route('admin.bank_soal.update'), {
             onSuccess: () => {
-                modal_update.value = false,
-                    modal.value = false,
-                    formBankSoal.reset()
+                modal_update.value = false
+                modal.value = false
+                formBankSoal.reset()
             },
             onError: (errors) => {
+                alert(errors.error)
                 console.log(errors)
             }
         });
@@ -59,6 +62,22 @@ const deleteBanks = () => {
             console.log(errors)
         }
     })
+}
+
+const checkFile = (e) => {
+    const file = e.target.files[0];
+    const allowedExtensions = ['csv'];
+
+    if (file) {
+        const extension = file.name.split('.').pop();
+        if (!allowedExtensions.includes(extension.toLowerCase())) {
+            alert('hanya menerima file csv')
+            e.target.value = '';
+        }else{
+            formBankSoal.file = file
+        }
+    }
+
 }
 
 </script>
@@ -85,6 +104,14 @@ const deleteBanks = () => {
                         <option value="toefl">TOEFL</option>
                         <option value="tpa">TPA</option>
                     </select>
+                </div>
+                <div class="mt-4">
+                    <InputLabel class="mb-2">Upload soal (csv)</InputLabel>
+                    <input v-on:change="checkFile" type="file" class="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+                </div>
+                <div class="mt-4 text-sm text-slate-600">
+                    bingung bikin soal? 
+                    <a href="https://docs.google.com/spreadsheets/d/1MlDjIsbPc0KG8iTNLg9DJUPUDbP7Zgy9pQtrap6qsD8/edit#gid=0" class=" text-blue-600 hover:underline">format soal csv</a>
                 </div>
                 <div class="flex justify-between gap-x-4 mt-4">
                     <PrimaryButton class="w-full flex justify-center" type="submit" v-if="modal_update == false">Tambah
@@ -133,23 +160,27 @@ const deleteBanks = () => {
                             <th class="py-5">Action</th>
                         </tr>
                     </thead>
+
                     <tbody class="text-center">
                         <tr v-if="questionBanks.data.length > 0" v-for="(i) in questionBanks.data"
                             class="border-b-2 border-abu-component">
                             <td>
-
                             </td>
                             <td class="py-5 uppercase">{{ i.category }}</td>
                             <td class="py-5">{{ i.name }}</td>
                             <td class="py-5">{{ moment(i.created_at).format("DD MMMM YYYY") }}</td>
-                            <td class="py-5">40</td>
+                            <td class="py-5">{{ i.jumlah }}</td>
                             <td class="py-5">
                                 <div class="flex gap-x-4 justify-end">
-                                    <Link :href="route('admin.bank_soal.detail', i.id)">
+                                    <!-- <Link :href="route('admin.bank_soal.detail', i.id)">
                                     <PrimaryButton class="px-4">Detail</PrimaryButton>
-                                    </Link>
+                                    </Link> -->
+                                    <a :href="'/'+i.content" class="px-2 text-slate-800 inline-flex items-center py-2 border border-black rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-abu-component focus:ring-offset-2 transition ease-in-out duration-150">
+                                        <i className="fa fa-download mr-2"></i> Download
+                                    </a>
+
                                     <SecondaryButton2
-                                        @click="formBankSoal.id = i.id, formBankSoal.name = i.name, formBankSoal.category = i.category, modal = true, modal_update = true"
+                                        @click="formBankSoal.id = i.id, formBankSoal.name = i.name, formBankSoal.category = i.category ,modal = true, modal_update = true"
                                         class="px-4">
                                         <svg width="22" height="21" viewBox="0 0 22 21" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">

@@ -32,21 +32,30 @@ class DatabaseSeeder extends Seeder
                         'is_admin' => '1'
                     ]
                 ))->create();
+            User::factory()
+            ->state(new Sequence(
+                [
+                    'name' => 'user',
+                    'email' => 'user@gmail.com',
+                    'nim_or_nik' => '1201202000',
+                    'is_admin' => '0'
+                ]
+            ))->create();
             User::factory(10)->create();
             Address::factory(11)->create();
         }
 
-        if(QuestionBank::count() < 3){
-            QuestionBank::factory(3)->create();
-        }
+        // if(QuestionBank::count() < 3){
+        //     QuestionBank::factory(3)->create();
+        // }
 
-        if(Schedule::count() < 10){
-            Schedule::factory(5)->create();
-        }
+        // if(Schedule::count() < 10){
+        //     Schedule::factory(5)->create();
+        // }
 
-        if(AttemptSchedule::count() < 10){
-            AttemptSchedule::factory(5)->create();
-        }
+        // if(AttemptSchedule::count() < 10){
+        //     AttemptSchedule::factory(5)->create();
+        // }
 
     }
 }
