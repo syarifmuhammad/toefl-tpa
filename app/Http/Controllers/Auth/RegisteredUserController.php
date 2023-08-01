@@ -48,30 +48,34 @@ class RegisteredUserController extends Controller
             'phone' => 'required|numeric|digits_between:10,13|starts_with:62',
         ]);
 
-        $address = Address::create([
-            'street' => $request->street,
-            'village' => $request->village,
-            'sub_district' => $request->sub_district,
-            'district' => $request->district,
-            'province' => $request->province,
-            'postal_code' => $request->postal_code,
-        ]);
-
+        
         if ($request->file('profile_picture')) {
             $file = $request->file('profile_picture');
             $fileName = date('YmdHis') . $file->getClientOriginalName();        
             $file->move(public_path('images/profile_picture'), $fileName);
         }
         
-
+        
         $user = User::create([
             'nim_or_nik' => $request->nim_or_nik,
             'password' => Hash::make($request->password),
             'email' => $request->email,
             'name' => $request->name,
             'profile_picture' => $fileName,
-            'address_id' => $address->id,
+            // 'address_id' => $address->id,
             'phone' => $request->phone,
+        ]);
+
+        $userId = User::where('nim_or_nik', $request->nim_or_nik)->first();
+
+        $address = Address::create([
+            'user_id' => $userId->id,
+            'street' => $request->street,
+            'village' => $request->village,
+            'sub_district' => $request->sub_district,
+            'district' => $request->district,
+            'province' => $request->province,
+            'postal_code' => $request->postal_code,
         ]);
 
         event(new Registered($user));

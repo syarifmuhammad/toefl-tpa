@@ -22,7 +22,7 @@ class ScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'questionbank_id' => 'required|exists:questionbanks,id',
+            'questionbank_id' => 'required|exists:question_banks,id',
             'tanggal' => 'required|date|after:yesterday',
             'waktu' => 'required|date_format:H:i',
             'kuota' => 'required|integer|min:1',

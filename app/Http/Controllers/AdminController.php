@@ -21,7 +21,7 @@ class AdminController extends Controller
   public function index()
   {
     $today = Carbon::today()->toDateString();
-    $schedule = Schedule::join('questionbanks', 'schedules.questionbank_id', '=', 'questionbanks.id')->select("schedules.*", "questionbanks.category as category")->whereDate('tanggal', $today)->orderBy('tanggal', 'asc')->paginate();
+    $schedule = Schedule::join('question_banks', 'schedules.questionbank_id', '=', 'question_banks.id')->select("schedules.*", "question_banks.category as category")->whereDate('tanggal', $today)->orderBy('tanggal', 'asc')->paginate();
 
     return Inertia::render('Admin/Dashboard', [
       'schedule' => $schedule

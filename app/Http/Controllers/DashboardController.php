@@ -24,7 +24,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         
-        $my_schedule = AttemptSchedule::join('schedules', 'attempt_schedules.schedule_id', '=', 'schedules.id')->join('questionbanks', 'schedules.questionbank_id', '=', 'questionbanks.id')->select('attempt_schedules.id as attempt_schedule_id', 'schedules.*', 'questionbanks.category')->where('user_id', Auth::id())->orderBy('schedules.tanggal', 'desc')->first();
+        $my_schedule = AttemptSchedule::join('schedules', 'attempt_schedules.schedule_id', '=', 'schedules.id')->join('question_banks', 'schedules.questionbank_id', '=', 'question_banks.id')->select('attempt_schedules.id as attempt_schedule_id', 'schedules.*', 'question_banks.category')->where('user_id', Auth::id())->orderBy('schedules.tanggal', 'desc')->first();
         
         $category = $request->has('category') ? $request->category : 'toefl';
 
