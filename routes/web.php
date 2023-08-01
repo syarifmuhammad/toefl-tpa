@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
         Route::get('/monitor/{id}', [AdminController::class, 'monitor'])->name('monitor');
+        Route::patch('/monitor/{id}/mulai-ujian', [AdminController::class, 'mulai-ujian'])->name('mulai-ujian');
 
         Route::name('bank_soal.')->prefix('bank-soal')->group(function () {
             Route::get('/', [AdminController::class, 'bank_soal'])->name('index');

@@ -83,7 +83,7 @@ const cetak = () => {
                         <div class="flex mt-4">
                             <p class="w-[175px]">Waktu</p>
                             <p class="font-semibold">:
-                                {{ history.data.schedule.waktu }} WIB
+                                {{ moment(history.data.schedule.waktu).format("HH:mm") }} WIB
                             </p>
                         </div>
                         <div class="flex mt-4">
@@ -91,6 +91,14 @@ const cetak = () => {
                             <p class="font-semibold">:
                                 Jl. Ketintang No.156, Ketintang, Kec. Gayungan, Surabaya, Jawa Timur 60231
                             </p>
+                        </div>
+                        <div class="flex mt-4">
+                            <p class="w-[175px]">Status</p>
+                            <p class="font-semibold">: {{ history.data.schedule.status == 1 ? 'Ready' : 'Not Ready' }}
+                            </p>
+                        </div>
+                        <div v-if="status == 1 && history.data.schedule.status == 1" class="mt-4">
+                            <PrimaryButton class="px-4">Kerjakan Ujian</PrimaryButton>
                         </div>
                     </div>
                     <div :class="status == 1 ? 'mt-8' : ''">
@@ -200,4 +208,5 @@ const cetak = () => {
         left: 0;
         top: 0;
     }
-}</style>
+}
+</style>

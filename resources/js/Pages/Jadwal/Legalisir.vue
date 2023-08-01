@@ -42,7 +42,7 @@ defineProps({
                             <tr>
                                 <td class="w-[175px]">Waktu</td>
                                 <td class="font-semibold">:</td>
-                                <td class="font-semibold">{{ moment(schedule.tanggal).format("HH:mm") }}</td>
+                                <td class="font-semibold">{{ moment(schedule.waktu).format("HH:mm") }}</td>
                             </tr>
                             <tr>
                                 <td class="w-[175px]">Lokasi</td>

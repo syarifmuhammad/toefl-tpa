@@ -23,7 +23,7 @@ class ScheduleRequest extends FormRequest
     {
         return [
             'questionbank_id' => 'required|exists:questionbanks,id',
-            'tanggal' => 'required|date|after:today',
+            'tanggal' => 'required|date|after:yesterday',
             'waktu' => 'required|date_format:H:i',
             'kuota' => 'required|integer|min:1',
         ];

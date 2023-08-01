@@ -13,21 +13,28 @@ use Inertia\Response;
 
 class ExamController extends Controller
 {
-    public function show($id): Response {
+    public function show($id)
+    {
+        $attempt_schedule = AttemptSchedule::where('user_id', Auth::id())->where('schedule_id', $id)->first();
+        if ($attempt_schedule) {
+            return to_route('jadwal.history.detail', $attempt_schedule->id);
+        }
         $schedule = Schedule::with('questionbank')->find($id);
         return Inertia::render('Jadwal/Detail', [
-            'schedule'=> $schedule,
+            'schedule' => $schedule,
         ]);
     }
 
-    public function history(Request $request): Response {
+    public function history(Request $request): Response
+    {
         $histories = AttemptSchedule::with('schedule')->where('user_id', Auth::id())->paginate();
         return Inertia::render('Jadwal/History', [
             'histories' => AttemptScheduleResource::collection($histories)
         ]);
     }
 
-    public function detail_history(Request $request, $id): Response {
+    public function detail_history(Request $request, $id): Response
+    {
         $history = AttemptSchedule::with('schedule')->find($id);
         $user = Auth::user();
         return Inertia::render('Jadwal/DetailHistory', [
@@ -36,14 +43,16 @@ class ExamController extends Controller
         ]);
     }
 
-    public function payment(Request $request, $id): Response {
+    public function payment(Request $request, $id): Response
+    {
         $schedule = Schedule::with('questionbank')->find($id);
         return Inertia::render('Jadwal/FormPembayaran', [
-            'schedule'=> $schedule,
+            'schedule' => $schedule,
         ]);
     }
 
-    public function daftar(DaftarJadwalUjianRequest $request, $id) {
+    public function daftar(DaftarJadwalUjianRequest $request, $id)
+    {
         $attempt_schedule = new AttemptSchedule();
         $attempt_schedule->user_id = Auth::id();
         $attempt_schedule->schedule_id = $id;
@@ -52,5 +61,4 @@ class ExamController extends Controller
         $attempt_schedule->save();
         return redirect()->route('jadwal.history.detail', $attempt_schedule->id);
     }
-    
 }

@@ -10,12 +10,11 @@ class Schedule extends Model
     use HasFactory;
 
     protected $table = 'schedules';
-    
+
     protected $fillable = [
         'category', // cth. toefl/tpa
         // 'question_bank',
         'tanggal', // cth. 10 jun
-        'waktu', // cth. 10.00 pm
         'kuota', // cth. 40
         'terisi', // cth. 20
         'status', // ready not ready
@@ -25,8 +24,14 @@ class Schedule extends Model
     // protected $casts = [
     //     'waktu' => 'datetime:H:i',
     // ];
-    
-    public function questionbank() {
+
+    public function questionbank()
+    {
         return $this->belongsTo(QuestionBank::class, 'questionbank_id', 'id');
+    }
+
+    public function attempt_schedules()
+    {
+        return $this->hasMany(AttemptSchedule::class, 'schedule_id', 'id');
     }
 }

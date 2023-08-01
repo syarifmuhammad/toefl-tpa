@@ -63,13 +63,18 @@ const props = defineProps(({
                         <tr v-if="schedule.data.length > 0" v-for="(i, index) in schedule.data"
                             class="border-b-2 border-abu-component">
                             <td class="py-5">{{ index + 1 }}.</td>
-                            <td class="py-5">{{ i.category }}</td>
-                            <td class="py-5">{{ i.waktu }}</td>
+                            <td class="py-5">{{ String(i.category).toUpperCase() }}</td>
+                            <td class="py-5">{{ i.tanggal }}</td>
                             <td class="py-5">{{ i.terisi }}/{{ i.kuota }}</td>
                             <td class="py-5">
-                                <Link :href="route('admin.monitor', index)">
+                                <Link :href="route('admin.monitor', i.id)">
                                 <PrimaryButton class="px-4">Monitor</PrimaryButton>
                                 </Link>
+                            </td>
+                        </tr>
+                        <tr v-else>
+                            <td colspan="5">
+                                <p class="text-center text-merah-warning font-semibold text-md">Tidak ada jadwal ujian hari ini !</p>
                             </td>
                         </tr>
                     </tbody>

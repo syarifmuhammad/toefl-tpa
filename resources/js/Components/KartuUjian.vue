@@ -55,7 +55,7 @@ const props = defineProps({
                     <tr>
                         <td class="w-[100px]">Tanggal Ujian</td>
                         <td>:</td>
-                        <td>{{ moment(registrar.schedule.tanggal).format('DD MMMM YYYY') }} {{ registrar.schedule.waktu }} WIB</td>
+                        <td>{{ moment(registrar.schedule.tanggal).format('DD MMMM YYYY HH:mm') }} WIB</td>
                     </tr>
                 </table>
             </div>
