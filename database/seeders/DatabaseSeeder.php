@@ -35,13 +35,13 @@ class DatabaseSeeder extends Seeder
             Address::factory(11)->create();
         }
 
-        if(QuestionBank::count() < 3){
-            QuestionBank::factory(3)->create();
-        }
+        // if(QuestionBank::count() < 3){
+        //     QuestionBank::factory(3)->create();
+        // }
 
-        if(Schedule::count() < 10){
-            Schedule::factory(5)->create();
-        }
+        // if(Schedule::count() < 10){
+        //     Schedule::factory(5)->create();
+        // }
 
     }
 }

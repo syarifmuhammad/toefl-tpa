@@ -9,11 +9,12 @@ class QuestionBank extends Model
 {
     use HasFactory;
 
-    protected $table = 'questionbanks';
+    protected $table = 'question_banks';
 
     protected $fillable = [
         'name',
         'category',
         'content',
+        'jumlah'
     ];
 }
