@@ -62,7 +62,6 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'name' => $request->name,
             'profile_picture' => $fileName,
-            // 'address_id' => $address->id,
             'phone' => $request->phone,
         ]);
 
