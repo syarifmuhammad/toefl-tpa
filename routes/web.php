@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/password', [ProfileController::class, 'password'])->name('password');
         Route::patch('', [ProfileController::class, 'update'])->name('update');
         Route::delete('', [ProfileController::class, 'destroy'])->name('destroy');
+        Route::patch('/password', [ProfileController::class, 'updatePassword'])->name('update-password');
     });
 
     Route::middleware('basic')->group(function () {
@@ -44,7 +45,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/daftar', [ExamController::class, 'payment'])->name('payment');
             Route::post('/{id}/daftar', [ExamController::class, 'daftar'])->name('daftar');
         });
-    
+
         Route::name('attempt_exam.')->prefix('attempt-exam')->group(function () {
             Route::get('/', [AttemptExamController::class, 'index'])->name('dashboard');
             Route::get('/instruction', [AttemptExamController::class, 'instruction'])->name('instruction');

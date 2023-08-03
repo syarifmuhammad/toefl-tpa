@@ -22,6 +22,12 @@ const form = useForm({
     password_confirmation: '',
 });
 
+const updatePassword = () => {
+    form.patch(route('profile.update-password'), {
+        onFinish: () => form.reset('current_password', 'password', 'password_confirmation'),
+    });
+};
+
 </script>
 
 <template>
@@ -36,6 +42,7 @@ const form = useForm({
                 <div class="md:px-8 md:py-8 px-4 py-4 flex flex-col justify-center items-center">
                     <h3 class="font-bold lg:text-xl text-lg text-center">Informasi Akun</h3>
                     <div class="max-w-[210px] w-full aspect-square bg-abu-component rounded-full mt-10 overflow-hidden">
+                        <img class="w-full h-full object-cover" :src="$page.props.auth.user.profile_picture" alt="">
                     </div>
                     <h3 class="font-bold lg:text-xl text-lg text-center mt-6 text-merah-component">{{
                         $page.props.auth.user.name }}</h3>
@@ -75,7 +82,7 @@ const form = useForm({
                         <div class="flex items-center gap-4">
                             <PrimaryButton :disabled="form.processing" class="px-4 mr-5">Simpan</PrimaryButton>
                             <Link :href="route('profile.index')">
-                                <SecondaryButton class="px-4">Batal</SecondaryButton>
+                            <SecondaryButton class="px-4">Batal</SecondaryButton>
                             </Link>
                         </div>
                     </form>
