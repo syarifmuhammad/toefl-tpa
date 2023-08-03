@@ -62,7 +62,6 @@ const openFileExplorer = () => {
                     <div class="max-w-[210px] w-full aspect-square bg-abu-component rounded-full mt-10 overflow-hidden">
                         <img class="w-full h-full object-cover" :src="$page.props.auth.user.profile_picture" alt="">
                     </div>
-                    <!-- <InputError class="mt-2" :message="form.errors.profile_picture" /> -->
                     <h3 class="font-medium text-lg text-center mt-6 text-biru hover:underline cursor-pointer"
                         v-on:click="openFileExplorer()">Ubah foto
                         profil</h3>
