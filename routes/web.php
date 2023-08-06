@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
 
         Route::name('attempt_exam.')->prefix('attempt-exam')->group(function () {
             Route::get('/', [AttemptExamController::class, 'index'])->name('dashboard');
+            // Route::get('/{id}', [AttemptExamController::class, 'index'])->name('dashboard');
             Route::get('/instruction', [AttemptExamController::class, 'instruction'])->name('instruction');
             Route::get('/attempt', [AttemptExamController::class, 'attempt'])->name('attempt');
         });

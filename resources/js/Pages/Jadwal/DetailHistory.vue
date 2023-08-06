@@ -11,6 +11,10 @@ moment.locale('id')
 const props = defineProps({
     history: Object,
     user: Object,
+    id: {
+        type: String,
+        default: window.location.href.split('/').pop()
+    }
 })
 
 const status = props.history.data.status
@@ -36,10 +40,6 @@ const cetak = () => {
     window.print()
 }
 
-const kerjakanUjian =() => {
-    window.location.href = '/attempt-exam'
-    // console.log('kerjakan')
-}
 
 </script>
 
@@ -103,7 +103,7 @@ const kerjakanUjian =() => {
                             </p>
                         </div>
                         <div v-if="status == 1 && history.data.schedule.status == 1" class="mt-4">
-                            <Link :href="route('attempt_exam.dashboard')">
+                            <Link :href="route('attempt_exam.dashboard', {id:props.id})">
                                 <PrimaryButton class="px-4">Kerjakan Ujian</PrimaryButton>
                             </Link>
                         </div>
