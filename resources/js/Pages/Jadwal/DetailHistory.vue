@@ -36,6 +36,11 @@ const cetak = () => {
     window.print()
 }
 
+const kerjakanUjian =() => {
+    window.location.href = '/attempt-exam'
+    // console.log('kerjakan')
+}
+
 </script>
 
 <template>
@@ -98,7 +103,7 @@ const cetak = () => {
                             </p>
                         </div>
                         <div v-if="status == 1 && history.data.schedule.status == 1" class="mt-4">
-                            <PrimaryButton class="px-4">Kerjakan Ujian</PrimaryButton>
+                            <PrimaryButton @click="kerjakanUjian" class="px-4">Kerjakan Ujian</PrimaryButton>
                         </div>
                     </div>
                     <div :class="status == 1 ? 'mt-8' : ''">

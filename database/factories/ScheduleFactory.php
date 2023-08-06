@@ -19,11 +19,12 @@ class ScheduleFactory extends Factory
     public function definition(): array
     {
         return [
-            'tanggal' => fake()->dateTime(),
-            'kuota' => rand(30,40),
-            'questionbank_id' => 1,
-            'biaya' => 200000,
-            'status' => (bool) rand(0,1)
+            
+            // 'tanggal' => fake()->dateTime(),
+            // 'kuota' => rand(30,40),
+            // 'questionbank_id' => 1,
+            // 'biaya' => 200000,
+            // 'status' => (bool) rand(0,1)
         ];
     }
 }
