@@ -10,6 +10,7 @@ use illuminate\Support\Facades\Log;
 use App\Models\Schedule;
 use App\Models\AttemptSchedule;
 use App\Models\QuestionBank;
+use App\Models\AttemptTest;
 use Illuminate\Support\Facades\Storage;
 
 class AttemptExamController extends Controller
@@ -76,5 +77,69 @@ class AttemptExamController extends Controller
         ]);
                
     }
-    
+
+    public function submit(Request $request)
+    {
+        $request->validate([
+            'answer' => 'required',
+            'attempt_schedule_id' => 'required',
+        ]);
+        $answer = $request->input('answer');
+        $attemptScheduleId = $request->input('attempt_schedule_id');
+        Log::debug($answer);
+
+        $attemptSchedule = AttemptSchedule::find($attemptScheduleId);
+        $userId = $attemptSchedule['user_id'];
+        $scheduleId = $attemptSchedule['schedule_id'];
+        $schedule = Schedule::find($scheduleId);
+        $questionbank = QuestionBank::find($schedule['questionbank_id']);
+        
+        $soal =  $questionbank["content"];
+        $file = null;
+        
+        if (!file_exists($soal)) {
+            Log::debug('error=>' . $soal . ' (not found) ');
+            return "soal not found";
+        }
+        $file = fopen($soal, 'r');
+        $num = 0;
+        $score = 0;
+        Log::debug($answer);
+        while (($line = fgetcsv($file)) !== FALSE) {
+
+            if($num == 0){
+                $num++;
+                continue;
+            }
+            $correctAnswer = $line[1];
+            if($answer) {
+                // Log::debug($num);
+                // Log::debug($correctAnswer."<>".$answer[$num-1]);
+                if($correctAnswer === $answer[$num-1]){
+                    $score++;
+                }
+            }
+            $num++;
+        }
+
+        fclose($file);
+        if($num){
+            $score = ceil(($score * 100)/$num);
+            Log::debug($score);
+        }
+        $answer = json_encode($answer);
+        Log::debug($answer);
+        
+
+
+        AttemptTest::create([
+            'user_id' => $userId,
+            'schedule_id' => $scheduleId,
+            'answer' => json_encode($answer),
+            'score' => $score
+        ]);
+        
+        return 'your score: ' . $score;
+    }
+
 }

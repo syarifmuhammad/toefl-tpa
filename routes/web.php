@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
             // Route::get('/{id}', [AttemptExamController::class, 'index'])->name('dashboard');
             Route::get('/instruction', [AttemptExamController::class, 'instruction'])->name('instruction');
             Route::get('/attempt', [AttemptExamController::class, 'attempt'])->name('attempt');
+            Route::post('/attempt', [AttemptExamController::class, 'submit'])->name('attempt');
         });
     });
 
