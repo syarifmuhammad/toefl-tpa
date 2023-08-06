@@ -1,7 +1,7 @@
 <script setup>
 import ExamLayout from '@/Layouts/ExamLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, usePage, Link } from '@inertiajs/vue3';
 import { computed } from 'vue'
 
 const page = usePage()
@@ -64,7 +64,9 @@ const user = computed(() => page.props.auth.user)
                         <label for="incoming_test_time" class="font-medium text-black uppercase text-center">Waktu Ujian</label>
                         <p id="incoming_test_time" class="font-bold">1:00:00</p>
                     </div>
-                    <PrimaryButton class="px-10 mt-4">Mulai</PrimaryButton>
+                    <Link :href="route('attempt_exam.attempt')">
+                        <PrimaryButton class="px-10 mt-4">Mulai</PrimaryButton>
+                    </Link>    
                 </div>
             </div>
         </section>

@@ -103,7 +103,9 @@ const kerjakanUjian =() => {
                             </p>
                         </div>
                         <div v-if="status == 1 && history.data.schedule.status == 1" class="mt-4">
-                            <PrimaryButton @click="kerjakanUjian" class="px-4">Kerjakan Ujian</PrimaryButton>
+                            <Link :href="route('attempt_exam.dashboard')">
+                                <PrimaryButton class="px-4">Kerjakan Ujian</PrimaryButton>
+                            </Link>
                         </div>
                     </div>
                     <div :class="status == 1 ? 'mt-8' : ''">
