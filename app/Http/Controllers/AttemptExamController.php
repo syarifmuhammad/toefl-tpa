@@ -22,10 +22,9 @@ class AttemptExamController extends Controller
         $schedule = Schedule::find($attemptSchedule['schedule_id']);
         $questionbank = QuestionBank::find($schedule['questionbank_id']);
 
-        Log::debug('test exam '.$questionbank);
-
         return Inertia::render('AttemptExam/Dashboard',[
-            'scehdule' => $schedule
+            'schedule' => $schedule,
+            'questionbank' => $questionbank,
         ]);
     }
 

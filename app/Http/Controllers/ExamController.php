@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 class ExamController extends Controller
 {

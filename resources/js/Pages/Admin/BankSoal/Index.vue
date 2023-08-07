@@ -111,7 +111,7 @@ const checkFile = (e) => {
                 </div>
                 <div class="mt-4 text-sm text-slate-600">
                     bingung bikin soal? 
-                    <a href="https://docs.google.com/spreadsheets/d/1MlDjIsbPc0KG8iTNLg9DJUPUDbP7Zgy9pQtrap6qsD8/edit#gid=0" class=" text-blue-600 hover:underline">format soal csv</a>
+                    <a target="__blank" href="https://docs.google.com/spreadsheets/d/1MlDjIsbPc0KG8iTNLg9DJUPUDbP7Zgy9pQtrap6qsD8/edit#gid=0" class=" text-blue-600 hover:underline">format soal csv</a>
                 </div>
                 <div class="flex justify-between gap-x-4 mt-4">
                     <PrimaryButton class="w-full flex justify-center" type="submit" v-if="modal_update == false">Tambah

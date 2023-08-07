@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('legalisirs', function (Blueprint $table) {
             $table->id();
-
+            $table->unsignedBigInteger("attempt_test_id");
+            $table->integer("status");
+            $table->string("file_bukti");
             $table->timestamps();
         });
     }

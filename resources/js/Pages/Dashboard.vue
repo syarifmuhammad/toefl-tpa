@@ -38,7 +38,7 @@ const props = defineProps(
                     <span class="w-[7px] aspect-square bg-abu-component rounded-full"></span>
                     <p>{{ $page.props.auth.user.phone }}</p>
                     <span class="w-[7px] aspect-square bg-abu-component rounded-full"></span>
-                    <p>{{ $page.props.auth.user.address.street }}</p>
+                    <p>{{ $page.props.auth.user.address != null ? $page.props.auth.user.address.street : "-" }}</p>
                 </div>
                 <hr class="bg-abu-component h-[2px] my-4" />
                 <div class="flex flex-col items-start gap-y-4 lg:flex-row lg:items-center justify-between ">
