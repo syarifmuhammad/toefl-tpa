@@ -36,6 +36,10 @@ class AttemptExamController extends Controller
     public function attempt(Request $request) {
         $userId = auth()->user()->id;
         $scheduleId = $request->get('id');
+        $pageId = $request->get('page');
+
+        Log::debug($pageId);
+
         $attemptSchedule = AttemptSchedule::where([
             'user_id' =>  $userId,
             'schedule_id' => $scheduleId,
@@ -63,12 +67,12 @@ class AttemptExamController extends Controller
                 'score' => 0,
             ]);
         } 
-        $page = $request->get('page');
+        $pageId = $request->get('page');
         $attemptSchedule = AttemptSchedule::find($scheduleId);
         $schedule = Schedule::find($attemptSchedule['schedule_id']);
         $questionbank = QuestionBank::find($schedule['questionbank_id']);
 
-        Log::debug("question-> ".$questionbank);
+        // Log::debug("question-> ".$questionbank);
 
         $soal =  $questionbank["content"];
         $file = null;
@@ -94,12 +98,14 @@ class AttemptExamController extends Controller
                 'audio' => $line[7],
                 'page' => $line[8],
             );
-            array_push($soalCsv, $temp);
+            if($pageId === $line[8]){
+                array_push($soalCsv, $temp);
+            }
             
             $num++;
         }
         fclose($file);
-        if(count($soalCsv)){
+        if(count($soalCsv) && $pageId = 1){
             $soalCsv = array_slice($soalCsv,1);
         }
 

@@ -74,7 +74,7 @@ const user = computed(() => page.props.auth.user)
                         <label for="incoming_test_time" class="font-medium text-black uppercase text-center">Waktu Ujian</label>
                         <p id="incoming_test_time" class="font-bold">02:00:00</p>
                     </div>
-                    <Link :href="route('attempt_exam.attempt', {id: props.id})">
+                    <Link :href="route('attempt_exam.attempt', {id: props.id, page: 1})">
                         <PrimaryButton class="px-10 mt-4">Mulai</PrimaryButton>
                     </Link>    
                 </div>
