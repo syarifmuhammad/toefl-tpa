@@ -56,6 +56,7 @@ const props = defineProps(({
                             <th class="py-5">Jenis</th>
                             <th class="py-5">Waktu</th>
                             <th class="py-5">Kuota</th>
+                            <th class="py-5">Status</th>
                             <th class="py-5">Action</th>
                         </tr>
                     </thead>
@@ -65,7 +66,10 @@ const props = defineProps(({
                             <td class="py-5">{{ index + 1 }}.</td>
                             <td class="py-5">{{ String(i.category).toUpperCase() }}</td>
                             <td class="py-5">{{ i.tanggal }}</td>
-                            <td class="py-5">{{ i.terisi }}/{{ i.kuota }}</td>
+                            <td class="py-5">{{ i.attempt_schedules_count }}/{{ i.kuota }}</td>
+                            <td class="py-5" v-if="i.status == 0"><span class="text-merah-warning"></span></td>
+                            <td class="py-5" v-else-if="i.is_exam_ready"><span class="text-kuning-warning">Sedang Berlangsung</span></td>
+                            <td class="py-5" v-else><span class="text-hijau-warning">Selesai</span></td>
                             <td class="py-5">
                                 <Link :href="route('admin.monitor', i.id)">
                                 <PrimaryButton class="px-4">Monitor</PrimaryButton>

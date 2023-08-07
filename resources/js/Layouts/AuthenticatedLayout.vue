@@ -71,7 +71,7 @@ const is_admin = user.value.is_admin
                 </template>
                 <template v-else>
                     <Link :href="route('admin.dashboard')" class="w-[350px] h-[76px] hover:bg-merah-secondary flex py-5 px-[24px]" :class="{
-                        'bg-merah-secondary': route().current('admin.dashboard') || route().current('index'),
+                        'bg-merah-secondary': route().current('admin.dashboard') || route().current('index') || route().current('admin.monitor'),
 
                     }">
                     <div class="flex items-center text-white font-medium text-md gap-x-6">
@@ -138,7 +138,7 @@ const is_admin = user.value.is_admin
                                         <span class="inline-flex rounded-md">
                                             <button type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                                <!-- Hello, {{ $page.props.auth.user.name ?? 'Admin' }} -->
+                                                Hello, {{ user.name ?? 'Admin' }}
 
                                                 <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20" fill="currentColor">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\LegalisirController;
 use App\Http\Controllers\admin\PembayaranController;
 use App\Http\Controllers\admin\ScheduleController;
 use App\Http\Controllers\AdminController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\AttemptExamController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Models\Legalisir;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -58,7 +60,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
         Route::get('/monitor/{id}', [AdminController::class, 'monitor'])->name('monitor');
-        Route::patch('/monitor/{id}/mulai-ujian', [AdminController::class, 'mulai-ujian'])->name('mulai-ujian');
+        Route::patch('/monitor/{id}/mulai-ujian', [AdminController::class, 'mulai_ujian'])->name('mulai-ujian');
 
         Route::name('bank_soal.')->prefix('bank-soal')->group(function () {
             Route::get('/', [AdminController::class, 'bank_soal'])->name('index');
@@ -83,12 +85,8 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::name('legalisir.')->prefix('legalisir')->group(function () {
-            Route::get('/', function () {
-                return Inertia::render('Admin/Legalisir/Index');
-            })->name('index');
-            Route::get('/{id}', function () {
-                return Inertia::render('Admin/Legalisir/Detail');
-            })->name('detail');
+            Route::get('/', [LegalisirController::class, 'index'])->name('index');
+            Route::get('/{id}', [LegalisirController::class, 'show'])->name('detail');
             // Route::name('legalisir.')->prefix('legalisir')->group(function () {
             //     Route::get('/', function () {
             //         return Inertia::render('Admin/Legalisir/Index');

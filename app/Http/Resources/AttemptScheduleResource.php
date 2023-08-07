@@ -24,7 +24,7 @@ class AttemptScheduleResource extends JsonResource
             'schedule' => [
                 'id' => $this->schedule->id,
                 'tanggal' => $this->schedule->tanggal,
-                'status' => $this->status,
+                'status' => $this->schedule->status,
             ],
             'payment' => [
                 'payment_id' => strtoupper($this->schedule->questionbank->category) . '-' . str_pad($this->id, 3, '0', STR_PAD_LEFT) . '-ITTS',

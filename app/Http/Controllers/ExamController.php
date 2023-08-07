@@ -53,6 +53,12 @@ class ExamController extends Controller
 
     public function daftar(DaftarJadwalUjianRequest $request, $id)
     {
+        $schedule = Schedule::withCount(['attempt_schedules' => function (EloquentBuilder $q) {
+            $q->where('status', 1);
+        }])->where('id', $id);
+        if (!$schedule->exists()) {
+            abort(404);
+        }
         $attempt_schedule = new AttemptSchedule();
         $attempt_schedule->user_id = Auth::id();
         $attempt_schedule->schedule_id = $id;
