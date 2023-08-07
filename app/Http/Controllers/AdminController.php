@@ -104,10 +104,7 @@ class AdminController extends Controller
     $num = 0;
 
     while (($line = fgetcsv($file)) !== FALSE) {
-      if(count($line) != 8){
-        Storage::delete('soal/'.$fileName);
-        throw ValidationException::withMessages(['error' => ['format soal tidak sesuai']]);
-      }
+      
 
       $soal = $line[0];
       $correctAnswer = $line[1];
@@ -118,6 +115,7 @@ class AdminController extends Controller
       $img = $line[6];
       $audio = $line[7];
       $page = $line[8];
+      Log::debug($audio.'-'.$page);
       
       if($num === 0 && ($soal != 'soal' || $correctAnswer != 'jawaban' || $a != 'a' || $b != 'b' || $c != 'c' || $d != 'd' || $img != 'img' || $audio != 'audio' || $page != 'page')){
         if(file_exists('soal/'.$fileName))Storage::delete('soal/'.$fileName);
