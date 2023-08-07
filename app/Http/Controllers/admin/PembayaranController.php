@@ -34,7 +34,7 @@ class PembayaranController extends Controller
         }
 
         return Inertia::render('Admin/Pembayaran/Index', [
-            'registrars' => AttemptScheduleResource::collection($registrars->paginate()),
+            'registrars' => AttemptScheduleResource::collection($registrars->paginate(100)),
             'status' => $request->has('status') ? $request->status : 'semua',
         ]);
     }

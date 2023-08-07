@@ -28,7 +28,7 @@ class ExamController extends Controller
 
     public function history(Request $request): Response
     {
-        $histories = AttemptSchedule::with('schedule')->where('user_id', Auth::id())->paginate();
+        $histories = AttemptSchedule::with('schedule')->where('user_id', Auth::id())->paginate(100);
         return Inertia::render('Jadwal/History', [
             'histories' => AttemptScheduleResource::collection($histories)
         ]);

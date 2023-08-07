@@ -10,7 +10,8 @@ moment.locale('id')
 
 const props = defineProps({
     schedule: Object,
-    participants: Object
+    participants: Object,
+    attempt_test_count: Number,
 })
 
 const mulaiUjian = () => {
@@ -87,14 +88,14 @@ window.setInterval(() => {
                         <div class="rounded-full h-[70px] aspect-square bg-blue-300"></div>
                         <div class="flex flex-col justify-between">
                             <div class="font-medium">Sedang Mengerjakan</div>
-                            <div class="text-3xl font-medium">40</div>
+                            <div class="text-3xl font-medium">{{ attempt_test_count }}</div>
                         </div>
                     </div>
                     <div class="border border-black p-4 flex gap-x-6">
                         <div class="rounded-full h-[70px] aspect-square bg-merah-primary"></div>
                         <div class="flex flex-col justify-between">
                             <div class="font-medium">Tidak Hadir</div>
-                            <div class="text-3xl font-medium">40</div>
+                            <div class="text-3xl font-medium">{{ schedule.attempt_schedules_count - attempt_test_count }}</div>
                         </div>
                     </div>
                 </div>

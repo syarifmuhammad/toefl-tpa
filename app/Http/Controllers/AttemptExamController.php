@@ -11,6 +11,7 @@ use App\Models\Schedule;
 use App\Models\AttemptSchedule;
 use App\Models\QuestionBank;
 use App\Models\AttemptTest;
+use Illuminate\Auth\Events\Attempting;
 use Illuminate\Support\Facades\Storage;
 
 class AttemptExamController extends Controller
@@ -35,9 +36,33 @@ class AttemptExamController extends Controller
     public function attempt(Request $request) {
         $userId = auth()->user()->id;
         $scheduleId = $request->get('id');
-        $attemptSchedule = AttemptSchedule::find($scheduleId);
+        $attemptSchedule = AttemptSchedule::where([
+            'user_id' =>  $userId,
+            'schedule_id' => $scheduleId,
+            'status' => 1,
+        ])->first();
+
+        if (!$attemptSchedule) {
+            abort(404);
+        }
+
         $schedule = Schedule::find($attemptSchedule['schedule_id']);
         $questionbank = QuestionBank::find($schedule['questionbank_id']);
+
+        $check_attempt_test = AttemptTest::where([
+            'schedule_id' => $schedule->id,
+            'user_id' => $userId,
+        ])->first();
+
+        if (!$check_attempt_test) {
+            $answer = [];
+            $attempt_test = AttemptTest::create([
+                'user_id' => $userId,
+                'schedule_id' => $scheduleId,
+                'answer' => json_encode($answer),
+                'score' => 0,
+            ]);
+        } 
 
         $soal =  $questionbank["content"];
         $file = null;
@@ -76,6 +101,15 @@ class AttemptExamController extends Controller
         ]);
                
     }
+
+    // public function answer(Request $request, $attempt_test_id) {
+    //     $answer = $request->input('answer');
+    //     $attempt_test = AttemptTest::find($attempt_test_id);
+    //     $attemptScheduleId = AttemptSchedule::where('schedule_id', $attempt_test->schedule_id);
+    //     $schedule = Schedule::with('questionbank')->find($attemptScheduleId->schedule_id);
+
+
+    // }
 
     public function submit(Request $request)
     {

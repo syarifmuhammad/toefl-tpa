@@ -13,7 +13,7 @@ class ScheduleController extends Controller
 {
     public function index()
     {
-        $schedules = Schedule::with('questionbank')->paginate();
+        $schedules = Schedule::with('questionbank')->paginate(100);
         $questionbanks = QuestionBank::all();
         return Inertia::render('Admin/Jadwal/Index', [
             'schedules' => $schedules,

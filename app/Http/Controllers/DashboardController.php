@@ -39,7 +39,7 @@ class DashboardController extends Controller
         } else {
             return Inertia::render('Dashboard', [
                 'my_schedule' => $my_schedule,
-                'schedules' => $schedules->orderBy('tanggal', 'desc')->paginate(),
+                'schedules' => $schedules->orderBy('tanggal', 'desc')->paginate(100),
                 'category' => $category,
             ]);
         }

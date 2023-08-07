@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AttemptSchedule;
+use App\Models\AttemptTest;
 use App\Models\QuestionBank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class AdminController extends Controller
     $today = Carbon::today()->toDateString();
     $schedule = Schedule::join('question_banks', 'schedules.questionbank_id', '=', 'question_banks.id')->select("schedules.*", "question_banks.category as category")->withCount(['attempt_schedules' => function (EloquentBuilder $q) {
       $q->where('status', 1);
-    }])->whereDate('tanggal', $today)->orderBy('tanggal', 'asc')->paginate();
+    }])->whereDate('tanggal', $today)->orderBy('tanggal', 'asc')->paginate(100);
     return Inertia::render('Admin/Dashboard', [
       'schedule' => $schedule
     ]);
@@ -39,11 +40,13 @@ class AdminController extends Controller
       $q->where('status', 1);
     }])->with('questionbank')->whereDate('tanggal', $today)->find($id);
 
-
-
+    
+    
     if (!$schedule) {
       return to_route('admin.dashboard');
     }
+    $attempt_test_count = AttemptTest::where('schedule_id', $id)->get()->count();
+
     $now = Carbon::now();
     $waktu_berakhir = Carbon::parse($schedule->waktu_berakhir);
     if ($now->lessThan($waktu_berakhir)) {
@@ -52,11 +55,12 @@ class AdminController extends Controller
       $schedule->durasi = 0;
     }
 
-    $participants = AttemptSchedule::with('user')->where('schedule_id', $id)->paginate();
+    $participants = AttemptSchedule::with('user')->where('schedule_id', $id)->paginate(100);
 
     return Inertia::render('Admin/MonitorUjian', [
       'schedule' => $schedule,
       'participants' => $participants,
+      'attempt_test_count' => $attempt_test_count,
     ]);
   }
 
