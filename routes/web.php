@@ -28,7 +28,7 @@ use Inertia\Inertia;
 Route::middleware('auth')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::name('profile.')->prefix('/profile')->group(function () {
         Route::get('', [ProfileController::class, 'index'])->name('index');
@@ -50,8 +50,10 @@ Route::middleware('auth')->group(function () {
 
         Route::name('attempt_exam.')->prefix('attempt-exam')->group(function () {
             Route::get('/', [AttemptExamController::class, 'index'])->name('dashboard');
+            // Route::get('/{id}', [AttemptExamController::class, 'index'])->name('dashboard');
             Route::get('/instruction', [AttemptExamController::class, 'instruction'])->name('instruction');
             Route::get('/attempt', [AttemptExamController::class, 'attempt'])->name('attempt');
+            Route::post('/attempt', [AttemptExamController::class, 'submit'])->name('attempt');
         });
     });
 

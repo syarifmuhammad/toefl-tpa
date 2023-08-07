@@ -1,12 +1,20 @@
 <script setup>
 import ExamLayout from '@/Layouts/ExamLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue'
+import { Head, usePage, Link } from '@inertiajs/vue3';
+import { computed, defineProps } from 'vue'
 
 const page = usePage()
+const props = defineProps({
+    schedule: Array,
+    id: {
+        type: String,
+        default: new URL(window.location).searchParams.get('id')
+    }
+})
 
 const user = computed(() => page.props.auth.user)
+ 
 
 </script>
 
@@ -64,7 +72,9 @@ const user = computed(() => page.props.auth.user)
                         <label for="incoming_test_time" class="font-medium text-black uppercase text-center">Waktu Ujian</label>
                         <p id="incoming_test_time" class="font-bold">1:00:00</p>
                     </div>
-                    <PrimaryButton class="px-10 mt-4">Mulai</PrimaryButton>
+                    <Link :href="route('attempt_exam.attempt', {id: props.id})">
+                        <PrimaryButton class="px-10 mt-4">Mulai</PrimaryButton>
+                    </Link>    
                 </div>
             </div>
         </section>

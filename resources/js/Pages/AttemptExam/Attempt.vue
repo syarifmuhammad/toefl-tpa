@@ -1,13 +1,45 @@
 <script setup>
 import ExamLayout from '@/Layouts/ExamLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head, usePage } from '@inertiajs/vue3';
-import { ref, computed } from 'vue'
+import { Head, usePage, useForm } from '@inertiajs/vue3';
+import { ref, computed, defineProps } from 'vue'
 
 const page = usePage()
 
+const props = defineProps({
+    soal: Array
+})
+
+const formAnswer = useForm({
+    answer: [],
+    attempt_schedule_id: null
+})
+
+const answer = ref([])
+
+const modal = ref(false)
+const modal_update = ref(false)
+const modal_delete = ref(false)
+
 const user = computed(() => page.props.auth.user)
 const navigation_modal = ref(false)
+
+const submit = (e) => {
+    const isEmpty = answer.value.some(item => item === '');
+    formAnswer.attempt_schedule_id = new URL(window.location.href).searchParams.get('id')
+    // formAnswer.answer = formAnswer.answer.map(item => item === null ? "" : item);
+    console.log(formAnswer)
+
+    formAnswer.post(route('attempt_exam.attempt'), {
+        onSuccess: () => {
+            console.log('success')
+        },
+        onError: (e) => {
+            console.log(e)
+        }
+    })
+    
+}
 </script>
 
 
@@ -31,40 +63,68 @@ const navigation_modal = ref(false)
         </div>
         <section class="mt-4 pl-4 pr-12 sm:pl-6 sm:pr-12 lg:pl-8 lg:pr-14 pb-6 flex gap-x-4">
             <div class="bg-white px-4 sm:px-6 lg:px-8 pb-6 w-3/4">
-                <div class="border-b border-abu-component w-full py-4 flex justify-between">
-                    <h1 class="font-bold text-lg">Soal No. 1 - 5</h1>
-                    <h1 class="font-bold text-lg">Sisa Waktu : <span class="text-merah-component">59.30</span></h1>
-                </div>
-                <div class="py-4 px-8 border-b border-abu-component">
-                    <div v-for="m in 5" class="flex flex-col space-y-4 mt-4 mb-16">
-                        <div class="mb-2">
-                            {{ m }}. Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia cupiditate pariatur
-                            illo
-                            facere impedit debitis deleniti accusantium quae ullam atque sed voluptatibus, possimus
-                            excepturi optio! Error veniam sit saepe quod! Quam inventore cumque ad voluptate optio ullam,
-                            eligendi unde quia? Nobis tempora voluptate laborum molestiae ratione ad pariatur neque
-                            consequuntur?
-                        </div>
-                        <div v-for="n in 4" class="flex items-start gap-x-3">
-                            <div class="flex flex-col gap-y-3 items-center">
-                                <input type="radio" name="jawaban_benar" :id="`jawaban_${index}__${index_jawaban}`"
-                                    :value="n">
+                <form @submit.prevent="submit">
+                    <div class="border-b border-abu-component w-full py-4 flex justify-between">
+                        <h1 class="font-bold text-lg">Soal No. 1 - 5</h1>
+                        <h1 class="font-bold text-lg">Sisa Waktu : <span class="text-merah-component">59.30</span></h1>
+                    </div>
+                    <div class="py-4 px-8 border-b border-abu-component">
+                        <div v-for="(m, idx) in soal" class="flex flex-col space-y-4 mt-4 mb-16">
+                            <div class="mb-2 gap-x-3">
+                                {{ idx+1 }}. {{ m.soal }}                            
+                                <div v-if="m.img">
+                                    <img :src="m.img" :alt="m.img" width="300" height="200">
+                                </div>
+                                <div v-if="m.audio">
+                                    <audio controls>
+                                        <source :src="m.audio">
+                                    </audio>
+                                </div>
                             </div>
-                            <div class="-mt-1">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero iste illum, sequi modi hic,
-                                expedita porro ullam eligendi inventore labore facere. Tempora corporis cupiditate nobis
-                                modi,
-                                commodi enim debitis? Nemo ipsum maxime molestiae provident, cumque repellat blanditiis
-                                quisquam
-                                iure labore quia deserunt exercitationem saepe? Saepe iure cum autem pariatur inventore.
+                            <div class="flex items-start gap-x-3">
+                                <div class="flex flex-col gap-y-3 items-center">
+                                    <input type="radio" v-model="formAnswer.answer[idx]" :name="'jawaban_benar'+idx" :id="`jawaban_${idx}__a`"
+                                        value="a">
+                                </div>
+                                <div class="-mt-1">
+                                    {{ m.a }}
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-x-3">
+                                <div class="flex flex-col gap-y-3 items-center">
+                                    <input type="radio" v-model="formAnswer.answer[idx]" :name="'jawaban_benar'+idx" :id="`jawaban_${idx}__b`"
+                                        value="b">
+                                </div>
+                                <div class="-mt-1">
+                                    {{ m.b }}
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-x-3">
+                                <div class="flex flex-col gap-y-3 items-center">
+                                    <input type="radio" v-model="formAnswer.answer[idx]" :name="'jawaban_benar'+idx" :id="`jawaban_${idx}__c`"
+                                        value="c">
+                                </div>
+                                <div class="-mt-1">
+                                    {{ m.c }}
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-x-3">
+                                <div class="flex flex-col gap-y-3 items-center">
+                                    <input type="radio" v-model="formAnswer.answer[idx]" :name="'jawaban_benar'+idx" :id="`jawaban_${index}__d`"
+                                        value="d">
+                                </div>
+                                <div class="-mt-1">
+                                    {{ m.d }}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="flex justify-between items-center">
-                    <PrimaryButton class="px-10 mt-4 float-right">Sebelumnya</PrimaryButton>
-                    <PrimaryButton class="px-10 mt-4 float-right">Selanjutnya</PrimaryButton>
-                </div>
+                    <div class="flex justify-between items-center">
+                        <PrimaryButton type="button" class="px-10 mt-4 float-right">Sebelumnya</PrimaryButton>
+                        <PrimaryButton type="submit" class="px-10 mt-4 float-none">Submit</PrimaryButton>
+                        <PrimaryButton type="button" class="px-10 mt-4 float-right">Selanjutnya</PrimaryButton>
+                    </div>
+                </form>
             </div>
             <div
                 class="w-1/4 right-[20px] min-h-[400px] max-h-[600px] text-white bg-merah-primary py-6 px-4 overflow-y-auto sticky">
