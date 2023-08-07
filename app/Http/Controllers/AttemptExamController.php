@@ -22,7 +22,7 @@ class AttemptExamController extends Controller
         $attemptSchedule = AttemptSchedule::find($scheduleId);
         $schedule = Schedule::find($attemptSchedule['schedule_id']);
         $questionbank = QuestionBank::find($schedule['questionbank_id']);
-
+        
         return Inertia::render('AttemptExam/Dashboard',[
             'schedule' => $schedule,
             'questionbank' => $questionbank,
@@ -63,6 +63,12 @@ class AttemptExamController extends Controller
                 'score' => 0,
             ]);
         } 
+        $page = $request->get('page');
+        $attemptSchedule = AttemptSchedule::find($scheduleId);
+        $schedule = Schedule::find($attemptSchedule['schedule_id']);
+        $questionbank = QuestionBank::find($schedule['questionbank_id']);
+
+        Log::debug("question-> ".$questionbank);
 
         $soal =  $questionbank["content"];
         $file = null;
@@ -85,7 +91,8 @@ class AttemptExamController extends Controller
                 'c' => $line[4],
                 'd' => $line[5],
                 'img' => $line[6],
-                'audio' => $line[7]
+                'audio' => $line[7],
+                'page' => $line[8],
             );
             array_push($soalCsv, $temp);
             
