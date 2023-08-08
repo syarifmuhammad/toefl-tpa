@@ -24,12 +24,16 @@ const props = defineProps(({
 const modal = ref(false)
 const modal_update = ref(false)
 const modal_delete = ref(false)
+const soal_tpa = ref(false)
+const soal_toefl = ref(false)
 
 const submit = () => {
     if (!modal_update.value) {
         formBankSoal.post(route('admin.bank_soal.store'), {
             onSuccess: () => {
                 modal.value = false
+                soal_toefl.value = false
+                soal_tpa.value = false
                 formBankSoal.reset()
             },
             onError: (errors) => {
@@ -42,6 +46,8 @@ const submit = () => {
             onSuccess: () => {
                 modal_update.value = false
                 modal.value = false
+                soal_toefl.value = false
+                soal_tpa.value = false
                 formBankSoal.reset()
             },
             onError: (errors) => {
@@ -73,11 +79,21 @@ const checkFile = (e) => {
         if (!allowedExtensions.includes(extension.toLowerCase())) {
             alert('hanya menerima file csv')
             e.target.value = '';
-        }else{
+        } else {
             formBankSoal.file = file
         }
     }
 
+}
+
+const setInput = (e) => {
+    if (e.target.value == 'tpa') {
+        soal_tpa.value = true
+        soal_toefl.value = false
+    } else if (e.target.value == 'toefl') {
+        soal_toefl.value = true
+        soal_tpa.value = false
+    }
 }
 
 </script>
@@ -99,26 +115,46 @@ const checkFile = (e) => {
                 <div class="mt-4">
                     <InputLabel class="mb-2">Tipe soal</InputLabel>
                     <select class="border-abu-text rounded-md shadow-sm focus:border-2 focus:ring-0 w-full"
-                        :class="{ 'text-black/70': formBankSoal.type == '' }" v-model="formBankSoal.category">
+                        :class="{ 'text-black/70': formBankSoal.type == '' }" v-model="formBankSoal.category"
+                        v-on:change="setInput">
                         <option value="" disabled>Pilih tipe soal</option>
                         <option value="toefl">TOEFL</option>
                         <option value="tpa">TPA</option>
                     </select>
                 </div>
-                <div class="mt-4">
+                <div class="mt-4" v-show="soal_tpa">
                     <InputLabel class="mb-2">Upload soal (csv)</InputLabel>
-                    <input v-on:change="checkFile" type="file" class="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+                    <input v-on:change="checkFile" type="file"
+                        class="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+                </div>
+                <div class="mt-4" v-show="soal_toefl">
+                    <InputLabel class="mb-2">Upload soal Listening(csv)</InputLabel>
+                    <input v-on:change="checkFile" type="file"
+                        class="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+                </div>
+                <div class="mt-4" v-show="soal_toefl">
+                    <InputLabel class="mb-2">Upload soal Reading(csv)</InputLabel>
+                    <input v-on:change="checkFile" type="file"
+                        class="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+                </div>
+                <div class="mt-4" v-show="soal_toefl">
+                    <InputLabel class="mb-2">Upload soal Biasa(csv)</InputLabel>
+                    <input v-on:change="checkFile" type="file"
+                        class="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
                 </div>
                 <div class="mt-4 text-sm text-slate-600">
-                    bingung bikin soal? 
-                    <a target="__blank" href="https://docs.google.com/spreadsheets/d/1MlDjIsbPc0KG8iTNLg9DJUPUDbP7Zgy9pQtrap6qsD8/edit#gid=0" class=" text-blue-600 hover:underline">format soal csv</a>
+                    bingung bikin soal?
+                    <a target="__blank"
+                        href="https://docs.google.com/spreadsheets/d/1MlDjIsbPc0KG8iTNLg9DJUPUDbP7Zgy9pQtrap6qsD8/edit#gid=0"
+                        class=" text-blue-600 hover:underline">format soal csv</a>
                 </div>
                 <div class="flex justify-between gap-x-4 mt-4">
                     <PrimaryButton class="w-full flex justify-center" type="submit" v-if="modal_update == false">Tambah
                     </PrimaryButton>
                     <PrimaryButton class="w-full flex justify-center" type="submit" v-if="modal_update == true">Update
                     </PrimaryButton>
-                    <SecondaryButton class="w-full flex justify-center" @click="modal = false, formBankSoal.reset()">Batal
+                    <SecondaryButton class="w-full flex justify-center"
+                        @click="modal = false, formBankSoal.reset(), soal_toefl = false, soal_tpa = false">Batal
                     </SecondaryButton>
                 </div>
             </form>
@@ -175,12 +211,13 @@ const checkFile = (e) => {
                                     <Link :href="route('admin.bank_soal.detail', i.id)">
                                     <PrimaryButton class="px-4">Detail</PrimaryButton>
                                     </Link>
-                                    <a :href="'/'+i.content" class="px-2 text-slate-800 inline-flex items-center py-2 border border-black rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-abu-component focus:ring-offset-2 transition ease-in-out duration-150">
+                                    <a :href="'/' + i.content"
+                                        class="px-2 text-slate-800 inline-flex items-center py-2 border border-black rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-abu-component focus:ring-offset-2 transition ease-in-out duration-150">
                                         <i className="fa fa-download mr-2"></i> Download
                                     </a>
 
                                     <SecondaryButton2
-                                        @click="formBankSoal.id = i.id, formBankSoal.name = i.name, formBankSoal.category = i.category ,modal = true, modal_update = true"
+                                        @click="formBankSoal.id = i.id, formBankSoal.name = i.name, formBankSoal.category = i.category, modal = true, modal_update = true"
                                         class="px-4">
                                         <svg width="22" height="21" viewBox="0 0 22 21" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
