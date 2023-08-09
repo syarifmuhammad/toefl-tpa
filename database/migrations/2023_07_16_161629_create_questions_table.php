@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('group_question_id')->constrained('group_questions')->onDelete('cascade');
             $table->string('question');
+            // $table->enum('category', ['structured', 'grammar', '']);
+            $table->string('image')->nullable();
+            $table->integer('page');
             $table->timestamps();
         });
     }

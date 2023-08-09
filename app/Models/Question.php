@@ -15,4 +15,14 @@ class Question extends Model
         'group_question_id',
         'question',
     ];
+
+    public function group_question()
+    {
+        return $this->belongsTo(GroupQuestion::class);
+    }
+
+    public function choices()
+    {
+        return $this->hasMany(Choice::class);
+    }
 }
