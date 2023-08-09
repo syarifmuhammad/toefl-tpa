@@ -70,10 +70,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/update', [AdminController::class, 'bankSoalUpdate'])->name('update');
             Route::delete('/', [AdminController::class, 'bankSoalDelete'])->name('destroy');
             // Route::put('/', [AdminController::class, 'bankSoalUpdate'])->name('update');
-
-            Route::get('/{id}', function () {
-                return Inertia::render('Admin/BankSoal/Detail');
-            })->name('detail');
+            
+            Route::get('/{id}', [AdminController::class, 'detail'])->name('detail');
         });
 
         Route::name('jadwal_tes.')->prefix('jadwal-tes')->group(function () {

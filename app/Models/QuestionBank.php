@@ -14,7 +14,6 @@ class QuestionBank extends Model
     protected $fillable = [
         'name',
         'category',
-        'content',
-        'jumlah'
+        'durasi',
     ];
 }

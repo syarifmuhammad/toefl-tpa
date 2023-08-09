@@ -14,7 +14,9 @@ const formBankSoal = useForm({
     id: null,
     name: '',
     category: '',
-    file: null
+    jam: 2,
+    menit: 0,
+    detik: 0,
 })
 
 const props = defineProps(({
@@ -122,7 +124,27 @@ const setInput = (e) => {
                         <option value="tpa">TPA</option>
                     </select>
                 </div>
-                <div class="mt-4" v-show="soal_tpa">
+                <div class="mt-4">
+                    <InputLabel class="mb-2">Durasi Pengerjaan</InputLabel>
+                    <div class="grid grid-cols-3 gap-x-4">
+                        <div>
+                            <InputLabel>Jam</InputLabel>
+                            <TextInput class="w-full" type="number" placeholder="00" autocomplete="jam"
+                                v-model="formBankSoal.jam"></TextInput>
+                        </div>
+                        <div>
+                            <InputLabel>Menit</InputLabel>
+                            <TextInput class="w-full" type="number" placeholder="00" autocomplete="menit" max="60"
+                                v-model="formBankSoal.menit"></TextInput>
+                        </div>
+                        <div>
+                            <InputLabel>Detik</InputLabel>
+                            <TextInput class="w-full" type="number" placeholder="00" autocomplete="detik"
+                                v-model="formBankSoal.detik" max="60"></TextInput>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="mt-4" v-show="soal_tpa">
                     <InputLabel class="mb-2">Upload soal (csv)</InputLabel>
                     <input v-on:change="checkFile" type="file"
                         class="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
@@ -147,7 +169,7 @@ const setInput = (e) => {
                     <a target="__blank"
                         href="https://docs.google.com/spreadsheets/d/1MlDjIsbPc0KG8iTNLg9DJUPUDbP7Zgy9pQtrap6qsD8/edit#gid=0"
                         class=" text-blue-600 hover:underline">format soal csv</a>
-                </div>
+                </div> -->
                 <div class="flex justify-between gap-x-4 mt-4">
                     <PrimaryButton class="w-full flex justify-center" type="submit" v-if="modal_update == false">Tambah
                     </PrimaryButton>
@@ -211,10 +233,10 @@ const setInput = (e) => {
                                     <Link :href="route('admin.bank_soal.detail', i.id)">
                                     <PrimaryButton class="px-4">Detail</PrimaryButton>
                                     </Link>
-                                    <a :href="'/' + i.content"
+                                    <!-- <a :href="'/' + i.content"
                                         class="px-2 text-slate-800 inline-flex items-center py-2 border border-black rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-abu-component focus:ring-offset-2 transition ease-in-out duration-150">
                                         <i className="fa fa-download mr-2"></i> Download
-                                    </a>
+                                    </a> -->
 
                                     <SecondaryButton2
                                         @click="formBankSoal.id = i.id, formBankSoal.name = i.name, formBankSoal.category = i.category, modal = true, modal_update = true"

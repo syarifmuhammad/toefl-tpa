@@ -11,8 +11,8 @@ class QuestionBanks extends Migration{
             $table->id();
             $table->string('name');
             $table->string('category', 5);
-            $table->text('content')->nullable();
-            $table->string('jumlah');
+            //detik
+            $table->integer('durasi');
             $table->timestamps();
         });
     }

@@ -40,8 +40,8 @@ class AdminController extends Controller
       $q->where('status', 1);
     }])->with('questionbank')->whereDate('tanggal', $today)->find($id);
 
-    
-    
+
+
     if (!$schedule) {
       return to_route('admin.dashboard');
     }
@@ -51,7 +51,7 @@ class AdminController extends Controller
     $waktu_berakhir = Carbon::parse($schedule->waktu_berakhir);
     if ($now->lessThan($waktu_berakhir)) {
       $schedule->durasi = $waktu_berakhir->diffInSeconds($now);
-    } else{
+    } else {
       $schedule->durasi = 0;
     }
 
@@ -69,7 +69,7 @@ class AdminController extends Controller
     $schedule = Schedule::find($id);
     $schedule->status = 1;
     $schedule->waktu_mulai = Carbon::now();;
-    $schedule->waktu_berakhir = Carbon::now()->addHours(2); 
+    $schedule->waktu_berakhir = Carbon::now()->addHours(2);
     $schedule->save();
     return to_route('admin.monitor', $id);
   }
@@ -89,47 +89,48 @@ class AdminController extends Controller
     $request->validate([
       'name' => 'required|string|max:255',
       'category' => 'required',
-      'file' => 'required',
+      'jam' => 'required|integer',
+      'menit' => 'required|integer|max:60',
+      'detik' => 'required|integer|max:60',
     ]);
 
     // test file
-    if (!$request->file('file')) return;
-    $file = $request->file('file');
-    $fileName = date('YmdHis') . $file->getClientOriginalName();
-    $file->move(public_path('soal/'), $fileName);
-    $file = fopen('soal/' . $fileName, 'r');
-    if (!$file) return fclose($file);
+    // if (!$request->file('file')) return;
+    // $file = $request->file('file');
+    // $fileName = date('YmdHis') . $file->getClientOriginalName();
+    // $file->move(public_path('soal/'), $fileName);
+    // $file = fopen('soal/' . $fileName, 'r');
+    // if (!$file) return fclose($file);
 
-    Log::info("test $fileName");
-    $num = 0;
+    // Log::info("test $fileName");
+    // $num = 0;
 
-    while (($line = fgetcsv($file)) !== FALSE) {
-      
+    // while (($line = fgetcsv($file)) !== FALSE) {
 
-      $soal = $line[0];
-      $correctAnswer = $line[1];
-      $b = $line[3];
-      $a = $line[2];
-      $c = $line[4];
-      $d = $line[5];
-      $img = $line[6];
-      $audio = $line[7];
-      $page = $line[8];
-      Log::debug($audio.'-'.$page);
-      
-      if($num === 0 && ($soal != 'soal' || $correctAnswer != 'jawaban' || $a != 'a' || $b != 'b' || $c != 'c' || $d != 'd' || $img != 'img' || $audio != 'audio' || $page != 'page')){
-        if(file_exists('soal/'.$fileName))Storage::delete('soal/'.$fileName);
-        throw ValidationException::withMessages(['error' => ['format soal tidak sesuai']]);
-      }
-      $num++;
-    }
-    fclose($file);
 
+    //   $soal = $line[0];
+    //   $correctAnswer = $line[1];
+    //   $b = $line[3];
+    //   $a = $line[2];
+    //   $c = $line[4];
+    //   $d = $line[5];
+    //   $img = $line[6];
+    //   $audio = $line[7];
+    //   $page = $line[8];
+    //   Log::debug($audio.'-'.$page);
+
+    //   if($num === 0 && ($soal != 'soal' || $correctAnswer != 'jawaban' || $a != 'a' || $b != 'b' || $c != 'c' || $d != 'd' || $img != 'img' || $audio != 'audio' || $page != 'page')){
+    //     if(file_exists('soal/'.$fileName))Storage::delete('soal/'.$fileName);
+    //     throw ValidationException::withMessages(['error' => ['format soal tidak sesuai']]);
+    //   }
+    //   $num++;
+    // }
+    // fclose($file);
+    // $schedule->durasi = $request->jam * 3600 + $request->menit * 60 + $request->detik;
     QuestionBank::create([
       'name' => $request->name,
       'category' => $request->category,
-      'content' => 'soal/' . $fileName,
-      'jumlah' => $num
+      'durasi' => $request->jam * 3600 + $request->menit * 60 + $request->detik,
     ]);
   }
 
@@ -190,15 +191,20 @@ class AdminController extends Controller
 
 
   //Soal
+  public function detail(Request $request, $id)
+  {
+    $page = $request->has('page') ? $request->page : 1;
+
+    
+
+    return Inertia::render('Admin/BankSoal/Detail');
+  }
+
   public function add_soal()
   {
     return Inertia::render('Admin/AddSoal');
   }
 
-  public function bankSoalDetail($id)
-  {
-    return Inertia::render('Admin/BankSoal/Detail');
-  }
 
   public function GroupQuestionAdd(Request $request)
   {
