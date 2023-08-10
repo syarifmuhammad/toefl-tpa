@@ -227,7 +227,7 @@ const setInput = (e) => {
                             <td class="py-5 uppercase">{{ i.category }}</td>
                             <td class="py-5">{{ i.name }}</td>
                             <td class="py-5">{{ moment(i.created_at).format("DD MMMM YYYY") }}</td>
-                            <td class="py-5">{{ i.jumlah }}</td>
+                            <td class="py-5">{{ i.questions_count }}</td>
                             <td class="py-5">
                                 <div class="flex gap-x-4 justify-end">
                                     <Link :href="route('admin.bank_soal.detail', i.id)">

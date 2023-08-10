@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('choices', function (Blueprint $table) {
             $table->id();
-            $table->string('category');
-            $table->string('title');
-            $table->string('group_questions');
             $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
-            $table->string('value');
+            $table->text('value');
+            $table->boolean('true')->default(false);
             $table->timestamps();
         });
     }

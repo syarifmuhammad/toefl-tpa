@@ -19,6 +19,7 @@ class QuestionBankFactory extends Factory
         return [
             'name' => fake()->name(),
             'category' => rand(0, 1) ? 'toefl' : 'tpa',
+            'durasi' => 7200,
         ];
     }
 }

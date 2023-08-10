@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('group_question_id')->constrained('group_questions')->onDelete('cascade');
-            $table->string('question');
+            $table->foreignId('question_bank_id')->constrained('question_banks')->onDelete('cascade');
+            $table->string('category');
+            $table->integer('page');
+            $table->text('value');
+            $table->string('image')->nullable();
             $table->timestamps();
+
         });
     }
 

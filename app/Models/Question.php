@@ -15,4 +15,8 @@ class Question extends Model
         'group_question_id',
         'question',
     ];
+
+    public function choices() {
+        return $this->hasMany(Choice::class, 'question_id', 'id');
+    }
 }

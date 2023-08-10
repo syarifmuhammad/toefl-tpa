@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AttemptSchedule;
 use App\Models\AttemptTest;
+use App\Models\Question;
 use App\Models\QuestionBank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Inertia\Inertia;
 use App\Models\Schedule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -77,7 +79,7 @@ class AdminController extends Controller
   //Bank Soal
   public function bank_soal(Request $request)
   {
-    $questionBanks = QuestionBank::paginate(50);
+    $questionBanks = QuestionBank::withCount('questions')->paginate(50);
     // Log::info('bank soal');
     return Inertia::render('Admin/BankSoal/Index', [
       'questionBanks' => $questionBanks
@@ -193,11 +195,27 @@ class AdminController extends Controller
   //Soal
   public function detail(Request $request, $id)
   {
+    $questions_bank = QuestionBank::find($id);
+    if (!$questions_bank) {
+      abort(404);
+    }
+
     $page = $request->has('page') ? $request->page : 1;
 
-    
+    $list_questions = Question::select('id', 'page')->where('question_bank_id', $id)->orderBy('page')->orderBy('id')->get();
 
-    return Inertia::render('Admin/BankSoal/Detail');
+    $questions = Question::with('choices')->where([
+      'question_bank_id' => $id,
+      'page' => $page,
+    ])->get();
+
+    return Inertia::render('Admin/BankSoal/Detail', [
+      'id' => intval($id),
+      'question_bank' => $questions_bank,
+      'page' => intval($page),
+      'list_questions' => $list_questions,
+      'questions' => $questions,
+    ]);
   }
 
   public function add_soal()

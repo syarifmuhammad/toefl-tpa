@@ -7,25 +7,35 @@ import TextInput from '@/Components/TextInput.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import SecondaryButton2 from '@/Components/SecondaryButton2.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue'
+import { ref, defineProps } from 'vue'
 import Editor from '@tinymce/tinymce-vue'
 
-const formSoal = useForm({
-    soal: [
+const props = defineProps({
+    question_bank: Object,
+    id: Number,
+    page: Number,
+    category: String,
+    questions: Array,
+    list_questions: Array,
+})
+const formSoal = ref({
+    soal: props.questions
+})
+
+formSoal.value.soal.push({
+    id: null,
+    value: '',
+    image: null,
+    preview_image: null,
+    category: '',
+    choices: [
         {
             id: null,
-            soal: '',
-            image: null,
-            jawaban: [
-                {
-                    id: null,
-                    text: '',
-                }
-            ],
-            jawaban_benar: null,
-        },
+            text: '',
+            true: false,
+        }
     ],
-})
+},)
 
 const modal = ref(false)
 const jawaban_sementara = ref('')
@@ -39,8 +49,8 @@ const openModalUploadFileForSoal = (index) => {
 }
 
 const uploadFileClient = (index, file) => {
-    formSoal.soal[index].image = file
-    formSoal.soal[index].preview_image = URL.createObjectURL(file)
+    formSoal.value.soal[index].image = file
+    formSoal.value.soal[index].preview_image = URL.createObjectURL(file)
     modal.value = false
     name_file_temp.value = null
 }
@@ -50,37 +60,68 @@ const listenFileUpload = (file) => {
 }
 
 const simpanJawaban = (index) => {
-    formSoal.soal[index].jawaban.push(
+    formSoal.value.soal[index].questions.push(
         {
             id: null,
-            image: null,
-            preview_image: null,
-            jawaban: '',
+            value: "",
+            true: false,
         },
     )
 }
 
-const addOrSave = (index) => {
-    if (formSoal.soal[index].id == null) {
-        formSoal.soal.push({
-            id: null,
-            soal: '',
-            image: null,
-            jawaban: [
-                {
-                    id: null,
-                    text: '',
-                }
-            ],
-            jawaban_benar: null,
-        })
-    }
-    simpanSoal(index)
+const pilihJawabanBenar = (indexSoal, indexJawaban) => {
+    formSoal.value.soal[indexSoal].choices.forEach((val, index) => {
+        formSoal.value.soal[indexSoal].choices[index].true = indexJawaban == index
+    });
 }
 
-const simpanSoal = (index) => {
-    
+const addOrSave = (index) => {
+    let soal = formSoal.value.soal[index]
+
+    if (!soal.choices.some(val => val.true == true)) {
+        alert('Wajib pilih jawaban yang benar')
+        return;
+    }
+
+    if (soal.choices.length < 2) {
+        alert("Pilihan jawaban wajib lebih dari 1")
+        return;
+    }
+
+    const form = useForm({
+        id: soal.id,
+        value: soal.value,
+        image: soal.image,
+        category: soal.category,
+        choices: soal.choices,
+        page: props.page,
+    })
+
+    form.post(route('admin.bank_soal.soal.save', props.id), {
+        onSuccess: () => {
+            if (formSoal.value.soal[index].id == null) {
+                formSoal.value.soal.push({
+                    id: null,
+                    value: '',
+                    image: null,
+                    preview_image: null,
+                    category: '',
+                    choices: [
+                        {
+                            id: null,
+                            value: '',
+                            true: false,
+                        }
+                    ],
+                })
+            }
+        },
+        onError: (errors) => {
+            alert(errors)
+        }
+    })
 }
+
 
 </script>
 
@@ -113,22 +154,34 @@ const simpanSoal = (index) => {
 
         <section class="mt-8 px-4 sm:px-6 lg:px-8 w-full flex bg-white py-8">
             <div class="w-7/12 flex flex-col divide-y-2">
-                <div v-for="(soal, index) in formSoal.soal" class="mt-4 flex justify-between py-8">
+                <form v-for="(soal, index) in formSoal.soal" @submit.prevent="addOrSave(index)" :id="`soal_${index}`"
+                    class="mt-4 flex justify-between py-8">
                     <div class="rounded-lg pl-8 grow">
+                        <select required v-model="soal.category" v-if="question_bank.category == 'toefl'">
+                            <option value="structured">Structured</option>
+                            <option value="grammar">Grammar</option>
+                        </select>
+                        <select required v-model="soal.category" v-if="question_bank.category == 'tpa'">
+                            <option value="verbal">Verbal</option>
+                            <option value="angka">Angka</option>
+                            <option value="logika">Logika</option>
+                            <option value="spasial">Spasial</option>
+                        </select>
                         <div>
                             <img v-if="soal.preview_image != null" class="max-w-[720px] mx-auto mb-3"
                                 :src="soal.preview_image" alt="">
-                            <textarea class="rounded-md w-full" rows="8"></textarea>
+                            <textarea required class="rounded-md w-full" rows="8" v-model="soal.value"></textarea>
                         </div>
                         <div class="mt-6">
                             <h2 class="font-semibold text-md">Opsi Jawaban</h2>
                             <div class="flex flex-col space-y-4 mt-4">
-                                <div v-for="(jawaban, index_jawaban) in soal.jawaban" class="flex gap-x-3">
-                                    <input type="radio" name="jawaban_benar" :value="index_jawaban"
-                                        v-model="soal.jawaban_benar">
-                                    <textarea class="rounded-md" name="" id="" cols="60" rows="3"></textarea>
-                                    <SecondaryButton2 class="px-2 self-start" v-if="soal.jawaban.length > 1"
-                                        @click="soal.jawaban.splice(index_jawaban, 1)">
+                                <div v-for="(choice, index_jawaban) in soal.choices" class="flex gap-x-3">
+                                    <input required type="radio" name="jawaban_benar" :checked="choice.true"
+                                        @change="pilihJawabanBenar(index, index_jawaban)">
+                                    <textarea required class="rounded-md" name="" id="" cols="60" rows="3"
+                                        v-model="choice.value"></textarea>
+                                    <SecondaryButton2 class="px-2 self-start" v-if="soal.choices.length > 1"
+                                        @click="soal.choices.splice(index_jawaban, 1)">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24px"
                                             height="24px">
                                             <path
@@ -136,7 +189,8 @@ const simpanSoal = (index) => {
                                         </svg>
                                     </SecondaryButton2>
                                 </div>
-                                <div class="flex gap-x-3 cursor-pointer" @click="soal.jawaban.push({ id: null, text: '' })">
+                                <div class="flex gap-x-3 cursor-pointer"
+                                    @click="soal.choices.push({ id: null, value: '', true: false, })">
                                     <span>+</span>
                                     <span>Tambah opsi</span>
                                 </div>
@@ -146,18 +200,18 @@ const simpanSoal = (index) => {
                         </PrimaryButton> -->
                     </div>
                     <div class="ml-3 bg-merah-primary self-start text-white py-4 flex flex-col">
-                        <div @click="addOrSave(index)" class="cursor-pointer box-content py-2 px-3 hover:bg-merah-warning">
+                        <button type="submit" class="cursor-pointer box-content py-2 px-3 hover:bg-merah-warning">
                             <svg class="w-[23px]" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 50 50">
                                 <path
                                     d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z" />
                             </svg>
-                        </div>
+                        </button>
                         <div @click="openModalUploadFileForSoal(index)"
                             class="cursor-pointer box-content py-2 px-3 hover:bg-merah-warning flex justify-center">
                             <img class="w-[20px] aspect-square" src="../../../Assets/image-icon.png" alt="">
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <aside class="fixed transition-all w-3/12 max-h-[70vh] overflow-y-auto bg-merah-primary"
                 :class="show_sidebar ? 'right-0' : '-right-1/4'">
@@ -172,17 +226,19 @@ const simpanSoal = (index) => {
                 <div class="w-full p-4 pr-16">
                     <h1 class="text-white text-lg">Nomor Soal</h1>
                     <hr class="w-full border-2 border-white my-5">
-                    <div class="text-white text-lg mb-3">Structured</div>
                     <div class="grid grid-cols-5 gap-2">
-                        <div v-for="n in 10" class="flex items-center justify-center aspect-square bg-blue-400 rounded-sm">
-                            {{ n }}
-                        </div>
-                    </div>
-                    <div class="mt-4 text-white text-lg mb-3">Grammar</div>
-                    <div class="grid grid-cols-5 gap-2">
-                        <div v-for="n in 10" class="flex items-center justify-center aspect-square bg-blue-400 rounded-sm">
-                            {{ n }}
-                        </div>
+                        <Link v-for="(list, index) in props.list_questions"
+                            :href="route('admin.bank_soal.detail', props.id) + `?page=${list.page}#soal_${index}`"
+                            class="flex items-center justify-center aspect-square rounded-sm"
+                            :class="list.page == props.page ? 'bg-blue-400' : 'bg-white'">
+                        {{ index + 1 }}
+                        </Link>
+                        <Link
+                            :href="props.list_questions.length != props.page ? route('admin.bank_soal.detail', props.id) + `?page=${props.list_questions.length}` : `#`"
+                            class="flex items-center justify-center aspect-square rounded-sm"
+                            :class="props.list_questions.length == props.page ? 'bg-blue-400' : 'bg-white'">
+                        ?
+                        </Link>
                     </div>
                 </div>
             </aside>

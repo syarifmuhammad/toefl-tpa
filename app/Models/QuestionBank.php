@@ -16,4 +16,8 @@ class QuestionBank extends Model
         'category',
         'durasi',
     ];
+
+    public function questions() {
+        return $this->hasMany(Question::class, 'question_bank_id', 'id');
+    }
 }

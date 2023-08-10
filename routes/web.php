@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\LegalisirController;
 use App\Http\Controllers\admin\PembayaranController;
+use App\Http\Controllers\admin\QuestionController;
 use App\Http\Controllers\admin\ScheduleController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttemptExamController;
@@ -72,6 +73,10 @@ Route::middleware('auth')->group(function () {
             // Route::put('/', [AdminController::class, 'bankSoalUpdate'])->name('update');
             
             Route::get('/{id}', [AdminController::class, 'detail'])->name('detail');
+            
+            Route::name('soal.')->prefix('/{id}/soal')->group(function () {
+                Route::post('', [QuestionController::class, 'save'])->name('save');
+            });
         });
 
         Route::name('jadwal_tes.')->prefix('jadwal-tes')->group(function () {
