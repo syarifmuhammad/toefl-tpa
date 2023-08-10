@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AttemptSchedule;
 use App\Models\AttemptTest;
+use App\Models\Choice;
 use App\Models\Question;
 use App\Models\QuestionBank;
 use Illuminate\Http\Request;
@@ -96,6 +97,12 @@ class AdminController extends Controller
       'detik' => 'required|integer|max:60',
     ]);
 
+    QuestionBank::create([
+      'name' => $request->name,
+      'category' => $request->category,
+      'durasi' => $request->jam * 3600 + $request->menit * 60 + $request->detik,
+    ]);
+
     // test file
     // if (!$request->file('file')) return;
     // $file = $request->file('file');
@@ -129,11 +136,6 @@ class AdminController extends Controller
     // }
     // fclose($file);
     // $schedule->durasi = $request->jam * 3600 + $request->menit * 60 + $request->detik;
-    QuestionBank::create([
-      'name' => $request->name,
-      'category' => $request->category,
-      'durasi' => $request->jam * 3600 + $request->menit * 60 + $request->detik,
-    ]);
   }
 
   public function bankSoalDelete(Request $request)
@@ -146,48 +148,56 @@ class AdminController extends Controller
 
   public function bankSoalUpdate(Request $request)
   {
-    Log::info('bank soal update');
+    // Log::info('bank soal update');
 
     $request->validate([
       'id' => 'required',
       'name' => 'required|string|max:255',
       'category' => 'required',
-      'file' => 'required'
+      'jam' => 'required|integer',
+      'menit' => 'required|integer|max:60',
+      'detik' => 'required|integer|max:60',
     ]);
 
-    Log::info("$request->file('file')");
+    // Log::info("$request->file('file')");
 
-    // test file
-    if (!$request->file('file')) return;
-    $file = $request->file('file');
-    $fileName = date('YmdHis') . $file->getClientOriginalName();
-    $file->move(public_path('soal/'), $fileName);
-    $file = fopen('soal/' . $fileName, 'r');
-    if (!$file) return fclose($file);
+    // // test file
+    // if (!$request->file('file')) return;
+    // $file = $request->file('file');
+    // $fileName = date('YmdHis') . $file->getClientOriginalName();
+    // $file->move(public_path('soal/'), $fileName);
+    // $file = fopen('soal/' . $fileName, 'r');
+    // if (!$file) return fclose($file);
 
-    Log::info("test $fileName");
-    $num = 0;
+    // Log::info("test $fileName");
+    // $num = 0;
 
-    while (($line = fgetcsv($file)) !== FALSE) {
-      $soal = $line[0];
-      $correctAnswer = $line[1];
-      $b = $line[3];
-      $a = $line[2];
-      $c = $line[4];
-      $d = $line[5];
-      if ($num === 0 && ($soal != 'soal' || $correctAnswer != 'jawaban' || $a != 'a' || $b != 'b' || $c != 'c' || $d != 'd')) {
-        if (Storage::exists('soal/' . $fileName)) Storage::delete('soal/' . $fileName);
-        throw ValidationException::withMessages(['error' => ['format soal tidak sesuai']]);
-      }
-      $num++;
+    // while (($line = fgetcsv($file)) !== FALSE) {
+    //   $soal = $line[0];
+    //   $correctAnswer = $line[1];
+    //   $b = $line[3];
+    //   $a = $line[2];
+    //   $c = $line[4];
+    //   $d = $line[5];
+    //   if ($num === 0 && ($soal != 'soal' || $correctAnswer != 'jawaban' || $a != 'a' || $b != 'b' || $c != 'c' || $d != 'd')) {
+    //     if (Storage::exists('soal/' . $fileName)) Storage::delete('soal/' . $fileName);
+    //     throw ValidationException::withMessages(['error' => ['format soal tidak sesuai']]);
+    //   }
+    //   $num++;
+    // }
+    // fclose($file);
+
+    $questionBanks = QuestionBank::where('id', $request->id);
+
+    if ($questionBanks->category != $request->category) {
+      Question::where('question_bank_id', $request->id)->delete();
     }
-    fclose($file);
 
-    QuestionBank::where('id', $request->id)->update([
+
+    $questionBanks->update([
       'name' => $request->name,
       'category' => $request->category,
-      'content' => 'soal/' . $fileName,
-      'jumlah' => $num
+      'durasi' => $request->jam * 3600 + $request->menit * 60 + $request->detik,
     ]);
   }
 
@@ -221,6 +231,34 @@ class AdminController extends Controller
   public function add_soal()
   {
     return Inertia::render('Admin/AddSoal');
+  }
+
+  public function soal_store(Request $request)
+  {
+    //versi Rifqi Attaufi
+    $request->validate([
+      'id_bank_soal' => 'required',
+      'soal' => 'required',
+      'jawaban' => 'required',
+    ]);
+
+    $question = Question::create([
+      'question_bank_id' => $request->id_bank_soal,
+      'question' => $request->soal,
+      'image' => $request->image,
+      'page' => $request->page,
+    ]);
+
+    foreach ($request->jawaban as $value) {
+      $choices = Choice::create([
+        'value' => $value->value,
+      ]);
+
+      if ($value->answer == true) {
+        $question->correct_answer = $choices->id;
+        $question->save();
+      }
+    }
   }
 
 

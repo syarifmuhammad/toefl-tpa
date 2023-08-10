@@ -19,4 +19,14 @@ class Question extends Model
     public function choices() {
         return $this->hasMany(Choice::class, 'question_id', 'id');
     }
+
+    public function group_question()
+    {
+        return $this->belongsTo(GroupQuestion::class);
+    }
+
+    // public function choices()
+    // {
+    //     return $this->hasMany(Choice::class);
+    // }
 }
