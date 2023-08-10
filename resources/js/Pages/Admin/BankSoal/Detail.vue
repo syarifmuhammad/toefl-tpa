@@ -6,8 +6,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import SecondaryButton2 from '@/Components/SecondaryButton2.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
-import { ref, defineProps } from 'vue'
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
+import { ref, defineProps, computed } from 'vue'
 import Editor from '@tinymce/tinymce-vue'
 
 const props = defineProps({
@@ -18,24 +18,26 @@ const props = defineProps({
     questions: Array,
     list_questions: Array,
 })
-const formSoal = ref({
-    soal: props.questions
-})
-
-formSoal.value.soal.push({
-    id: null,
-    value: '',
-    image: null,
-    preview_image: null,
-    category: '',
-    choices: [
+const formSoal = computed(() => {
+    let questions = props.questions
+    questions.push(
         {
             id: null,
-            text: '',
-            true: false,
+            value: '',
+            image: null,
+            preview_image: null,
+            category: '',
+            choices: [
+                {
+                    id: null,
+                    text: '',
+                    true: false,
+                }
+            ],
         }
-    ],
-},)
+    )
+    return questions
+})
 
 const modal = ref(false)
 const jawaban_sementara = ref('')
@@ -49,8 +51,8 @@ const openModalUploadFileForSoal = (index) => {
 }
 
 const uploadFileClient = (index, file) => {
-    formSoal.value.soal[index].image = file
-    formSoal.value.soal[index].preview_image = URL.createObjectURL(file)
+    formSoal.value[index].image = file
+    formSoal.value[index].preview_image = URL.createObjectURL(file)
     modal.value = false
     name_file_temp.value = null
 }
@@ -60,7 +62,7 @@ const listenFileUpload = (file) => {
 }
 
 const simpanJawaban = (index) => {
-    formSoal.value.soal[index].questions.push(
+    formSoal.value[index].questions.push(
         {
             id: null,
             value: "",
@@ -70,13 +72,13 @@ const simpanJawaban = (index) => {
 }
 
 const pilihJawabanBenar = (indexSoal, indexJawaban) => {
-    formSoal.value.soal[indexSoal].choices.forEach((val, index) => {
-        formSoal.value.soal[indexSoal].choices[index].true = indexJawaban == index
+    formSoal.value[indexSoal].choices.forEach((val, index) => {
+        formSoal.value[indexSoal].choices[index].true = indexJawaban == index
     });
 }
 
 const addOrSave = (index) => {
-    let soal = formSoal.value.soal[index]
+    let soal = formSoal.value[index]
 
     if (!soal.choices.some(val => val.true == true)) {
         alert('Wajib pilih jawaban yang benar')
@@ -99,27 +101,35 @@ const addOrSave = (index) => {
 
     form.post(route('admin.bank_soal.soal.save', props.id), {
         onSuccess: () => {
-            if (formSoal.value.soal[index].id == null) {
-                formSoal.value.soal.push({
-                    id: null,
-                    value: '',
-                    image: null,
-                    preview_image: null,
-                    category: '',
-                    choices: [
-                        {
-                            id: null,
-                            value: '',
-                            true: false,
-                        }
-                    ],
-                })
-            }
+            // if (formSoal.value[index].id == null) {
+            //     formSoal.value.push({
+            //         id: null,
+            //         value: '',
+            //         image: null,
+            //         preview_image: null,
+            //         category: '',
+            //         choices: [
+            //             {
+            //                 id: null,
+            //                 value: '',
+            //                 true: false,
+            //             }
+            //         ],
+            //     })
+            // }
         },
         onError: (errors) => {
             alert(errors)
         }
     })
+}
+
+const deleteSoal = (index) => {
+    if (confirm("Apakah anda yakin ingin menghapus soal ini ?")) {
+        const formDelete = useForm({});
+        formDelete.delete(route('admin.bank_soal.soal.destroy', formSoal.value[index].id))
+        // formSoal.value.splice(index, 1)
+    }
 }
 
 
@@ -154,7 +164,7 @@ const addOrSave = (index) => {
 
         <section class="mt-8 px-4 sm:px-6 lg:px-8 w-full flex bg-white py-8">
             <div class="w-7/12 flex flex-col divide-y-2">
-                <form v-for="(soal, index) in formSoal.soal" @submit.prevent="addOrSave(index)" :id="`soal_${index}`"
+                <form v-for="(soal, index) in formSoal" @submit.prevent="addOrSave(index)" :id="`soal_${index}`"
                     class="mt-4 flex justify-between py-8">
                     <div class="rounded-lg pl-8 grow">
                         <select required v-model="soal.category" v-if="question_bank.category == 'toefl'">
@@ -170,7 +180,43 @@ const addOrSave = (index) => {
                         <div>
                             <img v-if="soal.preview_image != null" class="max-w-[720px] mx-auto mb-3"
                                 :src="soal.preview_image" alt="">
-                            <textarea required class="rounded-md w-full" rows="8" v-model="soal.value"></textarea>
+                            <div class="flex">
+                                <textarea required class="rounded-md w-full" rows="8" v-model="soal.value"></textarea>
+                                <div class="ml-3 bg-merah-primary self-start text-white flex flex-col">
+                                    <button type="submit"
+                                        class="cursor-pointer box-content py-2 px-3 hover:bg-merah-warning flex justify-center">
+                                        <svg v-if="soal.id != null" class="w-[20px]" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                            fill="#fff" version="1.1" id="Capa_1"
+                                            viewBox="0 0 407.096 407.096" xml:space="preserve">
+                                            <g>
+                                                <g>
+                                                    <path
+                                                        d="M402.115,84.008L323.088,4.981C319.899,1.792,315.574,0,311.063,0H17.005C7.613,0,0,7.614,0,17.005v373.086    c0,9.392,7.613,17.005,17.005,17.005h373.086c9.392,0,17.005-7.613,17.005-17.005V96.032    C407.096,91.523,405.305,87.197,402.115,84.008z M300.664,163.567H67.129V38.862h233.535V163.567z" />
+                                                    <path
+                                                        d="M214.051,148.16h43.08c3.131,0,5.668-2.538,5.668-5.669V59.584c0-3.13-2.537-5.668-5.668-5.668h-43.08    c-3.131,0-5.668,2.538-5.668,5.668v82.907C208.383,145.622,210.92,148.16,214.051,148.16z" />
+                                                </g>
+                                            </g>
+                                        </svg>
+                                        <svg v-else class="w-[23px]" xmlns="http://www.w3.org/2000/svg" fill="white"
+                                            viewBox="0 0 50 50">
+                                            <path
+                                                d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z" />
+                                        </svg>
+                                    </button>
+                                    <div @click="openModalUploadFileForSoal(index)"
+                                        class="cursor-pointer box-content py-2 px-3 hover:bg-merah-warning flex justify-center">
+                                        <img class="w-[20px] aspect-square" src="../../../Assets/image-icon.png" alt="">
+                                    </div>
+                                    <div v-if="soal.id != null" @click="deleteSoal(index)"
+                                        class="cursor-pointer box-content py-2 px-3 hover:bg-merah-warning flex justify-center">
+                                        <svg class="w-[25px] aspect-square" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 32 32" fill="#ffffff">
+                                            <path
+                                                d="M 15 4 C 14.476563 4 13.941406 4.183594 13.5625 4.5625 C 13.183594 4.941406 13 5.476563 13 6 L 13 7 L 7 7 L 7 9 L 8 9 L 8 25 C 8 26.644531 9.355469 28 11 28 L 23 28 C 24.644531 28 26 26.644531 26 25 L 26 9 L 27 9 L 27 7 L 21 7 L 21 6 C 21 5.476563 20.816406 4.941406 20.4375 4.5625 C 20.058594 4.183594 19.523438 4 19 4 Z M 15 6 L 19 6 L 19 7 L 15 7 Z M 10 9 L 24 9 L 24 25 C 24 25.554688 23.554688 26 23 26 L 11 26 C 10.445313 26 10 25.554688 10 25 Z M 12 12 L 12 23 L 14 23 L 14 12 Z M 16 12 L 16 23 L 18 23 L 18 12 Z M 20 12 L 20 23 L 22 23 L 22 12 Z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="mt-6">
                             <h2 class="font-semibold text-md">Opsi Jawaban</h2>
@@ -199,18 +245,7 @@ const addOrSave = (index) => {
                         <!-- <PrimaryButton @click="simpanJawaban(index)" class="px-4 mt-6 float-right">Tambah Jawaban
                         </PrimaryButton> -->
                     </div>
-                    <div class="ml-3 bg-merah-primary self-start text-white py-4 flex flex-col">
-                        <button type="submit" class="cursor-pointer box-content py-2 px-3 hover:bg-merah-warning">
-                            <svg class="w-[23px]" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 50 50">
-                                <path
-                                    d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z" />
-                            </svg>
-                        </button>
-                        <div @click="openModalUploadFileForSoal(index)"
-                            class="cursor-pointer box-content py-2 px-3 hover:bg-merah-warning flex justify-center">
-                            <img class="w-[20px] aspect-square" src="../../../Assets/image-icon.png" alt="">
-                        </div>
-                    </div>
+
                 </form>
             </div>
             <aside class="fixed transition-all w-3/12 max-h-[70vh] overflow-y-auto bg-merah-primary"
@@ -233,10 +268,9 @@ const addOrSave = (index) => {
                             :class="list.page == props.page ? 'bg-blue-400' : 'bg-white'">
                         {{ index + 1 }}
                         </Link>
-                        <Link
-                            :href="props.list_questions.length != props.page ? route('admin.bank_soal.detail', props.id) + `?page=${props.list_questions.length}` : `#`"
+                        <Link :href="route('admin.bank_soal.detail', props.id) + `?page=${props.list_questions.length + 1}`"
                             class="flex items-center justify-center aspect-square rounded-sm"
-                            :class="props.list_questions.length == props.page ? 'bg-blue-400' : 'bg-white'">
+                            :class="props.page >= props.list_questions.length + 1 ? 'bg-blue-400' : 'bg-white'">
                         ?
                         </Link>
                     </div>
@@ -251,5 +285,4 @@ const addOrSave = (index) => {
             </svg>
 
         </section>
-    </AuthenticatedLayout>
-</template>
+    </AuthenticatedLayout></template>

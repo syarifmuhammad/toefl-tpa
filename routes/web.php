@@ -74,6 +74,8 @@ Route::middleware('auth')->group(function () {
             
             Route::get('/{id}', [AdminController::class, 'detail'])->name('detail');
             
+            Route::delete('/soal/{id}', [QuestionController::class, 'destroy'])->name('soal.destroy');
+
             Route::name('soal.')->prefix('/{id}/soal')->group(function () {
                 Route::post('', [QuestionController::class, 'save'])->name('save');
             });
